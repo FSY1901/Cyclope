@@ -33,12 +33,17 @@ namespace Cyclope {
 		virtual void ImGuiUpdate() = 0;
 
 	protected:
-		Window GetWindow();
-		void ClearColor(float r, float g, float b);
 		ImGuiContext* ctx;
 
+		int GetWindowWidth();
+		int GetWindowHeight();
+
+		const char* GetWindowTitle();
+		void SetWindowTitle(const char* title);
+
 	private:
-		Window m_win;
+
+		Window m_window;
 
 		int Init();
 

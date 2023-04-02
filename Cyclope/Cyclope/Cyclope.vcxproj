@@ -15,13 +15,16 @@
     <ClInclude Include="src\Cyclope\Application.h" />
     <ClInclude Include="src\Cyclope\Core.h" />
     <ClInclude Include="src\Cyclope\EntryPoint.h" />
-    <ClInclude Include="src\Game\Object.h" />
+    <ClInclude Include="src\Game\Components.h" />
+    <ClInclude Include="src\Game\Entity.h" />
     <ClInclude Include="src\Game\Scene.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Maths\Maths.h" />
+    <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\VAO.h" />
     <ClInclude Include="src\Rendering\VBO.h" />
+    <ClInclude Include="src\vendor\entt\entt.hpp" />
     <ClInclude Include="src\vendor\OpenGL\include\glad.h" />
     <ClInclude Include="src\vendor\OpenGL\include\glfw3.h" />
     <ClInclude Include="src\vendor\OpenGL\include\glfw3native.h" />
@@ -29,17 +32,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cyclope\Application.cpp" />
-    <ClCompile Include="src\Game\Object.cpp" />
+    <ClCompile Include="src\Game\Entity.cpp" />
     <ClCompile Include="src\Game\Scene.cpp" />
+    <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
+    <ClCompile Include="src\Rendering\Rendering.cpp" />
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\VAO.cpp" />
     <ClCompile Include="src\Rendering\VBO.cpp" />
-    <ClCompile Include="src\vendor\OpenGL\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="src\vendor\OpenGL\src\glfw3.lib" />
+    <Text Include="src\vendor\entt\LICENSE.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -93,13 +97,13 @@
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Cyclope\src\Cyclope;$(SolutionDir)Cyclope\src\vendor\OpenGL\include;D:\VS_Projects\Cyclope\Cyclope\ImGui\include;$(SolutionDir)Cyclope\vendor\drwav;$(SolutionDir)Cyclope\vendor\OpenAL\;$(SolutionDir)Cyclope\src\vendor\glm;$(SolutionDir)Cyclope\src\vendor\glm\gtc;$(SolutionDir)Cyclope\src\vendor\glm\gtx;$(SolutionDir)Cyclope\src\vendor\imgui;$(SolutionDir)Cyclope\src\vendor\OpenGL\include\;$(SolutionDir)Cyclope\src\vendor\SDL\sdl_mixer\include;$(SolutionDir)Cyclope\src\vendor\SDL\sdl\include;$(SolutionDir)Cyclope\src\vendor\imguizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\entt;$(SolutionDir)ImGui\include;$(SolutionDir)Cyclope\src\Cyclope;$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\VS_Projects\Cyclope\Cyclope\Cyclope\src\vendor\OpenGL\src;D:\VS_Projects\Cyclope\Cyclope\bin\Release-x64\ImGui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;$(SolutionDir)bin\Release-x64\ImGui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,7 +115,7 @@
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Cyclope\src\Cyclope;$(SolutionDir)Cyclope\src\vendor\OpenGL\include;D:\VS_Projects\Cyclope\Cyclope\ImGui\include;$(SolutionDir)Cyclope\vendor\drwav;$(SolutionDir)Cyclope\vendor\OpenAL\;$(SolutionDir)Cyclope\src\vendor\glm;$(SolutionDir)Cyclope\src\vendor\glm\gtc;$(SolutionDir)Cyclope\src\vendor\glm\gtx;$(SolutionDir)Cyclope\src\vendor\imgui;$(SolutionDir)Cyclope\src\vendor\OpenGL\include\;$(SolutionDir)Cyclope\src\vendor\SDL\sdl_mixer\include;$(SolutionDir)Cyclope\src\vendor\SDL\sdl\include;$(SolutionDir)Cyclope\src\vendor\imguizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\entt;$(SolutionDir)ImGui\include;$(SolutionDir)Cyclope\src\Cyclope;$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +123,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\VS_Projects\Cyclope\Cyclope\Cyclope\src\vendor\OpenGL\src;D:\VS_Projects\Cyclope\Cyclope\bin\Release-x64\ImGui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;$(SolutionDir)bin\Release-x64\ImGui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

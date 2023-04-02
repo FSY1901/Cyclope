@@ -7,6 +7,8 @@
 
 namespace Cyclope {
 
+#define TRIANGLES GL_TRIANGLES
+
 	class API VAO {
 
 	public:
@@ -16,6 +18,7 @@ namespace Cyclope {
 		void Bind();
 		void Unbind();
 		void Delete();
+		void Draw(int mode, int first, int count);
 
 	private:
 		unsigned int m_ID;

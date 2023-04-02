@@ -3,7 +3,7 @@
 namespace Cyclope {
 
     VAO::VAO() {
-
+        
     }
 
     void VAO::Generate() {
@@ -30,6 +30,10 @@ namespace Cyclope {
 
     void VAO::Delete() {
         glDeleteVertexArrays(1, &m_ID);
+    }
+
+    void VAO::Draw(int mode, int first, int count) {
+        glDrawArrays(mode, first, count);
     }
 
 }

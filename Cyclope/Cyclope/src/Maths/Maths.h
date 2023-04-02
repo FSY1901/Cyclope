@@ -6,16 +6,21 @@
 
 #include "../Cyclope/Core.h"
 
-#include "../vendor/glm/glm.hpp"
-#include "../vendor/glm/gtc/matrix_transform.hpp"
-#include "../vendor/glm/gtc/type_ptr.hpp"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include "../vendor/glm/gtx/matrix_decompose.hpp"
+#include <gtx/matrix_decompose.hpp>
 
 namespace Cyclope {
 
-	struct API Quaternion;
+	using Vector2 = glm::vec2;
+	using Vector3 = glm::vec3;
+	using Vector4 = glm::vec4;
+	using Quaternion = glm::quat;
+	using Matrix4 = glm::mat4;
+
 
 	const double PI = 3.1415926;
 
@@ -25,98 +30,18 @@ namespace Cyclope {
 
 	float API Clamp(float a, float b, float value);
 
-	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
+	//Calculates the angle between to Vector3s and returns the result in RADIANS.
+	float API AngleBetween(Vector3 v1, Vector3 v2);
 
-	template<typename T>
-	class API Vector3 {
+	Vector3 API Lerp(Vector3 v1, Vector3 v2, float t);
+	Vector3 API ToEulerAngles(Quaternion q);
 
-	public:
-		Vector3();
-		Vector3(T X, T Y, T Z);
-		Vector3(const Quaternion& q);
+	Quaternion API ToQuaternion(Vector3 eulerAngles);
+	Quaternion API LookAt(Vector3 direction, Vector3 forward = { 0, 0, 1 }, Vector3 up = { 0, 1, 0 });
 
-		T x, y, z;
+	Quaternion RotationBetweenVectors(Vector3 forward, Vector3 direction);
 
-		T Length();
-
-		//Multiplies 2 Vectors and returns the dot product (a scalar result).
-		static T DotProduct(Vector3 v1, Vector3 v2);
-
-		//Calculates the angle between to Vector3s and returns the result in RADIANS.
-		static T AngleBetween(Vector3 v1, Vector3 v2);
-
-		static T Distance(Vector3 v1, Vector3 v2);
-
-		//Produces a Vector that is orthogonal to both given Vectors.
-		static Vector3 CrossProduct(Vector3 a, Vector3 b);
-
-		//Returns a Vector that has the same direction, but a length of one.
-		static Vector3 Normalize(Vector3 v);
-
-		static Vector3 Lerp(Vector3 v1, Vector3 v2, float t);
-
-#pragma region Operators
-
-		Vector3& operator*=(Vector3 vec);
-
-		Vector3& operator+=(Vector3 vec);
-
-		Vector3& operator+(Vector3 vec);
-
-		Vector3& operator-(Vector3 vec);
-
-		Vector3& operator*(Vector3 vec);
-
-		Vector3& operator*(float f);
-
-		Vector3& operator/(float f);
-
-		bool operator!=(Vector3 other);
-
-		bool operator==(Vector3 other);
-#pragma endregion
-
-		static Vector3 up;
-		static Vector3 forward;
-		static Vector3 right;
-		static Vector3 down;
-		static Vector3 back;
-		static Vector3 left;
-
-	};
-
-	API typedef Vector3<float> Vector3f;
-
-	struct API Quaternion {
-		double w = 1, x = 0, y = 0, z = 0;
-
-		Quaternion();
-		Quaternion(double x, double y, double z, double w);
-		Quaternion(const Vector3f& vec);
-
-		static Quaternion ToQuaternion(Vector3f vec);
-		static Quaternion LookAt(Vector3f direction, Vector3f forward = Vector3f::forward, Vector3f up = Vector3f::up);
-		static Quaternion Slerp(Quaternion q1, Quaternion q2, float delta);
-		static float Dot(Quaternion q1, Quaternion q2);
-
-		static Vector3f ToEulerAngles(Quaternion q);
-		static Vector3f EulerAngles(glm::quat q);
-
-		Quaternion& operator*(Quaternion& q);
-
-		Quaternion& operator*(float f);
-
-		Quaternion& operator+(Quaternion& q);
-
-		bool operator!=(Quaternion& other);
-
-		bool operator==(Quaternion& other);
-
-		Vector3f& operator*(Vector3f& vec);
-
-	private:
-		static Quaternion RotationBetweenVectors(Vector3f forward, Vector3f direction);
-	};
+	bool DecomposeTransform(const Matrix4& transform, Vector3& translation, Vector3& rotation, Vector3& scale);
 
 }
 

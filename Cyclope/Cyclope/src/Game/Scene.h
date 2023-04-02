@@ -2,28 +2,24 @@
 #define SCENE_H
 
 #include "../Cyclope/Core.h"
-#include "Object.h"
-#include <memory>
+#include "Components.h"
+
+#include "entt.hpp"
 
 namespace Cyclope {
 
 	class API Scene {
-	
-	public:
 
+	public:
 		Scene();
 		~Scene();
-		Object* AddObject(Object* obj);
 
-		static Scene* GetActiveScene();
-		static void SetActiveScene(Scene* scene);
+		void Update();
 
-		std::vector<Object*> m_objects;
+		entt::entity CreateEntity();
+
 	private:
-
-		static Scene* m_activeScene;
-
-		friend class Application;
+		entt::registry m_Registry;
 
 	};
 

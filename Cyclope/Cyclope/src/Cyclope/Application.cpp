@@ -5,9 +5,6 @@
 #include "../Game/Scene.h"
 #include "../Input/Input.h"
 
-#include "../Rendering/Shader.h"
-#include "../Rendering/VAO.h"
-
 namespace Cyclope {
 
 	Application::Application() {
@@ -15,9 +12,9 @@ namespace Cyclope {
 	}
 
     Application::Application(int width, int height, const char* title) {
-        m_win.width = width;
-        m_win.height = height;
-        m_win.title = title;
+        m_window.width = width;
+        m_window.height = height;
+        m_window.title = title;
     }
 
     int Application::Init() {
@@ -30,14 +27,14 @@ namespace Cyclope {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-        GLFWwindow* window = glfwCreateWindow(m_win.width, m_win.height, m_win.title, NULL, NULL);
+        GLFWwindow* window = glfwCreateWindow(m_window.width, m_window.height, m_window.title, NULL, NULL);
         if (window == NULL)
         {
             std::cout << "Failed to create GLFW window" << std::endl;
             glfwTerminate();
             return -1;
         }
-        m_win.window = window;
+        m_window.window = window;
         glfwMakeContextCurrent(window);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -59,18 +56,18 @@ namespace Cyclope {
             return;
         }
 
-        Input::SetWindow(m_win.window);
-
-        Start();
+        Input::SetWindow(m_window.window);
 
         IMGUI_CHECKVERSION();
         ctx = ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
         ImGui::StyleColorsDark();
-        ImGui_ImplGlfw_InitForOpenGL(GetWindow().window, true);
+        ImGui_ImplGlfw_InitForOpenGL(m_window.window, true);
         ImGui_ImplOpenGL3_Init("#version 330");
 
-        while (!glfwWindowShouldClose(m_win.window))
+        Start();
+
+        while (!glfwWindowShouldClose(m_window.window))
         {
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
@@ -78,14 +75,12 @@ namespace Cyclope {
 
             Update();
 
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-
             ImGuiUpdate();
 
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-            glfwSwapBuffers(m_win.window);
+            glfwSwapBuffers(m_window.window);
             glfwPollEvents();
         }
 
@@ -93,14 +88,13 @@ namespace Cyclope {
 
 	}
 
-    Window Application::GetWindow()
-    {
-        return m_win;
-    }
+    int Application::GetWindowWidth() { return m_window.width; }
+    int Application::GetWindowHeight() { return m_window.height; }
 
-    void Application::ClearColor(float r, float g, float b) {
-        glClearColor(r, g, b, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    const char* Application::GetWindowTitle() { return m_window.title; }
+    void Application::SetWindowTitle(const char* title) {
+        m_window.title = title;
+        glfwSetWindowTitle(m_window.window, title);
     }
 
     void Application::framebuffer_size_callback(GLFWwindow* window, int width, int height)

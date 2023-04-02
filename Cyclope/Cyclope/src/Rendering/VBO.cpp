@@ -26,4 +26,6 @@ namespace Cyclope {
 		glDeleteBuffers(1, &m_ID);
 	}
 
+	unsigned int VBO::getID() { return m_ID; }
+
 }

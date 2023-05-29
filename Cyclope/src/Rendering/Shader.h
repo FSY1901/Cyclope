@@ -1,5 +1,5 @@
 #include "../Maths/Maths.h"
-#include "../Cyclope/Core.h"
+#include "Core.h"
 
 #include <string>
 

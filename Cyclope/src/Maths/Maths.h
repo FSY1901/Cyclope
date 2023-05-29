@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "../Cyclope/Core.h"
+#include "Core.h"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>

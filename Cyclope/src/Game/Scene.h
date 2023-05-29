@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../Cyclope/Core.h"
+#include "Core.h"
 #include "Components.h"
 
 #include "entt.hpp"

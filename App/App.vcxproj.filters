@@ -21,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader.glsl" />
+    <None Include="imgui.ini" />
   </ItemGroup>
 </Project>

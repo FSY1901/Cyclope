@@ -10,6 +10,7 @@ public:
 	VAO vao;
 	VBO vbo;
 	Shader sh;
+
 	App() {
 		
 	}
@@ -37,7 +38,6 @@ public:
 		vao.Link(&vbo);
 		vbo.Unbind();
 		vao.Unbind();
-		Quaternion q;
 		ImGui::SetCurrentContext((ImGuiContext*)ctx);
 	}
 

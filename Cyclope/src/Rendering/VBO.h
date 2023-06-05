@@ -6,7 +6,7 @@
 
 namespace Cyclope {
 
-	class API VBO {
+	class CYCLOPE_API VBO {
 
 	public:
 		VBO();

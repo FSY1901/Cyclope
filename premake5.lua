@@ -39,6 +39,11 @@ project "ImGui"
         "glfw3.lib"
     }
 
+    defines 
+    { 
+        "IMGUI_API=__declspec(dllexport)" 
+    }
+
     filter "system:windows"
         cppdialect "C++17"
         staticruntime "On"

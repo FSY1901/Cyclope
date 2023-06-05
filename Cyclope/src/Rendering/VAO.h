@@ -9,7 +9,7 @@ namespace Cyclope {
 
 #define TRIANGLES GL_TRIANGLES
 
-	class API VAO {
+	class CYCLOPE_API VAO {
 
 	public:
 		VAO();

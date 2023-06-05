@@ -8,7 +8,7 @@
 
 namespace Cyclope {
 
-    class API Shader
+    class CYCLOPE_API Shader
     {
     public:
         Shader(std::string path);

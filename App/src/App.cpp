@@ -4,23 +4,19 @@
 
 using namespace Cyclope;
 
-class App : public Application{
+class UI : public Layer {
 
 public:
-	VAO vao;
-	VBO vbo;
-	Shader sh;
-
-	App() {
-		
+	void OnImGuiRender() override {
+		ImGui::Begin("ImGui Window");
+		ImGui::Text("Test Text");
+		ImGui::End();
 	}
+};
 
-	App(int width, int height, const char* title) : Application(width, height, title) {
-		
-	}
-
-	void Start() override {
-
+class RenderLayer : public Layer {
+public:
+	void OnAttach() override {
 		// set up vertex data (and buffer(s)) and configure vertex attributes
 		// ------------------------------------------------------------------
 		float vertices[] = {
@@ -28,7 +24,6 @@ public:
 			 0.5f, -0.5f, 0.0f, // right 
 			 0.0f,  0.5f, 0.0f  // top   
 		};
-
 		sh = Shader("./src/shader.glsl");
 		vao.Generate();
 		vbo.Generate();
@@ -38,35 +33,32 @@ public:
 		vao.Link(&vbo);
 		vbo.Unbind();
 		vao.Unbind();
-		ImGui::SetCurrentContext((ImGuiContext*)ctx);
 	}
 
-	void Update() override {
+	void OnUpdate() override {
 		Renderer::ClearColor(0.2f, 0.3f, 0.3f);
 
 		sh.Use();
 		vao.Bind();
 		vao.Draw(TRIANGLES, 0, 3);
 
-		/*for (auto& o : Scene::GetActiveScene()->m_objects) {
-			for (auto& c : o->m_components) {
-				c->Update();
-			}
-		}*/
-
 		if (Input::KeyPressed(Keys::Q)) {
 			std::cout << "Pressed";
 		}
-
 	}
+private:
+	VAO vao;
+	VBO vbo;
+	Shader sh;
+};
 
-	void ImGuiUpdate() override {
-		// ImGUI window creation
-		ImGui::Begin("My name is window");
-		// Text that appears in the window
-		ImGui::Text("Hello there adventurer!");
-		// Ends the window
-		ImGui::End();
+class App : public Application{
+
+public:
+
+	App(int width, int height, const char* title) : Application(width, height, title) {
+		PushLayer(new UI());
+		PushLayer(new RenderLayer());
 	}
 
 };

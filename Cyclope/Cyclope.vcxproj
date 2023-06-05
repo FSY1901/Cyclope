@@ -111,9 +111,12 @@
     <ClInclude Include="src\Cyclope\Application.h" />
     <ClInclude Include="src\Cyclope\Core.h" />
     <ClInclude Include="src\Cyclope\EntryPoint.h" />
+    <ClInclude Include="src\Cyclope\Layer.h" />
+    <ClInclude Include="src\Cyclope\LayerStack.h" />
     <ClInclude Include="src\Game\Components.h" />
     <ClInclude Include="src\Game\Entity.h" />
     <ClInclude Include="src\Game\Scene.h" />
+    <ClInclude Include="src\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Rendering\Rendering.h" />
@@ -123,8 +126,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cyclope\Application.cpp" />
+    <ClCompile Include="src\Cyclope\LayerStack.cpp" />
     <ClCompile Include="src\Game\Entity.cpp" />
     <ClCompile Include="src\Game\Scene.cpp" />
+    <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
     <ClCompile Include="src\Rendering\Rendering.cpp" />

@@ -8,7 +8,7 @@
 
 namespace Cyclope {
 
-	API enum Keys
+	CYCLOPE_API enum Keys
 	{
 		SPACE = 32,
 		APOSTROPHE = 39,  /* ' */
@@ -132,7 +132,7 @@ namespace Cyclope {
 		MENU = 348,
 	};
 
-	API enum Buttons {
+	CYCLOPE_API enum Buttons {
 		Button_1 = 0,
 		Button_2 = 1,
 		Button_3 = 2,
@@ -147,12 +147,12 @@ namespace Cyclope {
 		Button_MIDDLE = Button_3,
 	};
 
-	API enum CursorMode {
+	CYCLOPE_API enum CursorMode {
 		Hidden = GLFW_CURSOR_DISABLED,
 		Shown = GLFW_CURSOR_NORMAL
 	};
 
-	class API Input {
+	class CYCLOPE_API Input {
 
 	public:
 

@@ -8,7 +8,7 @@
 
 namespace Cyclope {
 
-	class API Scene {
+	class CYCLOPE_API Scene {
 
 	public:
 		Scene();

@@ -1,5 +1,5 @@
 #ifdef CYCLOPE_BUILD_DLL
-	#define	API __declspec(dllexport)
+	#define	CYCLOPE_API __declspec(dllexport)
 #else
-	#define	API __declspec(dllimport)
+	#define	CYCLOPE_API __declspec(dllimport)
 #endif // CYCLOPE_BUILD_DLL

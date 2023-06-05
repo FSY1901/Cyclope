@@ -3,16 +3,15 @@
 
 #include "Core.h"
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "LayerStack.h"
+#include "../ImGui/ImGuiLayer.h"
 
 #include "glad.h"
 #include "glfw3.h"
 
 namespace Cyclope {
 
-	struct API Window
+	struct CYCLOPE_API Window
 	{
 		GLFWwindow* window;
 		int width;
@@ -20,20 +19,20 @@ namespace Cyclope {
 		const char* title;
 	};
 
-	class API Application {
+	class CYCLOPE_API Application {
 
 	public:
-		Application();
+		Application() = delete;
 		Application(int width, int height, const char* title);
 
 		void Run();
+		void PushLayer(Layer* layer);
 
-		virtual void Start() = 0;
-		virtual void Update() = 0;
-		virtual void ImGuiUpdate() = 0;
+		static Application* GetInstance();
+
+		Window GetWindow();
 
 	protected:
-		ImGuiContext* ctx;
 
 		int GetWindowWidth();
 		int GetWindowHeight();
@@ -42,6 +41,11 @@ namespace Cyclope {
 		void SetWindowTitle(const char* title);
 
 	private:
+
+		static Application* m_Instance;
+
+		LayerStack m_LayerStack;
+		ImGuiLayer* m_ImGuiLayer;
 
 		Window m_window;
 

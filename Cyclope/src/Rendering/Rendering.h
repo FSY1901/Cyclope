@@ -12,7 +12,7 @@ This file is used for various rendering commands that can be called by the user
 
 namespace Cyclope {
 	
-	struct API Renderer
+	struct CYCLOPE_API Renderer
 	{
 		static void ClearColor(float r, float g, float b);
 	};

@@ -7,14 +7,15 @@
 
 namespace Cyclope {
 
-	Application::Application() {
-
-	}
+    Application* Application::m_Instance = nullptr;
 
     Application::Application(int width, int height, const char* title) {
         m_window.width = width;
         m_window.height = height;
         m_window.title = title;
+        m_Instance = this;
+
+        Init();
     }
 
     int Application::Init() {
@@ -44,41 +45,29 @@ namespace Cyclope {
             return -1;
         }
 
+        m_ImGuiLayer = new ImGuiLayer();
+        PushLayer(m_ImGuiLayer);
+
         return 0;
     }
 
 	void Application::Run() {
 
-        int err = Init();
-
-        if (err == -1) {
-            std::cout << "ERROR HAPPENED WHEN TRYING TO RUN APPLICATION";
-            return;
-        }
-
         Input::SetWindow(m_window.window);
-
-        IMGUI_CHECKVERSION();
-        ctx = ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        ImGui::StyleColorsDark();
-        ImGui_ImplGlfw_InitForOpenGL(m_window.window, true);
-        ImGui_ImplOpenGL3_Init("#version 330");
-
-        Start();
 
         while (!glfwWindowShouldClose(m_window.window))
         {
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
+            {
+                for (Layer* layer : m_LayerStack)
+                    layer->OnUpdate();
+            }
 
-            Update();
-
-            ImGuiUpdate();
-
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            m_ImGuiLayer->Begin();
+            {
+                for (Layer* layer : m_LayerStack)
+                    layer->OnImGuiRender();
+            }
+            m_ImGuiLayer->End();
 
             glfwSwapBuffers(m_window.window);
             glfwPollEvents();
@@ -87,6 +76,15 @@ namespace Cyclope {
         glfwTerminate();
 
 	}
+
+    void Application::PushLayer(Layer* layer) {
+        m_LayerStack.PushLayer(layer);
+        layer->OnAttach();
+    }
+
+    Application* Application::GetInstance() { return m_Instance; }
+    
+    Window Application::GetWindow() { return m_window; }
 
     int Application::GetWindowWidth() { return m_window.width; }
     int Application::GetWindowHeight() { return m_window.height; }

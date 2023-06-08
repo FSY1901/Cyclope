@@ -70,6 +70,7 @@
     <ClInclude Include="src\Rendering\VBO.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\EBO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cyclope\Application.cpp">
@@ -108,5 +109,6 @@
     <ClCompile Include="src\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\EBO.cpp" />
   </ItemGroup>
 </Project>

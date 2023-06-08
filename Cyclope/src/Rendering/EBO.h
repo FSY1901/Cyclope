@@ -1,16 +1,17 @@
 #include "Core.h"
 #include "glad.h"
 
-#ifndef VBO_H
-#define VBO_H
+#ifndef EBO_H
+#define EBO_H
 
 namespace Cyclope {
 
-	class CYCLOPE_API VBO {
+	class CYCLOPE_API EBO {
 
 	public:
-		VBO();
-		void SetData(float* vertices, GLsizeiptr size);
+		EBO();
+		void SetData(unsigned int* indices, GLsizeiptr size);
+
 		unsigned int getID();
 
 		void Generate();
@@ -25,4 +26,4 @@ namespace Cyclope {
 
 }
 
-#endif 
+#endif // !EBO_H

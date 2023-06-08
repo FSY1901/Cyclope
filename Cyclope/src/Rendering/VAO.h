@@ -3,7 +3,9 @@
 
 #include "Core.h"
 #include "glad.h"
+
 #include "VBO.h"
+#include "EBO.h"
 
 namespace Cyclope {
 
@@ -14,11 +16,13 @@ namespace Cyclope {
 	public:
 		VAO();
 		void Generate();
-		void Link(VBO* VBO);
+		void LinkVBO(VBO* vbo);
+		void LinkEBO(VBO* vbo, EBO* ebo);
 		void Bind();
 		void Unbind();
 		void Delete();
-		void Draw(int mode, int first, int count);
+		void DrawVBO(int mode, int first, int count);
+		void DrawEBO(int mode, int count);
 
 	private:
 		unsigned int m_ID;

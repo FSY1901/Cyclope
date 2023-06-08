@@ -20,27 +20,32 @@ public:
 		// set up vertex data (and buffer(s)) and configure vertex attributes
 		// ------------------------------------------------------------------
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, // left  
-			 0.5f, -0.5f, 0.0f, // right 
-			 0.0f,  0.5f, 0.0f  // top   
+			 0.5f,  0.5f, 0.0f,  // top right
+			 0.5f, -0.5f, 0.0f,  // bottom right
+			-0.5f, -0.5f, 0.0f,  // bottom left
+			-0.5f,  0.5f, 0.0f   // top left 
+		};
+		unsigned int indices[] = {  // note that we start from 0!
+			0, 1, 3,   // first triangle
+			1, 2, 3    // second triangle
 		};
 		sh = Shader("./src/shader.glsl");
 		vao.Generate();
 		vbo.Generate();
+		ebo.Generate();
 		vao.Bind();
 		vbo.Bind();
 		vbo.SetData(vertices, sizeof(vertices));
-		vao.Link(&vbo);
-		vbo.Unbind();
-		vao.Unbind();
+		ebo.Bind();
+		ebo.SetData(indices, sizeof(indices));
+		vao.LinkEBO(&vbo, &ebo);
 	}
 
 	void OnUpdate() override {
 		Renderer::ClearColor(0.2f, 0.3f, 0.3f);
 
 		sh.Use();
-		vao.Bind();
-		vao.Draw(TRIANGLES, 0, 3);
+		vao.DrawEBO(TRIANGLES, 6);
 
 		if (Input::KeyPressed(Keys::Q)) {
 			std::cout << "Pressed";
@@ -49,6 +54,7 @@ public:
 private:
 	VAO vao;
 	VBO vbo;
+	EBO ebo;
 	Shader sh;
 };
 

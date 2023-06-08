@@ -10,14 +10,25 @@ namespace Cyclope {
         glGenVertexArrays(1, &m_ID);
     }
 
-    void VAO::Link(VBO* VBO) {
-        VBO->Bind();
+    void VAO::LinkVBO(VBO* vbo) {
+        vbo->Bind();
 
         //position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
 
-        VBO->Unbind();
+        vbo->Unbind();
+    }
+
+    void VAO::LinkEBO(VBO* vbo, EBO* ebo) {
+        vbo->Bind();
+        ebo->Bind();
+
+        //position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        vbo->Unbind();
     }
 
     void VAO::Bind() {
@@ -32,8 +43,16 @@ namespace Cyclope {
         glDeleteVertexArrays(1, &m_ID);
     }
 
-    void VAO::Draw(int mode, int first, int count) {
+    void VAO::DrawVBO(int mode, int first, int count) {
+        Bind();
         glDrawArrays(mode, first, count);
+        Unbind();
+    }
+
+    void VAO::DrawEBO(int mode, int count) {
+        Bind();
+        glDrawElements(mode, count, GL_UNSIGNED_INT, 0);
+        Unbind();
     }
 
 }

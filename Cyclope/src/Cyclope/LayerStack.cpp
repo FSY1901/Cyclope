@@ -7,8 +7,10 @@ namespace Cyclope {
 	}
 
 	LayerStack::~LayerStack() {
-		for (Layer* l : m_Layers)
+		for (Layer* l : m_Layers) {
+			l->OnDetach();
 			delete l;
+		}
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {

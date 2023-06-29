@@ -58,6 +58,9 @@
     <ClInclude Include="src\Maths\Maths.h">
       <Filter>Maths</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\EBO.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -70,7 +73,6 @@
     <ClInclude Include="src\Rendering\VBO.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\EBO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cyclope\Application.cpp">
@@ -94,6 +96,9 @@
     <ClCompile Include="src\Maths\Maths.cpp">
       <Filter>Maths</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\EBO.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -109,6 +114,5 @@
     <ClCompile Include="src\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\EBO.cpp" />
   </ItemGroup>
 </Project>

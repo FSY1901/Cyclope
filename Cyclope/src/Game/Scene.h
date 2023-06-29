@@ -8,6 +8,8 @@
 
 namespace Cyclope {
 
+	class Entity;
+
 	class CYCLOPE_API Scene {
 
 	public:
@@ -16,10 +18,12 @@ namespace Cyclope {
 
 		void Update();
 
-		entt::entity CreateEntity();
+		Entity CreateEntity();
 
 	private:
 		entt::registry m_Registry;
+
+		friend class Entity;
 
 	};
 

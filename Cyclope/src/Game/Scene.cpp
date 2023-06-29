@@ -1,4 +1,6 @@
 #include "Scene.h"
+#include "Entity.h"
+#include "Components.h"
 
 namespace Cyclope {
 
@@ -11,9 +13,19 @@ namespace Cyclope {
 	}
 
 	void Scene::Update() {
-
+		/*
+		auto view = m_Registry.view<Component>();
+		for (auto entity : view) {
+			Component c = view.get<Component>(entity);
+		}
+		*/
 	}
 
-	entt::entity Scene::CreateEntity() { return m_Registry.create(); }
+	Entity Scene::CreateEntity() {
+		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		//TODO: Maybe add other components and maybe transform properties like position, scale etc. as parameters
+		return entity;
+	}
 
 }

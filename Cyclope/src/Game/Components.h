@@ -7,8 +7,6 @@ namespace Cyclope {
 
 	struct TransformComponent
 	{
-		Matrix4 transform{1.0f};
-
 		Vector3 position{0.0f, 0.0f, 0.0f};
 		Vector3 scale{ 1.0f, 1.0f, 1.0f };
 		Quaternion rotation{ 0.0f, 0.0f, 0.0f, 1.0f };
@@ -21,8 +19,11 @@ namespace Cyclope {
 		TransformComponent(const Vector3& pos, const Vector3& rot, const Vector3& _scale)
 			: position(pos), rotation(ToQuaternion(rot)), scale(_scale) {}
 
-		operator Matrix4& () { return transform; }
+		operator Matrix4& () { return transform; }//TODO: recalculate matrix
 		operator const Matrix4& () const { return transform; }
+
+	private:
+		Matrix4 transform{ 1.0f };
 	};
 
 }

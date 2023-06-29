@@ -21,7 +21,7 @@ project "ImGui"
     files
     {
         "%{prj.name}/include/**.h",
-        "%{prj.name}/**.cpp",
+        "%{prj.name}/**.cpp"
     }
 
     includedirs
@@ -149,3 +149,11 @@ project "App"
         cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
+
+    filter "configurations:Debug"
+        symbols "On"
+        buildoptions "/MT"
+
+    filter "configurations:Release"
+        optimize "On"
+        buildoptions "/MT"

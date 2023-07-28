@@ -8,7 +8,7 @@
 
 namespace Cyclope {
 
-	CYCLOPE_API enum Keys
+	enum class CYCLOPE_API Key
 	{
 		SPACE = 32,
 		APOSTROPHE = 39,  /* ' */
@@ -132,7 +132,7 @@ namespace Cyclope {
 		MENU = 348,
 	};
 
-	CYCLOPE_API enum Buttons {
+	enum class CYCLOPE_API Button {
 		Button_1 = 0,
 		Button_2 = 1,
 		Button_3 = 2,
@@ -147,7 +147,7 @@ namespace Cyclope {
 		Button_MIDDLE = Button_3,
 	};
 
-	CYCLOPE_API enum CursorMode {
+	enum class CYCLOPE_API CursorMode {
 		Hidden = GLFW_CURSOR_DISABLED,
 		Shown = GLFW_CURSOR_NORMAL
 	};
@@ -158,13 +158,13 @@ namespace Cyclope {
 
 		Input() = delete;
 
-		static void SetCursorMode(int mode);
+		static void SetCursorMode(CursorMode mode);
 
 		//checks if the given key is pressed
-		static bool KeyPressed(int key);
+		static bool KeyPressed(Key key);
 
 		//checks if the given mouse _Button is pressed
-		static bool ButtonPressed(int button);
+		static bool ButtonPressed(Button button);
 
 		static float MouseX();
 

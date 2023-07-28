@@ -11,22 +11,22 @@ namespace Cyclope {
 		s_window = window;
 	}
 
-	void Input::SetCursorMode(int mode)
+	void Input::SetCursorMode(CursorMode mode)
 	{
-		glfwSetInputMode(s_window, GLFW_CURSOR, mode);
+		glfwSetInputMode(s_window, GLFW_CURSOR, (int)mode);
 	}
 
-	bool Input::KeyPressed(int key) {
-		if (glfwGetKey(s_window, key) == GLFW_PRESS) {
+	bool Input::KeyPressed(Key key) {
+		if (glfwGetKey(s_window, (int)key) == GLFW_PRESS) {
 			return true;
 		}
 
 		return false;
 	}
 
-	bool Input::ButtonPressed(int button)
+	bool Input::ButtonPressed(Button button)
 	{
-		if (glfwGetMouseButton(s_window, button) == GLFW_PRESS) {
+		if (glfwGetMouseButton(s_window, (int)button) == GLFW_PRESS) {
 			return true;
 		}
 

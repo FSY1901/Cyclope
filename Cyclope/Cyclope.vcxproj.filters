@@ -58,21 +58,20 @@
     <ClInclude Include="src\Maths\Maths.h">
       <Filter>Maths</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\EBO.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Shader.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\VAO.h">
+    <ClInclude Include="src\Rendering\Texture.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\VBO.h">
-      <Filter>Rendering</Filter>
+    <ClInclude Include="src\Input\Time.h">
+      <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Rendering\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cyclope\Application.cpp">
@@ -96,23 +95,22 @@
     <ClCompile Include="src\Maths\Maths.cpp">
       <Filter>Maths</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\EBO.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Shader.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\VAO.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Rendering\VBO.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Texture.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\Time.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Rendering\Buffer.cpp" />
   </ItemGroup>
 </Project>

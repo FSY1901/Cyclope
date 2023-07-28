@@ -39,7 +39,7 @@ namespace Cyclope {
 
     }
 
-    Shader::Shader(std::string path) {
+    void Shader::Create(std::string path) {
 
         //Store the Shader Code 
         std::string vertexCode;
@@ -142,32 +142,31 @@ namespace Cyclope {
     /// Setting Values in the shader
     ////////////////////////////
 
-    void Shader::setBool(const std::string& name, bool value) const {
+    void Shader::SetBool(const std::string& name, bool value) const {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
     }
 
-    void Shader::setInt(const std::string& name, int value) const {
+    void Shader::SetInt(const std::string& name, int value) const {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
     }
 
-    void Shader::setFloat(const std::string& name, float value) const {
+    void Shader::SetFloat(const std::string& name, float value) const {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
-    void Shader::setColorValues3(const std::string& name, float r, float g, float b) const {
-        glUniform3f(glGetUniformLocation(ID, name.c_str()), r, g, b);
+    void Shader::SetVec4(const std::string& name, const Vector4& vec) const {
+        glUniform4f(glGetUniformLocation(ID, name.c_str()), vec.x, vec.y, vec.z, vec.w);
     }
 
-    void Shader::setColorValues4(const std::string& name, float r, float g, float b, float a) const {
-        glUniform3f(glGetUniformLocation(ID, name.c_str()), r, g, b);
-        glUniform1f(glGetUniformLocation(ID, "Transparency"), a);
+    void Shader::SetVec2(const std::string& name, const Vector2& vec) const {
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), vec.x, vec.y);
     }
 
-    void Shader::setVec3(const std::string& name, float x, float y, float z) const {
-        glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+    void Shader::SetVec3(const std::string& name, const Vector3& vec) const {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), vec.x, vec.y, vec.z);
     }
 
-    void Shader::setMat4(const std::string& name, const glm::mat4& mat) const
+    void Shader::SetMat4(const std::string& name, const Matrix4& mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }

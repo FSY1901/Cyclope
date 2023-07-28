@@ -69,6 +69,7 @@ project "Cyclope"
         "$(SolutionDir)vendor/OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
+        "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src/Cyclope"
     }

@@ -8,9 +8,11 @@
 #include "Game/Entity.h"
 
 #include "Input/Input.h"
+#include "Input/Time.h"
 
 #include "Rendering/Shader.h"
-#include "Rendering/VAO.h"
+#include "Rendering/Texture.h"
+#include "Rendering/Buffer.h"
 #include "Rendering/Rendering.h"
 
 #include "imgui.h"

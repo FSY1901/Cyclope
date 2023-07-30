@@ -180,7 +180,8 @@ namespace Cyclope {
 		static float s_mx;
 		static float s_my;
 
-		extern friend class Application;
+		friend class Application;
+		friend class Window;
 
 	};
 

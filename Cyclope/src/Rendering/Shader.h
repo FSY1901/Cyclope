@@ -17,8 +17,8 @@ namespace Cyclope {
         unsigned int GetID() { return ID; }
 
         void Create(std::string path);
-        void Use();
-        void Delete();
+        void Use() const;
+        void Delete() const;
 
         // utility uniform functions
         void SetBool(const std::string& name, bool value) const;

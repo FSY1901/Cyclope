@@ -12,7 +12,6 @@
 
 #include "Rendering/Shader.h"
 #include "Rendering/Texture.h"
-#include "Rendering/Buffer.h"
 #include "Rendering/Rendering.h"
 
 #include "imgui.h"

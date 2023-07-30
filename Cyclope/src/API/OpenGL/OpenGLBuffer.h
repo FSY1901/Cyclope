@@ -12,10 +12,10 @@ namespace Cyclope {
 
 	public:
 		OpenGLVertexBuffer(float* vertices, GLsizeiptr size);
-		virtual ~OpenGLVertexBuffer();
+		~OpenGLVertexBuffer() override;
 
-		void Bind() const;
-		void Unbind() const;
+		void Bind() const override;
+		void Unbind() const override;
 
 	private:
 		unsigned int m_ID;
@@ -26,34 +26,16 @@ namespace Cyclope {
 
 	public:
 		OpenGLIndexBuffer(unsigned int* indices, GLsizeiptr size);
-		virtual ~OpenGLIndexBuffer();
+		~OpenGLIndexBuffer() override;
 
-		void Bind() const;
-		void Unbind() const;
+		void Bind() const override;
+		void Unbind() const override;
 		
-		GLsizeiptr GetSize() const;
+		GLsizeiptr GetSize() const override;
 
 	private:
 		unsigned int m_ID;
 		GLsizeiptr m_size;
-
-	};
-
-	class CYCLOPE_API OpenGLVertexArray : public VertexArray {
-
-	public:
-		OpenGLVertexArray(const Shared<VertexBuffer>& vertexBuffer, const Shared<IndexBuffer>& indexBuffer);
-		virtual ~OpenGLVertexArray();
-
-		void Bind() const;
-		void Unbind() const;
-
-		const Shared<IndexBuffer>& GetIndexBuffer();
-
-	private:
-		unsigned int m_ID;
-		Shared<VertexBuffer> m_VertexBuffer;
-		Shared<IndexBuffer> m_IndexBuffer;
 
 	};
 

@@ -14,7 +14,7 @@ namespace Cyclope {
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ImGui::StyleColorsDark();
-		ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow().window, true);
+		ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 	}
 

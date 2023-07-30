@@ -5,19 +5,9 @@
 
 #include "LayerStack.h"
 #include "../ImGui/ImGuiLayer.h"
-
-#include "glad.h"
-#include "glfw3.h"
+#include "Window.h"
 
 namespace Cyclope {
-
-	struct CYCLOPE_API Window
-	{
-		GLFWwindow* window;
-		int width;
-		int height;
-		const char* title;
-	};
 
 	class CYCLOPE_API Application {
 
@@ -30,15 +20,7 @@ namespace Cyclope {
 
 		static Application* GetInstance();
 
-		Window GetWindow();
-
-	protected:
-
-		int GetWindowWidth();
-		int GetWindowHeight();
-
-		const char* GetWindowTitle();
-		void SetWindowTitle(const char* title);
+		Window* GetWindow();
 
 	private:
 
@@ -49,11 +31,7 @@ namespace Cyclope {
 
 		Window m_window;
 
-		int Init();
-
-		//CALLBACKS
-		static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-		static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+		void Init();
 
 	};
 

@@ -39,7 +39,7 @@ namespace Cyclope {
 
     }
 
-    void Shader::Create(std::string path) {
+    void Shader::Create(std::string path){
 
         //Store the Shader Code 
         std::string vertexCode;
@@ -130,11 +130,11 @@ namespace Cyclope {
     }
 
     //Uses the shader
-    void Shader::Use() {
+    void Shader::Use() const{
         glUseProgram(ID);
     }
 
-    void Shader::Delete() {
+    void Shader::Delete() const{
         glDeleteProgram(ID);
     }
 

@@ -1,34 +1,44 @@
+#pragma once
+
 #include "Core.h"
 
 #include "glad.h"
 
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#include <string>
 
 namespace Cyclope {
+
+	enum class CYCLOPE_API ImageFormat {
+		R8,
+		RGB8,
+		RGBA8,
+		RGBA32F
+	};
+
+	struct CYCLOPE_API TextureSpecification {
+		int Width = 1;
+		int Height = 1;
+		ImageFormat Format = ImageFormat::RGBA8;
+	};
 
 	class CYCLOPE_API Texture2D {
 
 	public:
-		Texture2D();
+		virtual ~Texture2D() {};
+		virtual void Bind(unsigned int offset = 0) const = 0;
+		virtual void Unbind() const = 0;
 
-		void Create(const char* filename, bool flipped = true);
-		void Bind(int offset = 0);
-		void Unbind();
+		virtual void SetData(void* data) const = 0;
 
-		GLuint GetTexture() const;
+		virtual GLuint GetTexture() const = 0;
+		virtual int GetWidth() const = 0;
+		virtual int GetHeight() const = 0;
 
-		int GetWidth() const;
-		int GetHeight() const;
+		virtual const std::string& GetPath() const = 0;
 
-	private:
-		const char* m_filename;
-		GLuint m_texture;
-
-		int m_width, m_height;
+		static Shared<Texture2D> Create(const char* path, bool flipped = true);
+		static Shared<Texture2D> Create(TextureSpecification spec, void* data);
 
 	};
 
 }
-
-#endif 

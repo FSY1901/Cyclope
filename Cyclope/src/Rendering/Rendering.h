@@ -8,6 +8,7 @@ This file is used for various rendering commands that can be called by the user
 #include "glfw3.h"
 
 #include "Buffer.h"
+#include "VertexArray.h"
 #include "Shader.h"
 
 #ifndef RENDERING_H
@@ -36,7 +37,7 @@ namespace Cyclope {
 	public:
 		static void BeginScene();
 		static void EndScene();
-		static void Submit(const Shared<VertexArray>& vertexArray, Shader& shader);
+		static void Submit(const Shared<VertexArray>& vertexArray, const Shader& shader);
 
 		static RendererAPI GetAPI();
 	private:

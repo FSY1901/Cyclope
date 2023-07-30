@@ -24,7 +24,7 @@ namespace Cyclope {
 
 	}
 
-	void Renderer::Submit(const Shared<VertexArray>& vertexArray, Shader& shader) {
+	void Renderer::Submit(const Shared<VertexArray>& vertexArray, const Shader& shader) {
 		shader.Use();
 		vertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetSize(), GL_UNSIGNED_INT, 0);

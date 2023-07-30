@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="API">
+      <UniqueIdentifier>{FFD1870B-6BDB-877C-F456-9E7C605F937C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\OpenGL">
+      <UniqueIdentifier>{536662E4-3F1E-A431-A825-7D8D94FC3E22}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Cyclope">
       <UniqueIdentifier>{D451BA4A-4031-39E6-4949-C4BCB5A79F47}</UniqueIdentifier>
     </Filter>
@@ -24,6 +30,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h">
+      <Filter>API\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Cyclope.h" />
     <ClInclude Include="src\Cyclope\Application.h">
       <Filter>Cyclope</Filter>
@@ -55,8 +64,14 @@
     <ClInclude Include="src\Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="src\Input\Time.h">
+      <Filter>Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Maths\Maths.h">
       <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\Buffer.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
       <Filter>Rendering</Filter>
@@ -67,13 +82,15 @@
     <ClInclude Include="src\Rendering\Texture.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Input\Time.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Rendering\Buffer.h" />
+    <ClInclude Include="src\Rendering\VertexArray.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Cyclope\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
+      <Filter>API\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Cyclope\Application.cpp">
       <Filter>Cyclope</Filter>
     </ClCompile>
@@ -92,8 +109,14 @@
     <ClCompile Include="src\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="src\Input\Time.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
     <ClCompile Include="src\Maths\Maths.cpp">
       <Filter>Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\Buffer.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>Rendering</Filter>
@@ -101,16 +124,15 @@
     <ClCompile Include="src\Rendering\Shader.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\glad\glad.c">
-      <Filter>glad</Filter>
-    </ClCompile>
     <ClCompile Include="src\Rendering\Texture.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input\Time.cpp">
-      <Filter>Input</Filter>
+    <ClCompile Include="src\glad\glad.c">
+      <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Rendering\Buffer.cpp" />
+    <ClCompile Include="src\Rendering\VertexArray.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Cyclope\Window.cpp" />
   </ItemGroup>
 </Project>

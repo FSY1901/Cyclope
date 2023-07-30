@@ -108,6 +108,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Cyclope.h" />
     <ClInclude Include="src\Cyclope\Application.h" />
     <ClInclude Include="src\Cyclope\Core.h" />
@@ -125,9 +127,13 @@
     <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
+    <ClInclude Include="src\Rendering\VertexArray.h" />
+    <ClInclude Include="src\Cyclope\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Cyclope\Application.cpp" />
     <ClCompile Include="src\Cyclope\LayerStack.cpp" />
     <ClCompile Include="src\Game\Entity.cpp" />
@@ -141,6 +147,8 @@
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\glad\glad.c" />
+    <ClCompile Include="src\Rendering\VertexArray.cpp" />
+    <ClCompile Include="src\Cyclope\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

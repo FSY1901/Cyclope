@@ -86,6 +86,7 @@
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Cyclope\Window.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
@@ -134,5 +135,6 @@
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Cyclope\Window.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp" />
   </ItemGroup>
 </Project>

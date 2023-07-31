@@ -17,8 +17,12 @@ namespace Cyclope {
 		void Bind() const override;
 		void Unbind() const override;
 
+		void SetBufferLayout(const BufferLayout& layout) override;
+		void LinkVertexAttributes() override;
+
 	private:
 		unsigned int m_ID;
+		BufferLayout m_layout;
 
 	};
 

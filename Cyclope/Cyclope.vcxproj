@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Cyclope.h" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Cyclope\Application.cpp" />

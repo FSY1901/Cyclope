@@ -6,6 +6,7 @@
 
 namespace Cyclope {
 
+
 	class CYCLOPE_API OpenGLVertexArray : public VertexArray {
 
 	public:
@@ -21,6 +22,7 @@ namespace Cyclope {
 		unsigned int m_ID;
 		Shared<VertexBuffer> m_VertexBuffer;
 		Shared<IndexBuffer> m_IndexBuffer;
+
 
 	};
 

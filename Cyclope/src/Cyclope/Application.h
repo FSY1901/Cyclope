@@ -18,9 +18,9 @@ namespace Cyclope {
 		void Run();
 		void PushLayer(Layer* layer);
 
-		static Application* GetInstance();
-
 		Window* GetWindow();
+
+		static Application* GetInstance();
 
 	private:
 

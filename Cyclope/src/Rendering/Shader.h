@@ -3,36 +3,29 @@
 
 #include <string>
 
-#ifndef SHADER_H
-#define SHADER_H
-
+#pragma once
 namespace Cyclope {
 
     class CYCLOPE_API Shader
     {
     public:
-        Shader();
-        ~Shader();
+        virtual ~Shader() {};
 
-        unsigned int GetID() { return ID; }
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
 
-        void Create(std::string path);
-        void Use() const;
-        void Delete() const;
+        virtual unsigned int GetID() const = 0;
 
         // utility uniform functions
-        void SetBool(const std::string& name, bool value) const;
-        void SetInt(const std::string& name, int value) const;
-        void SetFloat(const std::string& name, float value) const;
-        void SetVec2(const std::string& name, const Vector2& vec) const;
-        void SetVec3(const std::string& name, const Vector3& vec) const;
-        void SetVec4(const std::string& name, const Vector4& vec) const;
-        void SetMat4(const std::string& name, const Matrix4& mat) const;
+        virtual void SetBool(const std::string& name, bool value) const = 0;
+        virtual void SetInt(const std::string& name, int value) const = 0;
+        virtual void SetFloat(const std::string& name, float value) const = 0;
+        virtual void SetVec2(const std::string& name, const Vector2& vec) const = 0;
+        virtual void SetVec3(const std::string& name, const Vector3& vec) const = 0;
+        virtual void SetVec4(const std::string& name, const Vector4& vec) const = 0;
+        virtual void SetMat4(const std::string& name, const Matrix4& mat) const = 0;
 
-    private:
-        unsigned int ID;
+        static Shared<Shader> Create(std::string path);
     };
 
 }
-
-#endif // !SHADER_H

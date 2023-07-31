@@ -7,6 +7,16 @@
 
 namespace Cyclope {
 
+	void BufferLayout::CalculateOffsetsAndStride() {
+		int offset = 0;
+
+		for (auto& elem : m_elements) {
+			elem.offset = offset;
+			offset += elem.size;
+			m_stride += elem.size;
+		}
+	}
+
 	Shared<VertexBuffer> VertexBuffer::Create(float* vertices, GLsizeiptr size) {
 
 		switch (Renderer::GetAPI())

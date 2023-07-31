@@ -37,7 +37,7 @@ namespace Cyclope {
 	public:
 		static void BeginScene();
 		static void EndScene();
-		static void Submit(const Shared<VertexArray>& vertexArray, const Shader& shader);
+		static void Submit(const Shared<VertexArray>& vertexArray, const Shared<Shader>& shader);
 
 		static RendererAPI GetAPI();
 	private:

@@ -23,11 +23,11 @@ public:
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
 			-0.5f,  0.5f, 0.0f,  0.0f, 1.0f // top left 
 		};
-		unsigned int indices[] = {  
+		unsigned int indices[] = {
 			0, 1, 3,   // first triangle
 			1, 2, 3    // second triangle
 		};
-		sh.Create("./src/shader.glsl");
+		sh = Shader::Create("./src/shader.glsl");
 		tex = Texture2D::Create("./src/Obama.png");
 		/*TextureSpecification t;
 		t.Format = ImageFormat::RGBA8;
@@ -47,8 +47,9 @@ public:
 		}
 		tex = Texture2D::Create(t, checkImage);
 		tex->SetData(checkImage);*/
-
-		vert = VertexArray::Create(VertexBuffer::Create(vertices, sizeof(vertices)), IndexBuffer::Create(indices, sizeof(indices)));
+		auto v = VertexBuffer::Create(vertices, sizeof(vertices));
+		v->SetBufferLayout(BufferLayout::Standard());
+		vert = VertexArray::Create(v, IndexBuffer::Create(indices, sizeof(indices)));
 		RenderCommands::SetClearColor(0.2f, 0.3f, 0.3f);
 	}
 
@@ -58,14 +59,14 @@ public:
 		Matrix4 mat = Matrix4(1.0f);
 		mat = glm::rotate(mat, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-		sh.SetMat4("transform", mat);
+		sh->SetMat4("transform", mat);
 		glm::mat4 view = glm::mat4(1.0f);
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		sh.SetMat4("view", view);
+		sh->SetMat4("view", view);
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), (float)Application::GetInstance()->GetWindow()->GetWidth() / (float)Application::GetInstance()->GetWindow()->GetHeight(), 0.1f, 100.0f);
 		//glm::ortho(-800.0f / 600.0f, 800.0f / 600.0f, -1.0f, 1.0f, 0.1f, 100.0f);
-		sh.SetMat4("proj", projection);
+		sh->SetMat4("proj", projection);
 		Renderer::Submit(vert, sh);
 
 		if (Input::KeyPressed(Key::Q)) {
@@ -74,14 +75,12 @@ public:
 	}
 
 	void OnDetach() {
-		//vao.Delete();
-		sh.Delete();
+		
 	}
 
 private:
-	//VAO vao;
 	Shared<VertexArray> vert;
-	Shader sh;
+	Shared<Shader> sh;
 	Shared<Texture2D> tex;
 };
 

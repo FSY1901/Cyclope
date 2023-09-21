@@ -22,6 +22,8 @@ namespace Cyclope {
 		int GetHeight() { return m_height; }
 		const char* GetTitle() { return m_title; }
 
+		bool IsMinimized() { return m_width == 0 && m_height == 0; }
+
 	private:
 		GLFWwindow* m_window;
 		int m_width, m_height;

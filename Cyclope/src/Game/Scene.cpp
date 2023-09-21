@@ -13,12 +13,12 @@ namespace Cyclope {
 	}
 
 	void Scene::Update() {
-		/*
-		auto view = m_Registry.view<Component>();
+		
+		auto view = m_Registry.view<TransformComponent>();
 		for (auto entity : view) {
-			Component c = view.get<Component>(entity);
+			TransformComponent transform = view.get<TransformComponent>(entity);
 		}
-		*/
+	
 	}
 
 	Entity Scene::CreateEntity() {

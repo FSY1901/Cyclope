@@ -117,6 +117,7 @@
     <ClInclude Include="src\Cyclope\EntryPoint.h" />
     <ClInclude Include="src\Cyclope\Layer.h" />
     <ClInclude Include="src\Cyclope\LayerStack.h" />
+    <ClInclude Include="src\Cyclope\Window.h" />
     <ClInclude Include="src\Game\Components.h" />
     <ClInclude Include="src\Game\Entity.h" />
     <ClInclude Include="src\Game\Scene.h" />
@@ -125,11 +126,11 @@
     <ClInclude Include="src\Input\Time.h" />
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Rendering\Buffer.h" />
+    <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="src\Rendering\VertexArray.h" />
-    <ClInclude Include="src\Cyclope\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Cyclope\Application.cpp" />
     <ClCompile Include="src\Cyclope\LayerStack.cpp" />
+    <ClCompile Include="src\Cyclope\Window.cpp" />
     <ClCompile Include="src\Game\Entity.cpp" />
     <ClCompile Include="src\Game\Scene.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
@@ -145,12 +147,12 @@
     <ClCompile Include="src\Input\Time.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
     <ClCompile Include="src\Rendering\Buffer.cpp" />
+    <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Rendering.cpp" />
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
-    <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\Rendering\VertexArray.cpp" />
-    <ClCompile Include="src\Cyclope\Window.cpp" />
+    <ClCompile Include="src\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

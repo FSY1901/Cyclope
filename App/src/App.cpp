@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Cyclope.h"
+#include "Comp.h"
 
 using namespace Cyclope;
 
@@ -29,28 +30,15 @@ public:
 		};
 		sh = Shader::Create("./src/shader.glsl");
 		tex = Texture2D::Create("./src/Obama.png");
-		/*TextureSpecification t;
-		t.Format = ImageFormat::RGBA8;
-		t.Width = 64;
-		t.Height = 64;
-		GLubyte checkImage[64][64][4];
-		int i, j, c;
-
-		for (i = 0; i < 64; i++) {
-			for (j = 0; j < 64; j++) {
-				c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
-				checkImage[i][j][0] = (GLubyte)c;
-				checkImage[i][j][1] = (GLubyte)c;
-				checkImage[i][j][2] = (GLubyte)c;
-				checkImage[i][j][3] = (GLubyte)255;
-			}
-		}
-		tex = Texture2D::Create(t, checkImage);
-		tex->SetData(checkImage);*/
 		auto v = VertexBuffer::Create(vertices, sizeof(vertices));
 		v->SetBufferLayout(BufferLayout::Standard());
 		vert = VertexArray::Create(v, IndexBuffer::Create(indices, sizeof(indices)));
 		RenderCommands::SetClearColor(0.2f, 0.3f, 0.3f);
+		t.position = Vector3(0.0f, 0.0f, 3.0f);
+
+		type t = type::get_by_name("MyStruct");//type::get<MyStruct>();
+		for (auto& prop : t.get_properties())
+			std::cout << prop.get_type().get_name() << ": " << prop.get_name() << std::endl;
 	}
 
 	void OnUpdate() override {
@@ -60,14 +48,14 @@ public:
 		mat = glm::rotate(mat, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		sh->SetMat4("transform", mat);
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		sh->SetMat4("view", view);
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), (float)Application::GetInstance()->GetWindow()->GetWidth() / (float)Application::GetInstance()->GetWindow()->GetHeight(), 0.1f, 100.0f);
-		//glm::ortho(-800.0f / 600.0f, 800.0f / 600.0f, -1.0f, 1.0f, 0.1f, 100.0f);
-		sh->SetMat4("proj", projection);
+		cam.SetPerspectiveMatrix((float)Application::GetInstance()->GetWindow()->GetWidth() / (float)Application::GetInstance()->GetWindow()->GetHeight());
+		/*cam.SetOrthographicMatrix(-(float)Application::GetInstance()->GetWindow()->GetWidth() / (float)Application::GetInstance()->GetWindow()->GetHeight(),
+			(float)Application::GetInstance()->GetWindow()->GetWidth() / (float)Application::GetInstance()->GetWindow()->GetHeight(),
+			-1.0f, 1.0f);*/
+		cam.RecalculateViewMatrix(t);
+		Renderer::BeginScene(cam);
 		Renderer::Submit(vert, sh);
+		Renderer::EndScene();
 
 		if (Input::KeyPressed(Key::Q)) {
 			std::cout << "Pressed";
@@ -82,19 +70,23 @@ private:
 	Shared<VertexArray> vert;
 	Shared<Shader> sh;
 	Shared<Texture2D> tex;
+	Camera cam;
+	TransformComponent t;
+	Vector3 pos;
 };
 
 class EditorLayer : public Layer {
 private:
 	Scene* m_ActiveScene = new Scene();
 public:
+	bool pressed = false;
 	void OnAttach() override {
-		Entity entity = m_ActiveScene->CreateEntity();
-		//entity.AddComponent<TransformComponent>(); -- All entities have transforms
-		/*if (entity.HasComponent<TransformComponent>()) {
-			std::cout << entity.GetComponent<TransformComponent>().position.x;
-			entity.RemoveComponent<TransformComponent>();
+		/*Entity entity = m_ActiveScene->CreateEntity();
+		entity.AddComponent<CameraComponent>();// -- All entities have transforms
+		if (entity.HasComponent<CameraComponent>()) {
+			std::cout << entity.GetComponent<CameraComponent>().camera.fov;
 		}*/
+		
 	}
 
 	void OnUpdate() override {

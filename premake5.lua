@@ -49,6 +49,45 @@ project "ImGui"
         staticruntime "On"
         systemversion "latest"
 
+project "rttr"
+    location "rttr"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp"
+    }
+
+    includedirs
+    {
+        "$(SolutionDir)rttr"
+    }
+
+    libdirs
+    {
+        
+    }
+
+    links
+    {
+        
+    }
+
+    defines 
+    { 
+        
+    }
+
+    filter "system:windows"
+        cppdialect "C++17"
+        staticruntime "On"
+        systemversion "latest"
+
 project "Cyclope"
     location "Cyclope"
     kind "SharedLib"
@@ -110,6 +149,59 @@ project "Cyclope"
         optimize "On"
         buildoptions "/MD"
 
+project "Scripting"
+    location "Scripting"
+    kind "SharedLib"
+    language "C++"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp",
+        "%{prj.name}/**.c"
+    }
+
+    includedirs
+    {
+        "$(SolutionDir)vendor/OpenGL/include",
+        "$(SolutionDir)vendor/glm",
+        "$(SolutionDir)vendor/entt",
+        "$(SolutionDir)vendor/stb_image",
+        "$(SolutionDir)ImGui/include",
+        "Cyclope/src",
+        "Cyclope/src/Cyclope"
+    }
+    
+    libdirs
+    {
+        "$(SolutionDir)vendor/OpenGL/src",
+    }
+
+    links
+    {
+        "glfw3.lib",
+        "ImGui",
+        "Cyclope"
+    }
+
+    filter "system:windows"
+        cppdialect "C++17"
+        staticruntime "On"
+        systemversion "latest"
+
+        defines
+        {
+            
+        }
+
+        postbuildcommands
+        {
+            ("{COPY} ../bin/" .. outputdir .. "/Scripting ../bin/" .. outputdir .. "/App")
+        }
+
 project "App"
     location "App"
     kind "ConsoleApp"
@@ -129,6 +221,7 @@ project "App"
         "$(SolutionDir)vendor/OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
+        "$(SolutionDir)rttr",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src",
         "Cyclope/src/Cyclope"
@@ -143,7 +236,9 @@ project "App"
     {
         "glfw3.lib",
         "Cyclope",
-        "ImGui"
+        "ImGui",
+        "rttr",
+        "Scripting"
     }
 
     filter "system:windows"

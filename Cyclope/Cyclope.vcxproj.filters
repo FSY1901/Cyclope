@@ -33,6 +33,15 @@
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h">
       <Filter>API\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\API\OpenGL\OpenGLShader.h">
+      <Filter>API\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\API\OpenGL\OpenGLTexture.h">
+      <Filter>API\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h">
+      <Filter>API\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Cyclope.h" />
     <ClInclude Include="src\Cyclope\Application.h">
       <Filter>Cyclope</Filter>
@@ -47,6 +56,9 @@
       <Filter>Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\LayerStack.h">
+      <Filter>Cyclope</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cyclope\Window.h">
       <Filter>Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Components.h">
@@ -73,6 +85,9 @@
     <ClInclude Include="src\Rendering\Buffer.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\Camera.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -82,20 +97,30 @@
     <ClInclude Include="src\Rendering\Texture.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\VertexArray.h" />
-    <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
-    <ClInclude Include="src\Cyclope\Window.h" />
-    <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Rendering\VertexArray.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
+      <Filter>API\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp">
+      <Filter>API\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp">
+      <Filter>API\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp">
       <Filter>API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Cyclope\Application.cpp">
       <Filter>Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Cyclope\LayerStack.cpp">
+      <Filter>Cyclope</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cyclope\Window.cpp">
       <Filter>Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Entity.cpp">
@@ -119,6 +144,9 @@
     <ClCompile Include="src\Rendering\Buffer.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Camera.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -128,13 +156,11 @@
     <ClCompile Include="src\Rendering\Texture.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\VertexArray.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\VertexArray.cpp" />
-    <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
-    <ClCompile Include="src\Cyclope\Window.cpp" />
-    <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp" />
   </ItemGroup>
 </Project>

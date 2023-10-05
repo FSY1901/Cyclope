@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -71,11 +71,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\Cyclope\Cyclope.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Cyclope\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Cyclope ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Cyclope ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -83,7 +83,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -99,11 +99,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\Cyclope\Cyclope.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\Cyclope\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Cyclope ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Cyclope ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -152,11 +152,13 @@
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />
     <ClCompile Include="src\Rendering\VertexArray.cpp" />
-    <ClCompile Include="src\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenGL\OpenGL.vcxproj">
+      <Project>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

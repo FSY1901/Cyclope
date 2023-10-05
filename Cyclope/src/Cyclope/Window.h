@@ -20,6 +20,7 @@ namespace Cyclope {
 		GLFWwindow* GetWindow() { return m_window; }
 		int GetWidth() { return m_width; }
 		int GetHeight() { return m_height; }
+		float GetAspectRatio() { return (float)m_width / (float)m_height; }
 		const char* GetTitle() { return m_title; }
 
 		bool IsMinimized() { return m_width == 0 && m_height == 0; }
@@ -32,6 +33,7 @@ namespace Cyclope {
 		//CALLBACKS
 		static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 		static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
+		static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 		friend class Application;
 

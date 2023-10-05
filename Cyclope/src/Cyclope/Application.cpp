@@ -24,18 +24,23 @@ namespace Cyclope {
 
         m_ImGuiLayer = new ImGuiLayer();
         PushLayer(m_ImGuiLayer);
+
+        Input::SetWindow(m_window.m_window);
+        glEnable(GL_DEPTH_TEST);
     }
 
 	void Application::Run() {
 
-        Input::SetWindow(m_window.m_window);
-
         while (!glfwWindowShouldClose(m_window.m_window))
         {
+            float currentTime = glfwGetTime();
+            deltaTime = currentTime - lastFrame;
+            lastFrame = currentTime;
+
             if (!m_window.IsMinimized()) {
                 {
                     for (Layer* layer : m_LayerStack)
-                        layer->OnUpdate();
+                        layer->OnUpdate(deltaTime);
                 }
 
                 m_ImGuiLayer->Begin();

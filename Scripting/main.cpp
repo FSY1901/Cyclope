@@ -1,4 +1,5 @@
 #include "Cyclope.h"
+#include "Cyclope/EntryPoint.h"
 
 using namespace Cyclope;
 

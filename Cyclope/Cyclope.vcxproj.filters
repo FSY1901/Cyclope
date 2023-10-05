@@ -159,8 +159,5 @@
     <ClCompile Include="src\Rendering\VertexArray.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\glad\glad.c">
-      <Filter>glad</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

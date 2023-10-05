@@ -31,7 +31,7 @@ project "ImGui"
 
     libdirs
     {
-        "$(SolutionDir)vendor/OpenGL/src",
+        "$(SolutionDir)OpenGL/src",
     }
 
     links
@@ -105,7 +105,7 @@ project "Cyclope"
 
     includedirs
     {
-        "$(SolutionDir)vendor/OpenGL/include",
+        "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
@@ -115,13 +115,14 @@ project "Cyclope"
     
     libdirs
     {
-        "$(SolutionDir)vendor/OpenGL/src",
+        "$(SolutionDir)OpenGL/src",
     }
 
     links
     {
         "glfw3.lib",
-        "ImGui"
+        "ImGui",
+        "OpenGL"
     }
 
     filter "system:windows"
@@ -136,7 +137,7 @@ project "Cyclope"
 
         postbuildcommands
         {
-            ("{COPY} ../bin/" .. outputdir .. "/Cyclope ../bin/" .. outputdir .. "/App")
+            ("{COPY} ../bin/" .. outputdir .. "/Cyclope/Cyclope.dll ../bin/" .. outputdir .. "/App")
         }
 
     filter "configurations:Debug"
@@ -166,7 +167,7 @@ project "Scripting"
 
     includedirs
     {
-        "$(SolutionDir)vendor/OpenGL/include",
+        "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
@@ -177,7 +178,7 @@ project "Scripting"
     
     libdirs
     {
-        "$(SolutionDir)vendor/OpenGL/src",
+        "$(SolutionDir)OpenGL/src",
     }
 
     links
@@ -199,7 +200,7 @@ project "Scripting"
 
         postbuildcommands
         {
-            ("{COPY} ../bin/" .. outputdir .. "/Scripting ../bin/" .. outputdir .. "/App")
+            ("{COPY} ../bin/" .. outputdir .. "/Scripting/Scripting.dll ../bin/" .. outputdir .. "/App")
         }
 
 project "App"
@@ -218,7 +219,7 @@ project "App"
 
     includedirs
     {
-        "$(SolutionDir)vendor/OpenGL/include",
+        "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)rttr",
@@ -229,7 +230,7 @@ project "App"
 
     libdirs
     {
-        "$(SolutionDir)vendor/OpenGL/src",
+        "$(SolutionDir)OpenGL/src",
     }
 
     links
@@ -253,3 +254,42 @@ project "App"
     filter "configurations:Release"
         optimize "On"
         buildoptions "/MT"
+
+project "OpenGL"
+        location "OpenGL"
+        kind "StaticLib"
+        language "C++"
+    
+        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    
+        files
+        {
+            "%{prj.name}/**.h",
+            "%{prj.name}/**.cpp"
+        }
+    
+        includedirs
+        {
+            "$(SolutionDir)OpenGL/include"
+        }
+    
+        libdirs
+        {
+            
+        }
+    
+        links
+        {
+            
+        }
+    
+        defines 
+        { 
+            
+        }
+    
+        filter "system:windows"
+            cppdialect "C++17"
+            staticruntime "On"
+            systemversion "latest"

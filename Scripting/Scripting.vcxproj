@@ -58,7 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -67,18 +67,18 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\Scripting\Scripting.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Scripting\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Scripting ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Scripting ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -87,13 +87,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\Scripting\Scripting.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\Scripting\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Scripting ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Scripting ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Scripting\Scripting.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Scripting\Scripting.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Scripting\Scripting.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Component.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="main.cpp" />
@@ -105,9 +108,6 @@
     <ProjectReference Include="..\Cyclope\Cyclope.vcxproj">
       <Project>{D451BA4A-4031-39E6-4949-C4BCB5A79F47}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Component.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

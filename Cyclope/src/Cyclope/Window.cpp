@@ -24,10 +24,11 @@ namespace Cyclope {
             return - 1;
         }
         m_window = window;
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(m_window);
         glfwSwapInterval(0);
-        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-        glfwSetCursorPosCallback(window, cursor_pos_callback);
+        glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+        glfwSetCursorPosCallback(m_window, cursor_pos_callback);
+        glfwSetScrollCallback(m_window, scroll_callback);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
@@ -57,6 +58,10 @@ namespace Cyclope {
     void Window::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
         Input::s_mx = xpos;
         Input::s_my = ypos;
+    }
+
+    void Window::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+        //TODO: find solution to scrolling
     }
 
 }

@@ -17,6 +17,9 @@ namespace Cyclope {
 		void Begin();
 		void End();
 
+	private:
+		void SetThemeColors();
+
 	};
 
 }

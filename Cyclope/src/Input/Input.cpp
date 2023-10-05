@@ -2,10 +2,12 @@
 
 namespace Cyclope {
 
+#pragma region Static Variables
 	GLFWwindow* Input::s_window = nullptr;
 
 	float Input::s_mx = 0.0f;
 	float Input::s_my = 0.0f;
+#pragma endregion
 
 	void Input::SetWindow(GLFWwindow* window) {
 		s_window = window;
@@ -24,8 +26,7 @@ namespace Cyclope {
 		return false;
 	}
 
-	bool Input::ButtonPressed(Button button)
-	{
+	bool Input::ButtonPressed(Button button){
 		if (glfwGetMouseButton(s_window, (int)button) == GLFW_PRESS) {
 			return true;
 		}
@@ -33,14 +34,8 @@ namespace Cyclope {
 		return false;
 	}
 
-	float Input::MouseX()
-	{
-		return s_mx;
-	}
+	float Input::MouseX() { return s_mx; }
 
-	float Input::MouseY()
-	{
-		return s_my;
-	}
+	float Input::MouseY() { return s_my; }
 
 }

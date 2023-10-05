@@ -13,7 +13,7 @@ namespace Cyclope {
 
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
-		virtual void OnUpdate() {};
+		virtual void OnUpdate(float dt) {};
 		virtual void OnImGuiRender() {};
 
 	};

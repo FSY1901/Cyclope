@@ -25,9 +25,6 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{E3AE1F7C-4F19-D4F2-9857-85980401B247}</UniqueIdentifier>
     </Filter>
-    <Filter Include="glad">
-      <UniqueIdentifier>{DD62977C-C999-980D-7286-7E105E9C140F}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h">
@@ -100,6 +97,8 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cyclope\Util.h" />
+    <ClInclude Include="src\Scripting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">

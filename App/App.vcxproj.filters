@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Layers">
+      <UniqueIdentifier>{157446C0-0116-7196-EAD0-84EAD611F8E6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SceneView">
       <UniqueIdentifier>{EE8D907A-5AF8-44F1-A336-F6960FE02246}</UniqueIdentifier>
     </Filter>
@@ -9,6 +12,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Layers\EditorLayer.h">
+      <Filter>Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\OBJLoader.h" />
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
       <Filter>SceneView</Filter>
@@ -16,11 +22,14 @@
     <ClInclude Include="src\Scripting\Comp.h">
       <Filter>Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="src\Layers\EditorLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
-    <ClCompile Include="src\SceneView\SceneViewCamera.cpp" />
-    <ClCompile Include="src\Layers\EditorLayer.cpp" />
+    <ClCompile Include="src\Layers\EditorLayer.cpp">
+      <Filter>Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
+      <Filter>SceneView</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

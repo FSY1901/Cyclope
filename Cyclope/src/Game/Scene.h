@@ -20,6 +20,12 @@ namespace Cyclope {
 
 		Entity CreateEntity();
 
+		template<typename T>
+		auto View() {
+			auto view = m_Registry.view<T>();
+			return view;
+		}
+
 	private:
 		entt::registry m_Registry;
 

@@ -172,8 +172,11 @@ project "Scripting"
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)ImGui/include",
+        "$(SolutionDir)rttr",
         "Cyclope/src",
-        "Cyclope/src/Cyclope"
+        "Cyclope/src/Cyclope",
+        "$(SolutionDir)Scripting/Components",
+        "$(SolutionDir)Scripting"
     }
     
     libdirs
@@ -185,6 +188,7 @@ project "Scripting"
     {
         "glfw3.lib",
         "ImGui",
+        "rttr",
         "Cyclope"
     }
 
@@ -266,7 +270,9 @@ project "OpenGL"
         files
         {
             "%{prj.name}/**.h",
-            "%{prj.name}/**.cpp"
+            "%{prj.name}/**.cpp",
+            "%{prj.name}/**.c",
+            "%{prj.name}/**.lib"
         }
     
         includedirs

@@ -1,8 +1,9 @@
 #include "EditorLayer.h"
 
-#include "../Scripting/Comp.h"
-
 #include "../OBJLoader.h"
+
+#include "Util.h"
+#include "Scripting.h"
 
 namespace CyclopeEditor {
 
@@ -32,11 +33,11 @@ namespace CyclopeEditor {
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
 		//vert = VertexArray::Create(v, IndexBuffer::Create(indices, sizeof(indices)));
 		RenderCommands::SetClearColor(0.2f, 0.3f, 0.3f);
-
-		type t = type::get_by_name("MyStruct");//type::get<MyStruct>();
-		for (auto& prop : t.get_properties())
-			std::cout << prop.get_type().get_name() << ": " << prop.get_name() << std::endl;
-
+		Scene s;
+		Entity e = s.CreateEntity();
+		loader.LoadDLL(reg);
+		auto f = reg.at(16088394637258171378);
+		f(e);
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
@@ -88,7 +89,29 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::OnDetach() {
-
+		loader.FreeDLL();
 	}
 
+}
+
+void DLLLoader::LoadDLL(Cyclope::ComponentRegistry& registry) {
+	hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\bin\\Release-windows-x86_64\\Scripting\\Scripting.dll");
+
+	if (hDLL != NULL)
+	{
+
+		std::cout << "Loaded DLL \n";
+
+		FUNC func = (FUNC)GetProcAddress(hDLL, "Test");
+
+		if (!func) {
+			std::cout << "could not locate the function \n";
+		}
+		else {
+			func(registry);
+		}
+	}
+	else {
+		std::cout << "Could not load DLL! \n";
+	}
 }

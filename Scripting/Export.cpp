@@ -1,6 +1,7 @@
 #include "Export.h"
 #include "Components.h"
 #include "Scripting.h"
+#include <iostream>
 namespace Scripting {
 
 	void Serialize() {
@@ -33,20 +34,9 @@ namespace Scripting {
 		}
 	}
 
-	void Test(Cyclope::ComponentRegistry& registry) {
-		//Cyclope::Scene _s;
-		//Cyclope::Entity f = s->CreateEntity();
-		//for (auto e : s->View<Cyclope::TransformComponent>()) {
-			//Cyclope::CameraComponent p;
-			//Cyclope::Entity{ e, s }.AddComponent<decltype(p)>();
-			//TODO: c++ typelist library
-		//}
-
-		//for (auto e : s->View<Cyclope::TransformComponent>()) {
-		//	std::cout << "entt" << std::endl;
-		//}
-		std::cout << "Test" << std::endl;
-		registry = Cyclope::reg;
+	void GetRegistries(Cyclope::ComponentRegistry& components, Cyclope::NativeScriptRegistry& scripts) {
+		components = Cyclope::componentRegistry;
+		scripts = Cyclope::nativeScriptRegistry;
 	}
 
 }

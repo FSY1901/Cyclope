@@ -3,7 +3,6 @@
 #include "../OBJLoader.h"
 
 #include "Util.h"
-#include "Scripting.h"
 
 namespace CyclopeEditor {
 
@@ -33,10 +32,10 @@ namespace CyclopeEditor {
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
 		//vert = VertexArray::Create(v, IndexBuffer::Create(indices, sizeof(indices)));
 		RenderCommands::SetClearColor(0.2f, 0.3f, 0.3f);
-		Scene s;
+		loader.LoadDLL(componentRegistry, nativeScriptRegistry);
 		Entity e = s.CreateEntity();
-		loader.LoadDLL(reg);
-		auto f = reg.at(16088394637258171378);
+		e.AddComponent<NativeScriptComponent>();
+		auto f = nativeScriptRegistry.at(10765104205153683754);
 		f(e);
 	}
 
@@ -58,6 +57,8 @@ namespace CyclopeEditor {
 		if (Input::KeyPressed(Key::Q)) {
 			std::cout << "Pressed";
 		}
+
+		s.Update(dt);
 
 	}
 
@@ -92,26 +93,4 @@ namespace CyclopeEditor {
 		loader.FreeDLL();
 	}
 
-}
-
-void DLLLoader::LoadDLL(Cyclope::ComponentRegistry& registry) {
-	hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\bin\\Release-windows-x86_64\\Scripting\\Scripting.dll");
-
-	if (hDLL != NULL)
-	{
-
-		std::cout << "Loaded DLL \n";
-
-		FUNC func = (FUNC)GetProcAddress(hDLL, "Test");
-
-		if (!func) {
-			std::cout << "could not locate the function \n";
-		}
-		else {
-			func(registry);
-		}
-	}
-	else {
-		std::cout << "Could not load DLL! \n";
-	}
 }

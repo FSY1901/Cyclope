@@ -2,7 +2,6 @@
 #define SCENE_H
 
 #include "Core.h"
-#include "Components.h"
 
 #include "entt.hpp"
 
@@ -16,7 +15,7 @@ namespace Cyclope {
 		Scene();
 		~Scene();
 
-		void Update();
+		void Update(float dt);
 
 		Entity CreateEntity();
 

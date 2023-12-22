@@ -122,17 +122,19 @@
     <ClInclude Include="src\Game\Components.h" />
     <ClInclude Include="src\Game\Entity.h" />
     <ClInclude Include="src\Game\Scene.h" />
+    <ClInclude Include="src\Game\ScriptableEntity.h" />
     <ClInclude Include="src\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Input\Time.h" />
     <ClInclude Include="src\Maths\Maths.h" />
+    <ClInclude Include="src\NativeScripting\DLLLoader.h" />
+    <ClInclude Include="src\NativeScripting\Scripting.h" />
     <ClInclude Include="src\Rendering\Buffer.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
     <ClInclude Include="src\Rendering\VertexArray.h" />
-    <ClInclude Include="src\Scripting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
@@ -148,6 +150,7 @@
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Input\Time.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
+    <ClCompile Include="src\NativeScripting\DLLLoader.cpp" />
     <ClCompile Include="src\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Rendering.cpp" />

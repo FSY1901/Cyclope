@@ -175,6 +175,7 @@ project "Scripting"
         "$(SolutionDir)rttr",
         "Cyclope/src",
         "Cyclope/src/Cyclope",
+        "Cyclope/src/NativeScripting",
         "$(SolutionDir)Scripting/Components",
         "$(SolutionDir)Scripting"
     }

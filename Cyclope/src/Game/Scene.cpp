@@ -12,19 +12,27 @@ namespace Cyclope {
 
 	}
 
-	void Scene::Update() {
+	void Scene::Update(float dt) {
 		
-		auto view = m_Registry.view<TransformComponent>();
-		for (auto entity : view) {
-			TransformComponent transform = view.get<TransformComponent>(entity);
-		}
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
+				//TODO: Revisit this: Should it be allowed to have an unbound NSC?
+				if (!script.instance && script.InstantiateScript != nullptr) {
+					script.instance = script.InstantiateScript();
+					script.instance->m_entity = Entity{ entity, this };
+					script.instance->OnCreate();
+				}
+				
+				if (script.instance) {
+					script.instance->OnUpdate(dt);
+				}
+
+			});
 	
 	}
 
 	Entity Scene::CreateEntity() {
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
-		//TODO: Maybe add other components and maybe transform properties like position, scale etc. as parameters
 		return entity;
 	}
 

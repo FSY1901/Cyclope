@@ -8,6 +8,7 @@
 #include "Game/Scene.h"
 #include "Game/Components.h"
 #include "Game/Entity.h"
+#include "Game/ScriptableEntity.h"
 
 #include "Input/Input.h"
 #include "Input/Time.h"

@@ -17,4 +17,22 @@ namespace Scripting {
 		float health = 100.0f;
 	};
 
+	using namespace Cyclope;
+
+	REGISTER_SCRIPT(Script);
+	class Script : public Cyclope::ScriptableEntity {
+
+	public:
+		TransformComponent transform;
+		
+		void OnCreate() {
+			transform = GetComponent<TransformComponent>();
+		}
+
+		void OnUpdate(float dt) {
+			std::cout << "Update" << std::endl;
+		}
+
+	};
+
 }

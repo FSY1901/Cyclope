@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "Components.h"
 
 #include "entt.hpp"
 

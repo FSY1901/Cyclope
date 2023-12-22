@@ -1,28 +1,8 @@
 #include "Cyclope.h"
 
 #include "../SceneView/SceneViewCamera.h"
-#include "Scripting.h"
 
-using namespace Cyclope;
-
-//Loading a dll:
-
-#include "windows.h"
-
-typedef void(*FUNC)(ComponentRegistry& registry);
-
-class DLLLoader {
-public:
-	void LoadDLL(ComponentRegistry& registry);
-
-	void FreeDLL() {
-		FreeLibrary(hDLL);
-		std::cout << "Freed DLL" << std::endl;
-	}
-
-private:
-	HINSTANCE hDLL;
-};
+#include "../NativeScripting/DLLLoader.h"
 
 namespace CyclopeEditor {
 
@@ -43,6 +23,8 @@ namespace CyclopeEditor {
 		SceneViewCamera svc;
 
 		DLLLoader loader;
+
+		Scene s;
 
 	};
 

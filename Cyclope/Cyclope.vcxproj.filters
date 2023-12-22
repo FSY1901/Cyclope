@@ -22,6 +22,9 @@
     <Filter Include="Maths">
       <UniqueIdentifier>{028BA70D-6E9F-CFBE-3721-731EA3F4CBEF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NativeScripting">
+      <UniqueIdentifier>{5FB25D4E-CB3D-CB12-D44E-4E0740592713}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Rendering">
       <UniqueIdentifier>{E3AE1F7C-4F19-D4F2-9857-85980401B247}</UniqueIdentifier>
     </Filter>
@@ -55,6 +58,9 @@
     <ClInclude Include="src\Cyclope\LayerStack.h">
       <Filter>Cyclope</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cyclope\Util.h">
+      <Filter>Cyclope</Filter>
+    </ClInclude>
     <ClInclude Include="src\Cyclope\Window.h">
       <Filter>Cyclope</Filter>
     </ClInclude>
@@ -65,6 +71,9 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Scene.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\ScriptableEntity.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="src\ImGui\ImGuiLayer.h">
@@ -78,6 +87,12 @@
     </ClInclude>
     <ClInclude Include="src\Maths\Maths.h">
       <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NativeScripting\DLLLoader.h">
+      <Filter>NativeScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NativeScripting\Scripting.h">
+      <Filter>NativeScripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Buffer.h">
       <Filter>Rendering</Filter>
@@ -97,8 +112,6 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cyclope\Util.h" />
-    <ClInclude Include="src\Scripting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
@@ -139,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="src\Maths\Maths.cpp">
       <Filter>Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NativeScripting\DLLLoader.cpp">
+      <Filter>NativeScripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Buffer.cpp">
       <Filter>Rendering</Filter>

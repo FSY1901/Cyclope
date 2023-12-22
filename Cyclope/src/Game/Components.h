@@ -1,15 +1,17 @@
+#pragma once
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 
 #include "../Maths/Maths.h"
 #include "../Rendering/Camera.h"
+#include "ScriptableEntity.h"
 
 namespace Cyclope {
 
 	class Scene;
 
-	struct TransformComponent
-	{
+	struct TransformComponent{
+
 		Vector3 position = { 0.0f, 0.0f, 0.0f };
 		Quaternion rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
 		Vector3 scale = { 1.0f, 1.0f, 1.0f };
@@ -29,6 +31,7 @@ namespace Cyclope {
 	};
 
 	struct CameraComponent {
+
 		Camera camera;
 
 		CameraComponent() = default;
@@ -36,6 +39,23 @@ namespace Cyclope {
 
 		operator Camera& () { return camera; }
 		operator const Camera& () const { return camera; }
+
+	};
+
+	struct NativeScriptComponent {
+
+		ScriptableEntity* instance = nullptr;
+
+		ScriptableEntity* (*InstantiateScript)() = nullptr;
+		void (*DestroyScript)(NativeScriptComponent*);
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->instance; nsc->instance = nullptr; };
+		}
+
 	};
 
 }

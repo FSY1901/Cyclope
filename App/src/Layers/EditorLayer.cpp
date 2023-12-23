@@ -6,32 +6,47 @@
 
 namespace CyclopeEditor {
 
+	EditorLayer* EditorLayer::s_EditorLayer = nullptr;
+
 	void EditorLayer::OnAttach() {
 
-		float vertices[] = {
-				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
-				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-				-0.5f,  0.5f, 0.0f,  0.0f, 1.0f // top left 
-		};
-		unsigned int indices[] = {
-			0, 1, 3,   // first triangle
-			1, 2, 3    // second triangle
-		};
+		s_EditorLayer = this;
 
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
 
-		LoadOBJFile("./Resources/objs/y.obj", verts, ind);
+		LoadOBJFile("./Resources/objs/sphere.obj", verts, ind);
 
-		sh = Shader::Create("./Resources/shader.glsl");
-		tex = Texture2D::Create("./Resources/container.jpg");
 		auto v = VertexBuffer::Create(&verts[0], verts.size() * sizeof(float));
-		//auto v = VertexBuffer::Create(vertices, sizeof(vertices));
 		v->SetBufferLayout(BufferLayout::Standard());
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
-		//vert = VertexArray::Create(v, IndexBuffer::Create(indices, sizeof(indices)));
-		RenderCommands::SetClearColor(0.2f, 0.3f, 0.3f);
+
+		sh = Shader::Create("./Resources/shaders/shader.glsl");
+		tex = Texture2D::Create("./Resources/textures/earth.jpg");
+
+		verts.clear();
+		ind.clear();
+
+		LoadOBJFile("./Resources/objs/y.obj", verts, ind);
+
+		auto v1 = VertexBuffer::Create(&verts[0], verts.size() * sizeof(float));
+		v1->SetBufferLayout(BufferLayout::Standard());
+		vert2 = VertexArray::Create(v1, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
+
+		sh2 = Shader::Create("./Resources/shaders/shader.glsl");
+		tex2 = Texture2D::Create("./Resources/textures/container.jpg");
+		
+		FramebufferSpecification fbs;
+		fbs.width = 800;
+		fbs.height = 600;
+		fb = Framebuffer::Create(fbs);
+		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
+							Application::GetInstance()->GetWindow()->GetHeight());
+
+		RenderCommands::SetClearColor(0.2f, 0.2f, 0.2f);
+
+		grid = Grid();
+
 		loader.LoadDLL(componentRegistry, nativeScriptRegistry);
 		Entity e = s.CreateEntity();
 		e.AddComponent<NativeScriptComponent>();
@@ -40,24 +55,39 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
-
+		if (fb->GetSpecification().width != panelSize.x ||
+			fb->GetSpecification().height != panelSize.y) {
+			fb->GetSpecification().width = panelSize.x;
+			fb->GetSpecification().height = panelSize.y;
+			RenderCommands::SetViewport(panelSize.x, panelSize.y);
+			fb->Invalidate();
+		}
+		fb->Bind();
 		RenderCommands::Clear();
 		svc.Update(dt);
 		Renderer::BeginScene(svc.GetCamera());
 		tex->Bind();
 		Matrix4 mat = Matrix4(1.0f);
-		mat = glm::translate(mat, Vector3(0, -1, -5));
-		mat = glm::scale(mat, Vector3(0.01f, 0.01f, 0.01f));
+		mat = glm::translate(mat, Vector3(0, 0, -5));
+		mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
 		//mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 		//mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		sh->Bind();
 		sh->SetMat4("transform", mat);
 		Renderer::Submit(vert, sh);
+		tex->Unbind();
+		
+		tex2->Bind();
+		Matrix4 mat1 = Matrix4(1.0f);
+		mat1 = glm::translate(mat1, Vector3(2, 0, -5));
+		mat1 = glm::scale(mat1, Vector3(0.01f, 0.01f, 0.01f));
+		sh2->Bind();
+		sh2->SetMat4("transform", mat1);
+		Renderer::Submit(vert2, sh2);
+		grid.Render(svc);
 		Renderer::EndScene();
-
-		if (Input::KeyPressed(Key::Q)) {
-			std::cout << "Pressed";
-		}
-
+		fb->Unbind();
+		RenderCommands::Clear();
 		s.Update(dt);
 
 	}
@@ -83,8 +113,26 @@ namespace CyclopeEditor {
 		ImGui::DockSpace(id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
 		ImGui::End();
 
-		ImGui::Begin("ImGui Window");
-		ImGui::Text("Test Text");
+		if (ImGui::BeginMainMenuBar()) {
+			if (ImGui::BeginMenu("Project")) {
+				if (ImGui::MenuItem("Save", "Ctrl+S")) {
+					
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+
+		ImGui::Begin("Scene");
+		panelSize = ImGui::GetContentRegionAvail();
+		ImGui::Image((void*)fb->GetColorAttachment(),
+			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+		ImGui::End();
+
+		ImGui::Begin("Debug");
+		ImGui::Text("FPS: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.0f, 0.2f, 0.2f, 1.0f), "%.1f FPS", ImGui::GetIO().Framerate);
 		ImGui::End();
 
 	}

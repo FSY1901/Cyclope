@@ -1,3 +1,4 @@
+#pragma once
 #include "Cyclope.h"
 
 using namespace Cyclope;
@@ -11,7 +12,7 @@ namespace CyclopeEditor {
 
 		void Update(float dt);
 
-		const Camera& GetCamera() { return cam; }
+		const Camera& GetCamera() const{ return cam; }
 
 	private:
 		Camera cam;

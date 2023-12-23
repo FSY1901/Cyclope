@@ -1,4 +1,5 @@
 #include "SceneViewCamera.h"
+#include "../Layers/EditorLayer.h"
 
 namespace CyclopeEditor {
 
@@ -7,6 +8,11 @@ namespace CyclopeEditor {
 		if (Input::ButtonPressed(Button::Button_RIGHT)) {
 
 			Input::SetCursorMode(CursorMode::Hidden);
+
+			if (Input::KeyPressed(Key::LEFT_SHIFT))
+				speed = 10.0f;
+			else
+				speed = 5.0f;
 
 			if (Input::KeyPressed(Key::W))
 				transform.position += speed * front * dt;
@@ -46,7 +52,9 @@ namespace CyclopeEditor {
 		lastX = Input::MouseX();
 		lastY = Input::MouseY();
 
-		cam.SetPerspectiveMatrix(Application::GetInstance()->GetWindow()->GetAspectRatio());
+		//cam.SetPerspectiveMatrix(Application::GetInstance()->GetWindow()->GetAspectRatio());
+		float aspect = (float)EditorLayer::GetEditorLayer()->GetPanelSize().x / EditorLayer::GetEditorLayer()->GetPanelSize().y;
+		cam.SetPerspectiveMatrix(aspect);//need to do this because scene is rendered in a panel
 		cam.RecalculateViewMatrix(transform);
 
 	}

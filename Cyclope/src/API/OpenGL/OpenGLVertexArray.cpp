@@ -6,11 +6,12 @@ namespace Cyclope {
 		glGenVertexArrays(1, &m_ID);
 		m_VertexBuffer = vertexBuffer;
 		m_IndexBuffer = indexBuffer;
-		Bind();
+		glBindVertexArray(m_ID);
 		m_VertexBuffer->Bind();
 		m_IndexBuffer->Bind();
 		m_VertexBuffer->LinkVertexAttributes();
 		m_VertexBuffer->Unbind();
+		glBindVertexArray(0);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray() {

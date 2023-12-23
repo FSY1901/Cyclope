@@ -16,6 +16,7 @@
 #include "Rendering/Shader.h"
 #include "Rendering/Texture.h"
 #include "Rendering/Rendering.h"
+#include "Rendering/Framebuffer.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

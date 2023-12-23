@@ -27,6 +27,8 @@ namespace Cyclope {
 
         Input::SetWindow(m_window.m_window);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND); 
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
 	void Application::Run() {

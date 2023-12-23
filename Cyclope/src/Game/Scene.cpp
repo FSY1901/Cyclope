@@ -16,15 +16,16 @@ namespace Cyclope {
 		
 		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
 				//TODO: Revisit this: Should it be allowed to have an unbound NSC?
-				if (!script.instance && script.InstantiateScript != nullptr) {
+				if (script.InstantiateScript == nullptr)
+					return;
+
+				if (!script.instance) {
 					script.instance = script.InstantiateScript();
 					script.instance->m_entity = Entity{ entity, this };
 					script.instance->OnCreate();
 				}
 				
-				if (script.instance) {
-					script.instance->OnUpdate(dt);
-				}
+				script.instance->OnUpdate(dt);
 
 			});
 	

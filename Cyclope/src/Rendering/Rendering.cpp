@@ -14,6 +14,11 @@ namespace Cyclope {
 		glPolygonMode(GL_FRONT_AND_BACK, (int)mode);
 	}
 
+	void RenderCommands::SetViewport(int width, int height)
+	{
+		glViewport(0, 0, width, height);
+	}
+
 	RendererAPI Renderer::s_RendererAPI = RendererAPI::OpenGL;
 	Unique<RendererData> Renderer::s_data = std::make_unique<RendererData>();
 

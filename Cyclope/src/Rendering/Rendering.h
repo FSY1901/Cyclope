@@ -32,6 +32,7 @@ namespace Cyclope {
 		static void SetClearColor(float r, float g, float b);
 		static void Clear();
 		static void SetDrawMode(DrawMode mode);
+		static void SetViewport(int width, int height);
 	};
 
 	struct RendererData

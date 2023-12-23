@@ -1,4 +1,4 @@
-#include "Scripting.h"
+#include "Cyclope.h"
 
 namespace Scripting {
 	
@@ -30,7 +30,9 @@ namespace Scripting {
 		}
 
 		void OnUpdate(float dt) {
-			std::cout << "Update" << std::endl;
+			if (Input::KeyPressed(Key::Q)) {
+				std::cout << "Q" << std::endl;
+			}
 		}
 
 	};

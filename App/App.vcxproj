@@ -99,12 +99,14 @@
   <ItemGroup>
     <ClInclude Include="src\Layers\EditorLayer.h" />
     <ClInclude Include="src\OBJLoader.h" />
+    <ClInclude Include="src\SceneView\Grid.h" />
     <ClInclude Include="src\SceneView\SceneViewCamera.h" />
     <ClInclude Include="src\Scripting\Comp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Layers\EditorLayer.cpp" />
+    <ClCompile Include="src\SceneView\Grid.cpp" />
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +122,10 @@
     <ProjectReference Include="..\Scripting\Scripting.vcxproj">
       <Project>{985A7358-04C5-27CF-4D03-D974B9AC0524}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\grid.glsl" />
+    <None Include="Resources\shaders\s.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

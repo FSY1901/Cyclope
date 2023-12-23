@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="src\NativeScripting\Scripting.h" />
     <ClInclude Include="src\Rendering\Buffer.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
+    <ClInclude Include="src\Rendering\Framebuffer.h" />
     <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Texture.h" />
@@ -138,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
@@ -153,6 +156,7 @@
     <ClCompile Include="src\NativeScripting\DLLLoader.cpp" />
     <ClCompile Include="src\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
+    <ClCompile Include="src\Rendering\Framebuffer.cpp" />
     <ClCompile Include="src\Rendering\Rendering.cpp" />
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />

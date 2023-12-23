@@ -112,6 +112,8 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\Framebuffer.h" />
+    <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
@@ -174,5 +176,7 @@
     <ClCompile Include="src\Rendering\VertexArray.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Framebuffer.cpp" />
+    <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

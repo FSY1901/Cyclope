@@ -9,11 +9,17 @@
 
 namespace Cyclope {
 
+	struct CYCLOPE_API WindowSpecification {
+		int width, height = 0;
+		bool maximized = false; //change to window mode (fullscreen, maximized, windowed)
+		const char* title = "";
+	};
+
 	class CYCLOPE_API Application {
 
 	public:
 		Application() = delete;
-		Application(int width, int height, const char* title);
+		Application(const WindowSpecification& spec);
 
 		void Run();
 		void PushLayer(Layer* layer);
@@ -30,8 +36,6 @@ namespace Cyclope {
 		ImGuiLayer* m_ImGuiLayer;
 
 		Window m_window;
-
-		void Init();
 
 		//Time
 		float deltaTime = 0.0f;

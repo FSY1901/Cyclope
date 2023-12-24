@@ -2,8 +2,6 @@
 
 #include "glad.h"
 
-#include <unordered_map>
-
 namespace Cyclope {
 
     OpenGLShader::OpenGLShader(const char* vShaderCode, const char* fShaderCode) {

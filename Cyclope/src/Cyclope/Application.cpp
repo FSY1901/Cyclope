@@ -9,26 +9,15 @@ namespace Cyclope {
 
     Application* Application::m_Instance = nullptr;
 
-    Application::Application(int width, int height, const char* title) {
-        m_window = Window(title, width, height);
+    Application::Application(const WindowSpecification& spec) {
         m_Instance = this;
 
-        Init();
-    }
-
-    void Application::Init() {
-        int error = m_window.Create();
-
-        if (error == -1)
-            return;
+        m_window.Create(spec);
 
         m_ImGuiLayer = new ImGuiLayer();
         PushLayer(m_ImGuiLayer);
 
         Input::SetWindow(m_window.m_window);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND); 
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
 	void Application::Run() {

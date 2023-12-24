@@ -4,25 +4,30 @@
 
 #include <iostream>
 
+#include "Application.h"
+
 namespace Cyclope {
 
-	Window::Window(const char* title, int width, int height) 
-		: m_title(title), m_width(width), m_height(height)
-	{}
+	void Window::Create(const WindowSpecification& spec) {
 
-	int Window::Create() {
+        m_width = spec.width;
+        m_height = spec.height;
+        m_title = spec.title;
+
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
+        if(spec.maximized)
+            glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
         GLFWwindow* window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
         if (window == NULL)
         {
             std::cout << "Failed to create GLFW window" << std::endl;
             glfwTerminate();
-            return - 1;
+            return;
         }
         m_window = window;
         glfwMakeContextCurrent(m_window);
@@ -34,8 +39,9 @@ namespace Cyclope {
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
             std::cout << "Failed to initialize GLAD" << std::endl;
-            return -1;
+            return;
         }
+
 	}
 
     void Window::Update() {

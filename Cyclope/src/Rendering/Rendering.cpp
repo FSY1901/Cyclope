@@ -19,6 +19,16 @@ namespace Cyclope {
 		glViewport(0, 0, width, height);
 	}
 
+	void RenderCommands::Enable(RenderingOperation op) {
+		glEnable((int)op);
+		if(op == RenderingOperation::Blending)
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	void RenderCommands::Disable(RenderingOperation op) {
+		glDisable((int)op);
+	}
+
 	RendererAPI Renderer::s_RendererAPI = RendererAPI::OpenGL;
 	Unique<RendererData> Renderer::s_data = std::make_unique<RendererData>();
 

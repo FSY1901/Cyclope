@@ -11,12 +11,17 @@ class App : public Application{
 
 public:
 
-	App(int width, int height, const char* title) : Application(width, height, title) {
+	App(const WindowSpecification& spec) : Application(spec) {
 		PushLayer(new CyclopeEditor::EditorLayer());
 	}
 
 };
 
 Cyclope::Application* Cyclope::CreateApplication() {
-	return new App(800, 600, "Cyclope Engine");
+	WindowSpecification spec;
+	spec.width = 800;
+	spec.height = 600;
+	spec.title = "Cyclope Editor";
+	spec.maximized = true;
+	return new App(spec);
 }

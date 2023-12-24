@@ -17,6 +17,8 @@ This file is used for various rendering commands that can be called by the user 
 
 namespace Cyclope {
 
+	//TODO: Make this API unspecific
+
 	enum class RendererAPI {
 		OpenGL
 	};
@@ -27,12 +29,20 @@ namespace Cyclope {
 		Fill = GL_FILL
 	};
 
+	enum class CYCLOPE_API RenderingOperation{
+		DepthTest = GL_DEPTH_TEST,
+		Blending = GL_BLEND
+	};
+
 	struct CYCLOPE_API RenderCommands
 	{
 		static void SetClearColor(float r, float g, float b);
 		static void Clear();
 		static void SetDrawMode(DrawMode mode);
 		static void SetViewport(int width, int height);
+
+		static void Enable(RenderingOperation op);
+		static void Disable(RenderingOperation op);
 	};
 
 	struct RendererData

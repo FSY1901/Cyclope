@@ -7,13 +7,14 @@
 
 namespace Cyclope {
 
+	struct WindowSpecification;
+
 	class CYCLOPE_API Window {
 
 	public:
 		Window() {};
-		Window(const char* title, int width, int height);
 
-		int Create();
+		void Create(const WindowSpecification& spec);
 		void Update();
 		void SetWindowTitle(const char* title);
 

@@ -7,12 +7,16 @@ class App : public Application {
 
 public:
 
-	App(int width, int height, const char* title) : Cyclope::Application(width, height, title) {
+	App(const WindowSpecification& spec) : Cyclope::Application(spec) {
 		
 	}
 
 };
 
 Cyclope::Application* Cyclope::CreateApplication() {
-	return new App(0, 0, "");
+	WindowSpecification spec;
+	spec.width = 0;
+	spec.height = 0;
+	spec.title = "";
+	return new App(spec);
 }

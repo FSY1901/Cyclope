@@ -37,4 +37,10 @@ namespace Cyclope {
 		return entity;
 	}
 
+	void Scene::ForEach(void(*EntityIteratorFunction)(Entity)) {
+		m_Registry.each([&](auto entity) {
+				EntityIteratorFunction(Entity{ entity, this });
+			});
+	}
+
 }

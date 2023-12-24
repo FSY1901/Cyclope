@@ -43,6 +43,8 @@ namespace CyclopeEditor {
 		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
 							Application::GetInstance()->GetWindow()->GetHeight());
 
+		RenderCommands::Enable(RenderingOperation::DepthTest);
+		RenderCommands::Enable(RenderingOperation::Blending);
 		RenderCommands::SetClearColor(0.1f, 0.1f, 0.1f);
 
 		grid = Grid();

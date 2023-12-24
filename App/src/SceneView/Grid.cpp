@@ -5,10 +5,10 @@ namespace CyclopeEditor {
 	Grid::Grid() {
 
 		float vertices[] = {
-				 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, // top right
-				 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, // bottom left
-				-1.0f,  1.0f, 0.0f,  0.0f, 1.0f // top left 
+				 1.0f,  1.0f, 0.0f, // top right
+				 1.0f, -1.0f, 0.0f, // bottom right
+				-1.0f, -1.0f, 0.0f, // bottom left
+				-1.0f,  1.0f, 0.0f, // top left 
 		};
 		unsigned int indices[] = {
 			0, 1, 3,   // first triangle
@@ -16,7 +16,7 @@ namespace CyclopeEditor {
 		};
 
 		auto v = VertexBuffer::Create(vertices, sizeof(vertices));
-		v->SetBufferLayout(BufferLayout::Standard());
+		v->SetBufferLayout({ {ShaderDataType::Float3} });
 		m_VA = VertexArray::Create(v, IndexBuffer::Create(&indices[0], 6 * sizeof(unsigned int)));
 
 		m_shader = Shader::Create("./Resources/shaders/grid.glsl");

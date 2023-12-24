@@ -25,6 +25,8 @@ namespace Cyclope {
 			return view;
 		}
 
+		void ForEach(void(*EntityIteratorFunction)(Entity));
+
 	private:
 		entt::registry m_Registry;
 

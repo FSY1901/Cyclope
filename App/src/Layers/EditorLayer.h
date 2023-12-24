@@ -33,10 +33,11 @@ namespace CyclopeEditor {
 		ImVec2 panelSize;
 
 		Grid grid;
+		bool renderGrid = true;
 
 		DLLLoader loader;
 
-		Scene s;
+		Scene activeScene;
 
 		static EditorLayer* s_EditorLayer;
 

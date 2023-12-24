@@ -9,7 +9,7 @@ namespace Cyclope {
 	class CYCLOPE_API OpenGLShader : public Shader {
 
 	public:
-		OpenGLShader(std::string path);
+		OpenGLShader(const char* vShaderCode, const char* fShaderCode);
 		~OpenGLShader() override;
 
 		void Bind() const override;

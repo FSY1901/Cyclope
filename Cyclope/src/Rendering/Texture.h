@@ -34,9 +34,8 @@ namespace Cyclope {
 		virtual int GetWidth() const = 0;
 		virtual int GetHeight() const = 0;
 
-		virtual const std::string& GetPath() const = 0;
 
-		static Shared<Texture2D> Create(const char* path, bool flipped = true);
+		static Shared<Texture2D> Create(const char* path);
 		static Shared<Texture2D> Create(TextureSpecification spec, void* data);
 
 	};

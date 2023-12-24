@@ -43,18 +43,22 @@ namespace CyclopeEditor {
 		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
 							Application::GetInstance()->GetWindow()->GetHeight());
 
-		RenderCommands::SetClearColor(0.2f, 0.2f, 0.2f);
+		RenderCommands::SetClearColor(0.1f, 0.1f, 0.1f);
 
 		grid = Grid();
 
 		loader.LoadDLL(componentRegistry, nativeScriptRegistry);
-		Entity e = s.CreateEntity();
+		Entity e = activeScene.CreateEntity();
 		e.AddComponent<NativeScriptComponent>();
 		auto f = nativeScriptRegistry.at(10765104205153683754);
 		f(e);
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
+		activeScene.Update(dt);
+
+		svc.Update(dt);
+
 		if (fb->GetSpecification().width != panelSize.x ||
 			fb->GetSpecification().height != panelSize.y) {
 			fb->GetSpecification().width = panelSize.x;
@@ -63,15 +67,14 @@ namespace CyclopeEditor {
 			fb->Invalidate();
 		}
 		fb->Bind();
+
 		RenderCommands::Clear();
-		svc.Update(dt);
+		
 		Renderer::BeginScene(svc.GetCamera());
 		tex->Bind();
 		Matrix4 mat = Matrix4(1.0f);
 		mat = glm::translate(mat, Vector3(0, 0, -5));
 		mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
-		//mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-		//mat = glm::rotate(mat, (float)Time::GetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		sh->Bind();
 		sh->SetMat4("transform", mat);
 		Renderer::Submit(vert, sh);
@@ -84,11 +87,14 @@ namespace CyclopeEditor {
 		sh2->Bind();
 		sh2->SetMat4("transform", mat1);
 		Renderer::Submit(vert2, sh2);
-		grid.Render(svc);
+
+		if(renderGrid)
+			grid.Render(svc);
+
 		Renderer::EndScene();
+
 		fb->Unbind();
 		RenderCommands::Clear();
-		s.Update(dt);
 
 	}
 
@@ -123,7 +129,9 @@ namespace CyclopeEditor {
 			ImGui::EndMainMenuBar();
 		}
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 		ImGui::Begin("Scene");
+		ImGui::PopStyleVar();
 		panelSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((void*)fb->GetColorAttachment(),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
@@ -133,6 +141,7 @@ namespace CyclopeEditor {
 		ImGui::Text("FPS: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 0.2f, 0.2f, 1.0f), "%.1f FPS", ImGui::GetIO().Framerate);
+		ImGui::Checkbox("Grid", &renderGrid);
 		ImGui::End();
 
 	}

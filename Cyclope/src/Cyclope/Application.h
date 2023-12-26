@@ -44,7 +44,7 @@ namespace Cyclope {
 	};
 
 	//defined in app
-	Application* CreateApplication();
+	Cyclope::Application* CreateApplication();
 
 }
 

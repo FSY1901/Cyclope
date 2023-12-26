@@ -2,14 +2,12 @@
 
 namespace Cyclope {
 
-	void DLLLoader::LoadDLL(ComponentRegistry& components, NativeScriptRegistry& scripts) {
+	void DLLLoader::LoadDLL(ComponentRegistry& components, ComponentNamesList& componentNames, NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames) {
 		//TODO: Make relative to project directory
 		hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\bin\\Release-windows-x86_64\\Scripting\\Scripting.dll");
 
 		if (hDLL != NULL)
 		{
-
-			std::cout << "Loaded DLL \n";
 
 			FUNC func = (FUNC)GetProcAddress(hDLL, "GetRegistries");
 
@@ -17,7 +15,7 @@ namespace Cyclope {
 				std::cout << "could not locate the function \n";
 			}
 			else {
-				func(components, scripts);
+				func(components, componentNames, scripts, scriptNames);
 			}
 		}
 		else {

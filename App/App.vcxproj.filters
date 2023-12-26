@@ -16,26 +16,23 @@
       <Filter>Layers</Filter>
     </ClInclude>
     <ClInclude Include="src\OBJLoader.h" />
+    <ClInclude Include="src\SceneView\Grid.h">
+      <Filter>SceneView</Filter>
+    </ClInclude>
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
       <Filter>SceneView</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scripting\Comp.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SceneView\Grid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Layers\EditorLayer.cpp">
       <Filter>Layers</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneView\Grid.cpp">
+      <Filter>SceneView</Filter>
+    </ClCompile>
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
       <Filter>SceneView</Filter>
     </ClCompile>
-    <ClCompile Include="src\SceneView\Grid.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shaders\grid.glsl" />
-    <None Include="Resources\shaders\s.glsl" />
   </ItemGroup>
 </Project>

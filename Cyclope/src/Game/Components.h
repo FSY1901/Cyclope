@@ -10,6 +10,16 @@ namespace Cyclope {
 
 	class Scene;
 
+	struct TagComponent
+	{
+		std::string tag;
+
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(const std::string& tag)
+			: tag(tag) {}
+	};
+
 	struct TransformComponent{
 
 		Vector3 position = { 0.0f, 0.0f, 0.0f };
@@ -49,11 +59,20 @@ namespace Cyclope {
 		ScriptableEntity* (*InstantiateScript)() = nullptr;
 		void (*DestroyScript)(NativeScriptComponent*);
 
+		std::string scriptName = "None";
+
 		template<typename T>
-		void Bind()
+		void Bind(const std::string& name)
 		{
+			scriptName = name;
 			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->instance; nsc->instance = nullptr; };
+		}
+
+		void Unbind() {
+			scriptName = "None";
+			InstantiateScript = nullptr;
+			DestroyScript = nullptr;
 		}
 
 	};

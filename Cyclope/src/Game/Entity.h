@@ -35,10 +35,25 @@ namespace Cyclope {
 			m_Scene->m_Registry.remove<T>(m_Entity);
 		}
 
+		operator bool() const { return m_Entity != entt::null; }
+		operator entt::entity() const { return m_Entity; }
+		operator uint32_t() const { return (uint32_t)m_Entity; }
+
 		TransformComponent& Transform();
+		std::string& Tag();
+
+		bool operator==(const Entity& other) const
+		{
+			return m_Entity == other.m_Entity && m_Scene == other.m_Scene;
+		}
+
+		bool operator!=(const Entity& other) const
+		{
+			return !(*this == other);
+		}
 
 	private:
-		entt::entity m_Entity;
+		entt::entity m_Entity{entt::null};
 		Scene* m_Scene;
 
 	};

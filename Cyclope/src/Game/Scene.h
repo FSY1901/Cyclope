@@ -18,6 +18,7 @@ namespace Cyclope {
 		void Update(float dt);
 
 		Entity CreateEntity();
+		void DestroyEntity(Entity& entity);
 
 		template<typename T>
 		auto View() {
@@ -25,7 +26,12 @@ namespace Cyclope {
 			return view;
 		}
 
-		void ForEach(void(*EntityIteratorFunction)(Entity));
+		template<typename Func>
+		void ForEach(Func func) {
+			m_Registry.each([&](auto entity) {
+				func(Entity{ entity, this });
+			});
+		}
 
 	private:
 		entt::registry m_Registry;

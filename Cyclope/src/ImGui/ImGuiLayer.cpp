@@ -17,7 +17,7 @@ namespace Cyclope {
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("Resources/fonts/Poppins/Poppins-Bold.ttf", 16.0f);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("Resources/fonts/Poppins/Poppins-Bold.ttf", 17.0f);
 		SetThemeColors();
 	}
 

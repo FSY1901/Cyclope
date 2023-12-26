@@ -5,7 +5,9 @@ namespace CyclopeEditor {
 
 	void SceneViewCamera::Update(float dt) {
 
-		if (Input::ButtonPressed(Button::Button_RIGHT)) {
+		if (Input::ButtonPressed(Button::Button_RIGHT) && (sceneWindowHovered || controlling)) {
+
+			controlling = true;
 
 			Input::SetCursorMode(CursorMode::Hidden);
 
@@ -47,6 +49,7 @@ namespace CyclopeEditor {
 		}
 		else {
 			Input::SetCursorMode(CursorMode::Shown);
+			controlling = false;
 		}
 
 		lastX = Input::MouseX();

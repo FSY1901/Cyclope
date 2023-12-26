@@ -34,13 +34,12 @@ namespace Cyclope {
 	Entity Scene::CreateEntity() {
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<TagComponent>("Entity");
 		return entity;
 	}
 
-	void Scene::ForEach(void(*EntityIteratorFunction)(Entity)) {
-		m_Registry.each([&](auto entity) {
-				EntityIteratorFunction(Entity{ entity, this });
-			});
+	void Scene::DestroyEntity(Entity& entity) {
+		m_Registry.destroy(entity);
 	}
 
 }

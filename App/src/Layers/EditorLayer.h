@@ -21,6 +21,7 @@ namespace CyclopeEditor {
 		ImVec2 GetPanelSize() { return panelSize; }
 
 	private:
+
 		Shared<VertexArray> vert;
 		Shared<VertexArray> vert2;
 		Shared<Shader> sh;
@@ -37,7 +38,31 @@ namespace CyclopeEditor {
 
 		DLLLoader loader;
 
-		Scene activeScene;
+		Shared<Scene> activeScene;
+		Entity selectedEntity;
+
+		void DrawScenePanel();
+		void DrawSceneHierarchyPanel();
+		void DrawInspectorPanel();
+		void DrawDebugPanel();
+
+		GUIFunction DisplayComponent;
+
+		template<typename T>
+		void DisplayAddComponentEntry(const std::string& entryName) {
+			if (!selectedEntity.HasComponent<T>())
+			{
+				if (ImGui::MenuItem(entryName.c_str()))
+				{
+					selectedEntity.AddComponent<T>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+		}
+
+		void DisplayAddCustomComponentEntry(const std::string& entryName);
+
+		void DisplayCustomComponent(const std::string& name);
 
 		static EditorLayer* s_EditorLayer;
 

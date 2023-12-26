@@ -7,6 +7,8 @@ namespace Cyclope {
 
 	float Input::s_mx = 0.0f;
 	float Input::s_my = 0.0f;
+
+	Vector2 Input::m_scroll = Vector2(0.0f, 0.0f);
 #pragma endregion
 
 	void Input::SetWindow(GLFWwindow* window) {
@@ -37,5 +39,7 @@ namespace Cyclope {
 	float Input::MouseX() { return s_mx; }
 
 	float Input::MouseY() { return s_my; }
+
+	Vector2 Input::GetDeltaScroll() { return m_scroll; }
 
 }

@@ -33,6 +33,9 @@
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h">
       <Filter>API\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h">
+      <Filter>API\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLShader.h">
       <Filter>API\OpenGL</Filter>
     </ClInclude>
@@ -100,6 +103,9 @@
     <ClInclude Include="src\Rendering\Camera.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\Framebuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -112,11 +118,12 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\Framebuffer.h" />
-    <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
+      <Filter>API\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp">
@@ -164,6 +171,9 @@
     <ClCompile Include="src\Rendering\Camera.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Framebuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -176,7 +186,5 @@
     <ClCompile Include="src\Rendering\VertexArray.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Rendering\Framebuffer.cpp" />
-    <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

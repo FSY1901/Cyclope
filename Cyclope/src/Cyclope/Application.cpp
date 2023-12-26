@@ -5,6 +5,10 @@
 #include "../Game/Scene.h"
 #include "../Input/Input.h"
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 namespace Cyclope {
 
     Application* Application::m_Instance = nullptr;
@@ -41,6 +45,8 @@ namespace Cyclope {
                 }
                 m_ImGuiLayer->End();
             }
+
+            Input::m_scroll = Vector2(0.0f, 0.0f);
 
             m_window.Update();
         }

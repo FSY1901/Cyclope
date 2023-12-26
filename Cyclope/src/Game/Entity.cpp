@@ -9,4 +9,8 @@ namespace Cyclope {
 		return GetComponent<TransformComponent>();
 	}
 
+	std::string& Entity::Tag() {
+		return GetComponent<TagComponent>().tag;
+	}
+
 }

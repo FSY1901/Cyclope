@@ -14,9 +14,12 @@ namespace CyclopeEditor {
 
 		const Camera& GetCamera() const{ return cam; }
 
+		bool sceneWindowHovered = false;
+
+		TransformComponent transform;
+
 	private:
 		Camera cam;
-		TransformComponent transform;
 
 		Vector3 front{ 0.0f, 0.0f, -1.0f };
 		Vector3 up{0.0f, 1.0f, 0.0f};
@@ -30,6 +33,8 @@ namespace CyclopeEditor {
 
 		float lastX = Application::GetInstance()->GetWindow()->GetWidth() / 2.0f;
 		float lastY = Application::GetInstance()->GetWindow()->GetHeight() / 2.0f;
+
+		bool controlling = false;
 
 	};
 

@@ -10,6 +10,7 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Export.h" />
+    <ClInclude Include="GUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Export.cpp" />

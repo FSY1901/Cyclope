@@ -68,7 +68,7 @@ namespace Cyclope {
     }
 
     void Window::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-        //TODO: find solution to scrolling
+        Input::m_scroll = Vector2((float)xoffset, (float)yoffset);
     }
 
 }

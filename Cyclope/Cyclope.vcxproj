@@ -133,6 +133,7 @@
     <ClInclude Include="src\Rendering\Buffer.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Framebuffer.h" />
+    <ClInclude Include="src\Rendering\Mesh.h" />
     <ClInclude Include="src\Rendering\Rendering.h" />
     <ClInclude Include="src\Rendering\Shader.h" />
     <ClInclude Include="src\Rendering\Texture.h" />

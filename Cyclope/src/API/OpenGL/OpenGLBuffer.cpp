@@ -4,10 +4,12 @@
 
 namespace Cyclope {
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, GLsizeiptr size) {
+	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, GLsizeiptr size, const BufferLayout& layout) {
 		glGenBuffers(1, &m_ID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_ID);
-		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+		SetBufferLayout(layout);
+		m_vertexCount = size / layout.GetOffset(); //how many floats make up one vertex
+		glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer() {
@@ -82,11 +84,16 @@ namespace Cyclope {
 
 	}
 
+	GLsizeiptr OpenGLVertexBuffer::GetVertexCount() const
+	{
+		return m_vertexCount;
+	}
+
 	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int* indices, GLsizeiptr size) {
 		glGenBuffers(1, &m_ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
-		m_size = size;
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+		m_size = size * sizeof(unsigned int);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_size, indices, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer() {

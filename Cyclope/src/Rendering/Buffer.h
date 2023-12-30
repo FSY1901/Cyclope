@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include "Mesh.h"
+
 namespace Cyclope {
 
 	enum class CYCLOPE_API ShaderDataType
@@ -40,7 +42,7 @@ namespace Cyclope {
 
 		BufferElement() {};
 		BufferElement(ShaderDataType _type, bool _normalized = false) 
-		: type(_type), normalized(_normalized), size(ShaderDataTypeSize(type)) {}
+		: type(_type), normalized(_normalized), size(ShaderDataTypeSize(type)){}
 
 		unsigned int GetComponentCount() const
 		{
@@ -73,7 +75,8 @@ namespace Cyclope {
 			CalculateOffsetsAndStride();
 		}
 
-		int GetStride() { return m_stride; }
+		int GetStride() const { return m_stride; }
+		int GetOffset() const { return m_offset; }
 
 		std::vector<BufferElement>& GetElements() { return m_elements; }
 
@@ -83,6 +86,7 @@ namespace Cyclope {
 		void CalculateOffsetsAndStride();
 
 		int m_stride = 0;
+		int m_offset = 0;
 		std::vector<BufferElement> m_elements;
 	};
 
@@ -96,7 +100,9 @@ namespace Cyclope {
 		virtual void SetBufferLayout(const BufferLayout& layout) = 0;
 		virtual void LinkVertexAttributes() = 0;
 
-		static Shared<VertexBuffer> Create(float* vertices, GLsizeiptr size);
+		virtual GLsizeiptr GetVertexCount() const = 0;
+
+		static Shared<VertexBuffer> Create(float* vertices, GLsizeiptr size, const BufferLayout& layout);
 
 	};
 

@@ -12,7 +12,7 @@ namespace CyclopeEditor {
 			Input::SetCursorMode(CursorMode::Hidden);
 
 			if (Input::KeyPressed(Key::LEFT_SHIFT))
-				speed = 10.0f;
+				speed = 20.0f;
 			else
 				speed = 5.0f;
 

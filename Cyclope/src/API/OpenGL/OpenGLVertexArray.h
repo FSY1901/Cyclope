@@ -17,6 +17,7 @@ namespace Cyclope {
 		void Unbind() const override;
 
 		const Shared<IndexBuffer>& GetIndexBuffer() override;
+		const Shared<VertexBuffer>& GetVertexBuffer() override;
 
 	private:
 		unsigned int m_ID;

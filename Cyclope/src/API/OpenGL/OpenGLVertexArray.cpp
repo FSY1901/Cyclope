@@ -26,6 +26,10 @@ namespace Cyclope {
 		glBindVertexArray(0);
 	}
 
+	const Shared<VertexBuffer>& OpenGLVertexArray::GetVertexBuffer() {
+		return m_VertexBuffer;
+	}
+
 	const Shared<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() {
 		return m_IndexBuffer;
 	}

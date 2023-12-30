@@ -91,26 +91,41 @@ namespace CyclopeEditor {
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
 
-		LoadOBJFile("./Resources/objs/sphere.obj", verts, ind);
+		//LoadOBJFile("./Resources/objs/sphere.obj", verts, ind);
+		LoadOBJFile("./Resources/objs/cube.obj", m.vertices, m.indices);
 
-		auto v = VertexBuffer::Create(&verts[0], verts.size() * sizeof(float));
-		v->SetBufferLayout(BufferLayout::Standard());
-		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
+		auto v = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
+		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
 
-		sh = Shader::Create("./Resources/shaders/shader.glsl");
+		sh = Shader::Create("./Resources/shaders/batch.glsl");
 		tex = Texture2D::Create("./Resources/textures/earth.jpg");
 
 		verts.clear();
 		ind.clear();
 
-		LoadOBJFile("./Resources/objs/y.obj", verts, ind);
+		batch = MakeShared<Batch>();
+
+		const int bound = 1250;
+		for (int i = 0; i < bound; i++) {
+			for (int j = 0; j < bound; j++) {
+				Matrix4 mat = Matrix4(1.0f);
+				mat = glm::translate(mat, Vector3((i-0.5f) - bound*0.5f, 0, (j-0.5f) - bound*0.5f));
+				mat = glm::scale(mat, Vector3(0.3f, 0.3f, 0.3f));
+				//sh->SetMat4("transform", mat);
+				batch->AddToBatch(m, mat);
+			}
+		}
+
+		batch->GenerateBatch();
+
+		/*LoadOBJFile("./Resources/objs/cube.obj", verts, ind);
 
 		auto v1 = VertexBuffer::Create(&verts[0], verts.size() * sizeof(float));
 		v1->SetBufferLayout(BufferLayout::Standard());
 		vert2 = VertexArray::Create(v1, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
 
 		sh2 = Shader::Create("./Resources/shaders/shader.glsl");
-		tex2 = Texture2D::Create("./Resources/textures/container.jpg");
+		tex2 = Texture2D::Create("./Resources/textures/container.jpg");*/
 		
 		FramebufferSpecification fbs;
 		fbs.width = 800;
@@ -155,22 +170,31 @@ namespace CyclopeEditor {
 		RenderCommands::Clear();
 		
 		Renderer::BeginScene(svc.GetCamera());
+
+		/*for (int i = 0; i < 100; i++) {
+			for (int j = 0; j < 100; j++) {
+				tex->Bind();
+				Matrix4 mat = Matrix4(1.0f);
+				mat = glm::translate(mat, Vector3((i*2) - 50, 0, (j*2) - 50));
+				mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
+				sh->Bind();
+				sh->SetMat4("transform", mat);
+				Renderer::Submit(vert, sh);
+				tex->Unbind();
+			}
+		}*/
+
 		tex->Bind();
-		Matrix4 mat = Matrix4(1.0f);
-		mat = glm::translate(mat, Vector3(0, 0, -5));
-		mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
-		sh->Bind();
-		sh->SetMat4("transform", mat);
-		Renderer::Submit(vert, sh);
+		Renderer::Submit(batch, sh);
 		tex->Unbind();
 		
-		tex2->Bind();
+		/*tex2->Bind();
 		Matrix4 mat1 = Matrix4(1.0f);
-		mat1 = glm::translate(mat1, Vector3(2, 0, -5));
-		mat1 = glm::scale(mat1, Vector3(0.01f, 0.01f, 0.01f));
+		mat1 = glm::translate(mat1, Vector3(3, 0, -5));
+		mat1 = glm::scale(mat1, Vector3(1.0f, 1.0f, 1.0f));
 		sh2->Bind();
 		sh2->SetMat4("transform", mat1);
-		Renderer::Submit(vert2, sh2);
+		Renderer::Submit(vert2, sh2);*/
 
 		if(renderGrid)
 			grid.Render(svc);
@@ -383,6 +407,12 @@ namespace CyclopeEditor {
 		ImGui::Text("FPS: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 0.2f, 0.2f, 1.0f), "%.1f FPS", ImGui::GetIO().Framerate);
+		std::string drawCallText = "Draw Calls: ";
+		drawCallText += std::to_string(Renderer::GetRenderStats().drawCalls);
+		ImGui::Text(drawCallText.c_str());
+		std::string numVertices = "Vertices: ";
+		numVertices += std::to_string(Renderer::GetRenderStats().renderedVertices);
+		ImGui::Text(numVertices.c_str());
 		ImGui::Checkbox("Grid", &renderGrid);
 		ImGui::End();
 

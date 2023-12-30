@@ -7,9 +7,6 @@
     <Filter Include="SceneView">
       <UniqueIdentifier>{EE8D907A-5AF8-44F1-A336-F6960FE02246}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripting">
-      <UniqueIdentifier>{985A7358-04C5-27CF-4D03-D974B9AC0524}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Layers\EditorLayer.h">
@@ -34,5 +31,8 @@
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
       <Filter>SceneView</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\batch.glsl" />
   </ItemGroup>
 </Project>

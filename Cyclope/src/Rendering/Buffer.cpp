@@ -9,20 +9,20 @@ namespace Cyclope {
 
 	void BufferLayout::CalculateOffsetsAndStride() {
 		int offset = 0;
-
 		for (auto& elem : m_elements) {
 			elem.offset = offset;
 			offset += elem.size;
 			m_stride += elem.size;
+			m_offset += elem.GetComponentCount();
 		}
 	}
 
-	Shared<VertexBuffer> VertexBuffer::Create(float* vertices, GLsizeiptr size) {
+	Shared<VertexBuffer> VertexBuffer::Create(float* vertices, GLsizeiptr size, const BufferLayout& layout) {
 
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::OpenGL:
-			return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+			return std::make_shared<OpenGLVertexBuffer>(vertices, size, layout);
 			break;
 		}
 

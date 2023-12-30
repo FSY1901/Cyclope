@@ -1189,3 +1189,28 @@ bool LoadOBJFile(std::string path, std::vector<float>& vertices, std::vector<uns
 
 	return true;
 }
+
+#include "Rendering/Mesh.h"
+
+bool LoadOBJFile(std::string path, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
+	objl::Loader loader;
+	if (!loader.LoadFile(path))
+		return false;
+
+	const auto& mesh = loader.LoadedMeshes[0];
+	for (const auto& vertex : mesh.Vertices) {
+		Vertex v;
+		v.position = Vector3(vertex.Position.X, vertex.Position.Y, vertex.Position.Z);
+		v.uv = Vector2(vertex.TextureCoordinate.X, vertex.TextureCoordinate.Y);
+		vertices.push_back(v);
+	}
+
+	for (int j = 0; j < mesh.Indices.size(); j += 3)
+	{
+		indices.push_back(mesh.Indices[j]);
+		indices.push_back(mesh.Indices[j + 1]);
+		indices.push_back(mesh.Indices[j + 2]);
+	}
+
+	return true;
+}

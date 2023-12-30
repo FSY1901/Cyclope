@@ -11,7 +11,7 @@ namespace Cyclope {
 	class CYCLOPE_API OpenGLVertexBuffer : public VertexBuffer{
 
 	public:
-		OpenGLVertexBuffer(float* vertices, GLsizeiptr size);
+		OpenGLVertexBuffer(float* vertices, GLsizeiptr size, const BufferLayout& layout);
 		~OpenGLVertexBuffer() override;
 
 		void Bind() const override;
@@ -20,9 +20,12 @@ namespace Cyclope {
 		void SetBufferLayout(const BufferLayout& layout) override;
 		void LinkVertexAttributes() override;
 
+		GLsizeiptr GetVertexCount() const override;
+
 	private:
 		unsigned int m_ID;
 		BufferLayout m_layout;
+		GLsizeiptr m_vertexCount;
 
 	};
 

@@ -15,9 +15,8 @@ namespace CyclopeEditor {
 			1, 2, 3    // second triangle
 		};
 
-		auto v = VertexBuffer::Create(vertices, sizeof(vertices));
-		v->SetBufferLayout({ {ShaderDataType::Float3} });
-		m_VA = VertexArray::Create(v, IndexBuffer::Create(&indices[0], 6 * sizeof(unsigned int)));
+		auto v = VertexBuffer::Create(vertices, 12, { {ShaderDataType::Float3} });
+		m_VA = VertexArray::Create(v, IndexBuffer::Create(&indices[0], 6));
 
 		m_shader = Shader::Create("./Resources/shaders/grid.glsl");
 

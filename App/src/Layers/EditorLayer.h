@@ -30,6 +30,9 @@ namespace CyclopeEditor {
 		Shared<Texture2D> tex2;
 		SceneViewCamera svc;
 
+		Mesh m;
+		Shared<Batch> batch;
+
 		Shared<Framebuffer> fb;
 		ImVec2 panelSize;
 

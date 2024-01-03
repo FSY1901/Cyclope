@@ -32,12 +32,4 @@
       <Filter>SceneView</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shaders\batch.glsl" />
-    <None Include="Resources\shaders\framebuffer.glsl" />
-    <None Include="Resources\shaders\grid.glsl" />
-    <None Include="Resources\shaders\s.glsl" />
-    <None Include="Resources\shaders\shader.glsl" />
-    <None Include="Resources\shaders\raymarcher.glsl" />
-  </ItemGroup>
 </Project>

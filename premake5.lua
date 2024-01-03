@@ -49,45 +49,6 @@ project "ImGui"
         staticruntime "On"
         systemversion "latest"
 
-project "rttr"
-    location "rttr"
-    kind "StaticLib"
-    language "C++"
-
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-    files
-    {
-        "%{prj.name}/**.h",
-        "%{prj.name}/**.cpp"
-    }
-
-    includedirs
-    {
-        "$(SolutionDir)rttr"
-    }
-
-    libdirs
-    {
-        
-    }
-
-    links
-    {
-        
-    }
-
-    defines 
-    { 
-        
-    }
-
-    filter "system:windows"
-        cppdialect "C++17"
-        staticruntime "On"
-        systemversion "latest"
-
 project "Cyclope"
     location "Cyclope"
     kind "SharedLib"
@@ -172,7 +133,6 @@ project "Scripting"
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)ImGui/include",
-        "$(SolutionDir)rttr",
         "Cyclope/src",
         "Cyclope/src/Cyclope",
         "Cyclope/src/NativeScripting",
@@ -189,7 +149,6 @@ project "Scripting"
     {
         "glfw3.lib",
         "ImGui",
-        "rttr",
         "Cyclope"
     }
 
@@ -227,7 +186,6 @@ project "App"
         "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
-        "$(SolutionDir)rttr",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src",
         "Cyclope/src/Cyclope"
@@ -243,7 +201,6 @@ project "App"
         "glfw3.lib",
         "Cyclope",
         "ImGui",
-        "rttr",
         "Scripting"
     }
 

@@ -58,7 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;$(SolutionDir)rttr;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;$(SolutionDir)rttr;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -106,9 +106,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\rttr\rttr.vcxproj">
-      <Project>{918F9D7C-7DC6-9E0D-26B3-841012C91A0F}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Cyclope\Cyclope.vcxproj">
       <Project>{D451BA4A-4031-39E6-4949-C4BCB5A79F47}</Project>

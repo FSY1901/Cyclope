@@ -91,13 +91,13 @@ namespace CyclopeEditor {
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
 
-		//LoadOBJFile("./Resources/objs/sphere.obj", verts, ind);
-		LoadOBJFile("./Resources/objs/cube.obj", m.vertices, m.indices);
+		LoadOBJFile("./Resources/objs/cube.obj", verts, ind);
+		//LoadOBJFile("./Resources/objs/cube.obj", m.vertices, m.indices);
 
 		auto v = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
 
-		sh = Shader::Create("./Resources/shaders/batch.glsl");
+		sh = Shader::Create("./Resources/shaders/shader.glsl");
 		tex = Texture2D::Create("./Resources/textures/earth.jpg");
 
 		verts.clear();
@@ -131,8 +131,23 @@ namespace CyclopeEditor {
 		fbs.width = 800;
 		fbs.height = 600;
 		fb = Framebuffer::Create(fbs);
+		fb2 = Framebuffer::Create(fbs);
 		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
 							Application::GetInstance()->GetWindow()->GetHeight());
+
+		float vertices[] = {
+		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, // top right
+		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,// bottom right
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,// bottom left
+		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,// top left 
+		};
+		unsigned int indices[] = {
+			0, 1, 3,   // first triangle
+			1, 2, 3    // second triangle
+		};
+		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout::Standard());
+		fbVA = VertexArray::Create(v1, IndexBuffer::Create(indices, 6));
+		fbShader = Shader::Create("./Resources/shaders/raymarcher.glsl");
 
 		RenderCommands::Enable(RenderingOperation::DepthTest);
 		RenderCommands::Enable(RenderingOperation::Blending);
@@ -157,13 +172,16 @@ namespace CyclopeEditor {
 		activeScene->Update(dt);
 
 		svc.Update(dt);
-
+		RenderCommands::Enable(RenderingOperation::DepthTest);
 		if (fb->GetSpecification().width != panelSize.x ||
 			fb->GetSpecification().height != panelSize.y) {
 			fb->GetSpecification().width = panelSize.x;
 			fb->GetSpecification().height = panelSize.y;
+			fb2->GetSpecification().width = panelSize.x;
+			fb2->GetSpecification().height = panelSize.y;
 			RenderCommands::SetViewport(panelSize.x, panelSize.y);
 			fb->Invalidate();
+			fb2->Invalidate();
 		}
 		fb->Bind();
 
@@ -171,30 +189,20 @@ namespace CyclopeEditor {
 		
 		Renderer::BeginScene(svc.GetCamera());
 
-		/*for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				tex->Bind();
-				Matrix4 mat = Matrix4(1.0f);
-				mat = glm::translate(mat, Vector3((i*2) - 50, 0, (j*2) - 50));
-				mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
-				sh->Bind();
-				sh->SetMat4("transform", mat);
-				Renderer::Submit(vert, sh);
-				tex->Unbind();
-			}
-		}*/
+		/*tex->Bind();
+		Matrix4 mat = Matrix4(1.0f);
+		mat = glm::translate(mat, Vector3(0, 0, -5));
+		mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
+		sh->Bind();
+		sh->SetMat4("transform", mat);
+		Renderer::Submit(vert, sh);
+		tex->Unbind();*/
 
+		/*
 		tex->Bind();
 		Renderer::Submit(batch, sh);
 		tex->Unbind();
-		
-		/*tex2->Bind();
-		Matrix4 mat1 = Matrix4(1.0f);
-		mat1 = glm::translate(mat1, Vector3(3, 0, -5));
-		mat1 = glm::scale(mat1, Vector3(1.0f, 1.0f, 1.0f));
-		sh2->Bind();
-		sh2->SetMat4("transform", mat1);
-		Renderer::Submit(vert2, sh2);*/
+		*/
 
 		if(renderGrid)
 			grid.Render(svc);
@@ -202,6 +210,20 @@ namespace CyclopeEditor {
 		Renderer::EndScene();
 
 		fb->Unbind();
+		RenderCommands::Clear();
+
+		fb2->Bind();
+		fbShader->Bind();
+		//Draw
+		fbVA->Bind();
+		RenderCommands::Disable(RenderingOperation::DepthTest);
+		//RenderCommands::Disable(RenderingOperation::CullFace);
+		fb->BindTexture(fb->GetColorAttachment());
+		fbShader->Bind();
+		fbShader->SetFloat("iTime", Time::GetTime());
+		Renderer::Submit(fbVA, fbShader);
+		//Draw End
+		fb2->Unbind();
 		RenderCommands::Clear();
 
 	}
@@ -254,7 +276,7 @@ namespace CyclopeEditor {
 		ImGui::Begin("Scene");
 		ImGui::PopStyleVar();
 		panelSize = ImGui::GetContentRegionAvail();
-		ImGui::Image((void*)fb->GetColorAttachment(),
+		ImGui::Image((void*)fb2->GetColorAttachment(),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 
 		if (ImGui::IsWindowHovered())

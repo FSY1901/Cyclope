@@ -92,8 +92,8 @@ namespace Cyclope {
 	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int* indices, GLsizeiptr size) {
 		glGenBuffers(1, &m_ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
-		m_size = size * sizeof(unsigned int);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_size, indices, GL_STATIC_DRAW);
+		m_size = size;
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer() {

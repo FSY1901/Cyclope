@@ -12,11 +12,16 @@ namespace Cyclope {
 		Delete();
 	}
 
-	void OpenGLFramebuffer::Bind(){
+	void OpenGLFramebuffer::Bind() const{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_ID);
 	}
 
-	void OpenGLFramebuffer::Unbind(){
+	void OpenGLFramebuffer::BindTexture(uint32_t id) const
+	{
+		glBindTexture(GL_TEXTURE_2D, id);
+	}
+
+	void OpenGLFramebuffer::Unbind() const{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 

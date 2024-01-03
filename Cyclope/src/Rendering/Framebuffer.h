@@ -12,8 +12,9 @@ namespace Cyclope {
 	//API might change so that the attachments can be determined by user
 	class CYCLOPE_API Framebuffer {
 	public:
-		virtual void Bind() = 0;
-		virtual void Unbind() = 0;
+		virtual void Bind() const = 0;
+		virtual void BindTexture(uint32_t id) const = 0;
+		virtual void Unbind() const = 0;
 
 		virtual void Invalidate() = 0;
 

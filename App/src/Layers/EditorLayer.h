@@ -34,6 +34,9 @@ namespace CyclopeEditor {
 		Shared<Batch> batch;
 
 		Shared<Framebuffer> fb;
+		Shared<Framebuffer> fb2; //used for post processing effects in the renderer
+		Shared<VertexArray> fbVA;
+		Shared<Shader> fbShader;
 		ImVec2 panelSize;
 
 		Grid grid;

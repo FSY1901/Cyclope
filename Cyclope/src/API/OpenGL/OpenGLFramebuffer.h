@@ -10,8 +10,9 @@ namespace Cyclope {
 		OpenGLFramebuffer(const FramebufferSpecification& specs);
 		virtual ~OpenGLFramebuffer();
 
-		void Bind() override;
-		void Unbind() override;
+		void Bind() const override;
+		void BindTexture(uint32_t id) const override;
+		void Unbind() const override;
 	
 		void Invalidate() override;
 

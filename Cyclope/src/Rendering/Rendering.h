@@ -33,7 +33,8 @@ namespace Cyclope {
 
 	enum class CYCLOPE_API RenderingOperation{
 		DepthTest = GL_DEPTH_TEST,
-		Blending = GL_BLEND
+		Blending = GL_BLEND,
+		CullFace = GL_CULL_FACE
 	};
 
 	struct CYCLOPE_API RenderCommands

@@ -3,6 +3,7 @@
 #include "Rendering.h"
 #include "../API/OpenGL/OpenGLTexture.h"
 #include "stb_image.h"
+#include "Log.h"
 
 namespace Cyclope {
 
@@ -18,6 +19,9 @@ namespace Cyclope {
 			//for pngs
 			spec.Format = ImageFormat::RGBA8;
 			unsigned char* data = stbi_load(path, &spec.Width, &spec.Height, &nrChannels, STBI_rgb_alpha); //unsigned char*
+			if (!data) {
+				CYCLOPE_CORE_WARN("Failed to load texture from path: " + std::string(path));
+			}
 			return std::make_shared<OpenGLTexture2D>(spec, data);
 			break;
 		}

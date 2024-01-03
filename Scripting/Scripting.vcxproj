@@ -58,7 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;..\Cyclope\src\NativeScripting;$(SolutionDir)Scripting\Components;$(SolutionDir)Scripting;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>

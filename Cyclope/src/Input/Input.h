@@ -67,7 +67,7 @@ namespace Cyclope {
 		TAB = 258,
 		BACKSPACE = 259,
 		INSERT = 260,
-		DELETE = 261,
+		DELETE_KEY = 261,// had to add _KEY because of a macro collision in a random file when adding Log.h
 		RIGHT = 262,
 		LEFT = 263,
 		DOWN = 264,

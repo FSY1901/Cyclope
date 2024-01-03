@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Log.h"
 #include "../Game/Scene.h"
 #include "../Input/Input.h"
 
@@ -14,6 +15,9 @@ namespace Cyclope {
     Application* Application::m_Instance = nullptr;
 
     Application::Application(const WindowSpecification& spec) {
+        Cyclope::Log::Init();
+
+        CYCLOPE_CORE_ASSERT(!m_Instance, "Application Instance already exists");
         m_Instance = this;
 
         m_window.Create(spec);
@@ -25,7 +29,6 @@ namespace Cyclope {
     }
 
 	void Application::Run() {
-
         while (!glfwWindowShouldClose(m_window.m_window))
         {
             float currentTime = glfwGetTime();

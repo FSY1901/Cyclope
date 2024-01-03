@@ -58,8 +58,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_DEBUG;CYCLOPE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -83,7 +83,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -118,6 +118,7 @@
     <ClInclude Include="src\Cyclope\EntryPoint.h" />
     <ClInclude Include="src\Cyclope\Layer.h" />
     <ClInclude Include="src\Cyclope\LayerStack.h" />
+    <ClInclude Include="src\Cyclope\Log.h" />
     <ClInclude Include="src\Cyclope\Util.h" />
     <ClInclude Include="src\Cyclope\Window.h" />
     <ClInclude Include="src\Game\Components.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Cyclope\Application.cpp" />
     <ClCompile Include="src\Cyclope\LayerStack.cpp" />
+    <ClCompile Include="src\Cyclope\Log.cpp" />
     <ClCompile Include="src\Cyclope\Window.cpp" />
     <ClCompile Include="src\Game\Entity.cpp" />
     <ClCompile Include="src\Game\Scene.cpp" />

@@ -6,6 +6,13 @@
 	#define	CYCLOPE_API __declspec(dllimport)
 #endif // CYCLOPE_BUILD_DLL
 
+#ifdef CYCLOPE_ENABLE_ASSERTS
+#define CYCLOPE_ASSERT(x, ...) {if(!(x)){CYCLOPE_CRITICAL("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+#define CYCLOPE_CORE_ASSERT(x, ...) {if(!(x)){CYCLOPE_CORE_CRITICAL("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+#else
+#define CYCLOPE_ASSERT(x, ...)
+#endif
+
 #include <memory>
 namespace Cyclope {
 

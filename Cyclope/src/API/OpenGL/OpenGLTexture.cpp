@@ -1,4 +1,5 @@
 #include "OpenGLTexture.h"
+#include "Log.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -50,7 +51,7 @@ namespace Cyclope {
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {
-            std::cout << "Data for texture was empty" << std::endl;
+            CYCLOPE_CORE_WARN("Data for texture was empty");
         }
 
         stbi_image_free(data);

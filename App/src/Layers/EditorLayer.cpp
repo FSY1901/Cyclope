@@ -105,7 +105,7 @@ namespace CyclopeEditor {
 
 		batch = MakeShared<Batch>();
 
-		const int bound = 1250;
+		/*const int bound = 1250;
 		for (int i = 0; i < bound; i++) {
 			for (int j = 0; j < bound; j++) {
 				Matrix4 mat = Matrix4(1.0f);
@@ -116,7 +116,7 @@ namespace CyclopeEditor {
 			}
 		}
 
-		batch->GenerateBatch();
+		batch->GenerateBatch();*/
 
 		/*LoadOBJFile("./Resources/objs/cube.obj", verts, ind);
 
@@ -147,7 +147,7 @@ namespace CyclopeEditor {
 		};
 		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout::Standard());
 		fbVA = VertexArray::Create(v1, IndexBuffer::Create(indices, 6));
-		fbShader = Shader::Create("./Resources/shaders/raymarcher.glsl");
+		fbShader = Shader::Create("./Resources/shaders/framebuffer.glsl");
 
 		RenderCommands::Enable(RenderingOperation::DepthTest);
 		RenderCommands::Enable(RenderingOperation::Blending);

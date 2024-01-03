@@ -1,6 +1,7 @@
 #include "OpenGLShader.h"
 
 #include "glad.h"
+#include "Log.h"
 
 namespace Cyclope {
 
@@ -18,7 +19,7 @@ namespace Cyclope {
         if (!success)
         {
             glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-            std::cout << "[SHADER::VERTEX::COMPILATION_FAILED]:\n" + std::string(infoLog) << std::endl;
+            CYCLOPE_CORE_ERROR("[SHADER::VERTEX::COMPILATION_FAILED]:\n" + std::string(infoLog));
             return;
         };
 
@@ -33,7 +34,8 @@ namespace Cyclope {
         if (!success_)
         {
             glGetShaderInfoLog(fragment, 512, NULL, infoLog_);
-            std::cout << "[SHADER::FRAGMENT::COMPILATION_FAILED]:\n" + std::string(infoLog_) << std::endl;
+            CYCLOPE_CORE_ERROR("[SHADER::FRAGMENT::COMPILATION_FAILED]:\n" + std::string(infoLog_));
+            return;
         }
 
         m_ID = glCreateProgram();
@@ -45,7 +47,7 @@ namespace Cyclope {
         if (!success)
         {
             glGetProgramInfoLog(m_ID, 512, NULL, infoLog);
-            std::cout << "[SHADER::PROGRAM::LINKING_FAILED]:\n" + std::string(infoLog) << std::endl;
+            CYCLOPE_CORE_ERROR("[SHADER::PROGRAM::LINKING_FAILED]:\n" + std::string(infoLog));
         }
 
         glDeleteShader(vertex);

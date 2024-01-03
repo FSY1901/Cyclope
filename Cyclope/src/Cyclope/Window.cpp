@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Application.h"
+#include "Log.h"
 
 namespace Cyclope {
 
@@ -23,12 +24,10 @@ namespace Cyclope {
             glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
         GLFWwindow* window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
-        if (window == NULL)
-        {
-            std::cout << "Failed to create GLFW window" << std::endl;
+        if (!window) {
             glfwTerminate();
-            return;
         }
+        CYCLOPE_CORE_ASSERT(window, "Failed to create Window");
         m_window = window;
         glfwMakeContextCurrent(m_window);
         glfwSwapInterval(0);
@@ -38,7 +37,7 @@ namespace Cyclope {
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
-            std::cout << "Failed to initialize GLAD" << std::endl;
+            CYCLOPE_CORE_ASSERT(0, "Failed to initialize GLAD");
             return;
         }
 

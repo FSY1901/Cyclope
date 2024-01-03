@@ -70,6 +70,7 @@ project "Cyclope"
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
+        "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src/Cyclope"
     }
@@ -93,7 +94,7 @@ project "Cyclope"
 
         defines
         {
-            "CYCLOPE_BUILD_DLL"
+            "CYCLOPE_BUILD_DLL",
         }
 
         postbuildcommands
@@ -102,7 +103,7 @@ project "Cyclope"
         }
 
     filter "configurations:Debug"
-        defines "CYCLOPE_DEBUG"
+        defines {"CYCLOPE_DEBUG", "CYCLOPE_ENABLE_ASSERTS"}
         symbols "On"
         buildoptions "/MD"
 
@@ -131,7 +132,7 @@ project "Scripting"
         "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
-        "$(SolutionDir)vendor/stb_image",
+        "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src",
         "Cyclope/src/Cyclope",
@@ -186,6 +187,7 @@ project "App"
         "$(SolutionDir)OpenGL/include",
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
+        "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src",
         "Cyclope/src/Cyclope"

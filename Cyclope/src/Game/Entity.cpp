@@ -13,4 +13,8 @@ namespace Cyclope {
 		return GetComponent<TagComponent>().tag;
 	}
 
+	void Entity::Destroy() {
+		m_Scene->DestroyEntity(*this);
+	}
+
 }

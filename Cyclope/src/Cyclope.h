@@ -2,6 +2,7 @@
 #define CYCLOPE_H
 
 #include "Cyclope/Application.h"
+#include "Cyclope/Log.h"
 
 #include "Maths/Maths.h"
 

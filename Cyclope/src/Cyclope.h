@@ -4,6 +4,8 @@
 #include "Cyclope/Application.h"
 #include "Cyclope/Log.h"
 
+#include "Debug/Instrumentor.h"
+
 #include "Maths/Maths.h"
 
 #include "Game/Scene.h"

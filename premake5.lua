@@ -57,6 +57,9 @@ project "Cyclope"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "Cpch.h"
+    pchsource "Cyclope/src/Cpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",
@@ -72,7 +75,8 @@ project "Cyclope"
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)ImGui/include",
-        "Cyclope/src/Cyclope"
+        "Cyclope/src/Cyclope",
+        "Cyclope/src"
     }
     
     libdirs
@@ -103,7 +107,7 @@ project "Cyclope"
         }
 
     filter "configurations:Debug"
-        defines {"CYCLOPE_DEBUG", "CYCLOPE_ENABLE_ASSERTS"}
+        defines {"CYCLOPE_DEBUG", "CYCLOPE_ENABLE_ASSERTS", "CYCLOPE_PROFILE"}
         symbols "On"
         buildoptions "/MD"
 

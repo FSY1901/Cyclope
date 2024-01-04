@@ -1,9 +1,9 @@
+#include "Cpch.h"
 #include "Texture.h"
 
 #include "Rendering.h"
 #include "../API/OpenGL/OpenGLTexture.h"
 #include "stb_image.h"
-#include "Log.h"
 
 namespace Cyclope {
 

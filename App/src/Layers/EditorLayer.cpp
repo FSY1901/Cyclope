@@ -85,7 +85,6 @@ namespace CyclopeEditor {
 	EditorLayer* EditorLayer::s_EditorLayer = nullptr;
 
 	void EditorLayer::OnAttach() {
-
 		s_EditorLayer = this;
 
 		std::vector<float> verts;
@@ -169,21 +168,25 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
+		CYCLOPE_PROFILE_FUNCTION();
 		activeScene->Update(dt);
 
 		svc.Update(dt);
-		RenderCommands::Enable(RenderingOperation::DepthTest);
-		if (fb->GetSpecification().width != panelSize.x ||
-			fb->GetSpecification().height != panelSize.y) {
-			fb->GetSpecification().width = panelSize.x;
-			fb->GetSpecification().height = panelSize.y;
-			fb2->GetSpecification().width = panelSize.x;
-			fb2->GetSpecification().height = panelSize.y;
-			RenderCommands::SetViewport(panelSize.x, panelSize.y);
-			fb->Invalidate();
-			fb2->Invalidate();
+		{
+			CYCLOPE_PROFILE_SCOPE("Framebuffer Scope"); //Example Usage
+			RenderCommands::Enable(RenderingOperation::DepthTest);
+			if (fb->GetSpecification().width != panelSize.x ||
+				fb->GetSpecification().height != panelSize.y) {
+				fb->GetSpecification().width = panelSize.x;
+				fb->GetSpecification().height = panelSize.y;
+				fb2->GetSpecification().width = panelSize.x;
+				fb2->GetSpecification().height = panelSize.y;
+				RenderCommands::SetViewport(panelSize.x, panelSize.y);
+				fb->Invalidate();
+				fb2->Invalidate();
+			}
+			fb->Bind();
 		}
-		fb->Bind();
 
 		RenderCommands::Clear();
 		

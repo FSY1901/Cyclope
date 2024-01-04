@@ -10,6 +10,9 @@
     <Filter Include="Cyclope">
       <UniqueIdentifier>{D451BA4A-4031-39E6-4949-C4BCB5A79F47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{0C95060D-78A9-2EBE-412B-D21DADFE2AEF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</UniqueIdentifier>
     </Filter>
@@ -45,6 +48,7 @@
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h">
       <Filter>API\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Cpch.h" />
     <ClInclude Include="src\Cyclope.h" />
     <ClInclude Include="src\Cyclope\Application.h">
       <Filter>Cyclope</Filter>
@@ -69,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="src\Cyclope\Window.h">
       <Filter>Cyclope</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Instrumentor.h">
+      <Filter>Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Components.h">
       <Filter>Game</Filter>
@@ -141,6 +148,7 @@
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp">
       <Filter>API\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Cpch.cpp" />
     <ClCompile Include="src\Cyclope\Application.cpp">
       <Filter>Cyclope</Filter>
     </ClCompile>

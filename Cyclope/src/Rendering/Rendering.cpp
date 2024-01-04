@@ -1,3 +1,4 @@
+#include "Cpch.h"
 #include "Rendering.h"
 
 namespace Cyclope {

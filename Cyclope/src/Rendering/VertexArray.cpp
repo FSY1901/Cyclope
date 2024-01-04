@@ -1,3 +1,5 @@
+#include "Cpch.h"
+
 #include "VertexArray.h"
 #include "Rendering.h"
 #include "../API/OpenGL/OpenGLVertexArray.h"

@@ -1,11 +1,8 @@
+#include "Cpch.h"
 #include "Shader.h"
 
 #include "Rendering.h"
 #include "../API/OpenGL/OpenGLShader.h"
-
-#include <fstream>
-#include <sstream>
-#include <unordered_map>
 
 namespace Cyclope {
 

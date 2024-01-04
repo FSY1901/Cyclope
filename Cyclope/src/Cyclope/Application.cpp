@@ -1,8 +1,6 @@
+#include "Cpch.h"
+
 #include "Application.h"
-
-#include <iostream>
-
-#include "Log.h"
 #include "../Game/Scene.h"
 #include "../Input/Input.h"
 

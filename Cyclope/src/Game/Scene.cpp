@@ -32,10 +32,29 @@ namespace Cyclope {
 	
 	}
 
-	Entity Scene::CreateEntity() {
+	void Scene::OnEvent(Event& e) {
+		m_Registry.view<NativeScriptComponent>().each([&](auto entity, NativeScriptComponent& script) {
+			if (script.InstantiateScript == nullptr)
+				return;
+			//TODO: Revisit this; just a test for now!
+			script.instance->OnEvent(e);
+			if (e.Handled)
+				return;
+
+			});
+	}
+
+	void Scene::Render() {
+
+		//TODO: Implement this
+		//m_Registry.view<MeshRendererComponent>().each([=](auto entity, MeshRendererComponent& mesh) {});
+
+	}
+
+	Entity Scene::CreateEntity(std::string name) {
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
-		entity.AddComponent<TagComponent>("Entity");
+		entity.AddComponent<TagComponent>(name);
 		return entity;
 	}
 

@@ -4,7 +4,6 @@
 #include "../Game/Entity.h"
 
 namespace Cyclope {
-	//TODO: Add RemoveComponentFunction
 	using AddComponentFunction = void(*)(Entity& e);
 	using HasComponentFunction = bool(*)(Entity& e);
 	using RemoveComponentFunction = void(*)(Entity& e);
@@ -19,21 +18,21 @@ namespace Cyclope {
 	using ComponentNamesList = std::vector<std::string>;
 	using NativeScriptNamesList = std::vector<std::string>;
 
-	static ComponentRegistry componentRegistry;
-	static NativeScriptRegistry nativeScriptRegistry;
-	static ComponentNamesList componentNamesList;
-	static NativeScriptNamesList nativeScriptNamesList = std::vector<std::string>{"None"};
+	extern CYCLOPE_API ComponentRegistry& componentRegistry();
+	extern CYCLOPE_API NativeScriptRegistry& nativeScriptRegistry();
+	extern CYCLOPE_API ComponentNamesList& componentNamesList();
+	extern CYCLOPE_API NativeScriptNamesList& nativeScriptNamesList(); //= std::vector<std::string>{"None"};
 
 	inline uint8_t RegisterComponent(const std::string& name, AddComponentFunction aFunc, HasComponentFunction hFunc, RemoveComponentFunction rFunc) {
-		componentNamesList.push_back(name);
+		componentNamesList().push_back(name);
 		size_t tag = std::hash<std::string>()(name);
-		return componentRegistry.insert(ComponentRegistry::value_type({ tag, {aFunc, hFunc, rFunc } })).second;
+		return componentRegistry().insert(ComponentRegistry::value_type({tag, {aFunc, hFunc, rFunc}})).second;
 	}
 
 	inline uint8_t RegisterNativeScript(const std::string& name, AddNativeScriptFunction func) {
-		nativeScriptNamesList.push_back(name);
+		nativeScriptNamesList().push_back(name);
 		size_t tag = std::hash<std::string>()(name);
-		return nativeScriptRegistry.insert(NativeScriptRegistry::value_type({ tag, func })).second;
+		return nativeScriptRegistry().insert(NativeScriptRegistry::value_type({tag, func})).second;
 	}
 
 #define REGISTER_COMPONENT(TYPE)									\

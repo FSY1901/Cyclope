@@ -74,6 +74,7 @@ project "Cyclope"
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)vendor/spdlog",
+        "$(SolutionDir)yaml-cpp/include",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src/Cyclope",
         "Cyclope/src"
@@ -88,7 +89,8 @@ project "Cyclope"
     {
         "glfw3.lib",
         "ImGui",
-        "OpenGL"
+        "OpenGL",
+        "yaml-cpp"
     }
 
     filter "system:windows"
@@ -263,3 +265,42 @@ project "OpenGL"
             cppdialect "C++17"
             staticruntime "On"
             systemversion "latest"
+
+project "yaml-cpp"
+        location "yaml-cpp"
+        kind "StaticLib"
+        language "C++"
+    
+        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    
+        files
+        {
+            "src/**.h",
+            "src/**.cpp",
+            
+            "include/**.h"
+        }
+    
+        includedirs
+        {
+            "$(SolutionDir)yaml-cpp/include"
+        }
+    
+        defines
+        {
+            "YAML_CPP_STATIC_DEFINE"
+        }
+    
+        filter "system:windows"
+            systemversion "latest"
+            cppdialect "C++17"
+            staticruntime "off"
+    
+        filter "configurations:Debug"
+            runtime "Debug"
+            symbols "on"
+    
+        filter "configurations:Release"
+            runtime "Release"
+            optimize "on"

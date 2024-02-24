@@ -12,7 +12,8 @@ namespace CyclopeEditor {
 
 		void Update(float dt);
 
-		const Camera& GetCamera() const{ return cam; }
+		Camera& GetCamera() { return cam; }
+		const Camera& GetCamera() const { return cam; }
 
 		bool sceneWindowHovered = false;
 

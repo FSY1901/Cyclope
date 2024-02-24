@@ -7,13 +7,11 @@
 #include "../ImGui/ImGuiLayer.h"
 #include "Window.h"
 
-namespace Cyclope {
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+#include "Events/ApplicationEvent.h"
 
-	struct CYCLOPE_API WindowSpecification {
-		int width, height = 0;
-		bool maximized = false; //change to window mode (fullscreen, maximized, windowed)
-		const char* title = "";
-	};
+namespace Cyclope {
 
 	class CYCLOPE_API Application {
 
@@ -23,6 +21,10 @@ namespace Cyclope {
 
 		void Run();
 		void PushLayer(Layer* layer);
+
+		void OnEvent(Event& e);
+		bool OnWindowResize(WindowResizeEvent& e);
+		bool OnMouseMove(MouseMovedEvent& e); //for input class
 
 		Window* GetWindow();
 
@@ -36,6 +38,7 @@ namespace Cyclope {
 		ImGuiLayer* m_ImGuiLayer;
 
 		Window m_window;
+		Window win2;
 
 		//Time
 		float deltaTime = 0.0f;

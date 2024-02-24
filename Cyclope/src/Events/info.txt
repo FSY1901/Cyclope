@@ -1,0 +1,1 @@
+The contents of this folder are copied from https://github.com/TheCherno/Hazel/tree/master/Hazel/src/Hazel/Events and are slightly modified

@@ -4,6 +4,8 @@
 
 #include "Util.h"
 
+#include "Game/SceneSerializer.h"
+
 namespace CyclopeEditor {
 
 	static void DrawVec3Control(const std::string& label, glm::vec3& values)
@@ -97,14 +99,14 @@ namespace CyclopeEditor {
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
 
 		sh = Shader::Create("./Resources/shaders/shader.glsl");
-		tex = Texture2D::Create("./Resources/textures/earth.jpg");
+		tex = Texture2D::Create("./Resources/textures/container.jpg");
 
 		verts.clear();
 		ind.clear();
 
-		batch = MakeShared<Batch>();
+		/*batch = MakeShared<Batch>();
 
-		/*const int bound = 1250;
+		const int bound = 1250;
 		for (int i = 0; i < bound; i++) {
 			for (int j = 0; j < bound; j++) {
 				Matrix4 mat = Matrix4(1.0f);
@@ -129,8 +131,9 @@ namespace CyclopeEditor {
 		FramebufferSpecification fbs;
 		fbs.width = 800;
 		fbs.height = 600;
-		fb = Framebuffer::Create(fbs);
 		fb2 = Framebuffer::Create(fbs);
+		fbs.samples = 4;//Set to 4 for Anti Aliasing
+		fb = Framebuffer::Create(fbs);
 		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
 							Application::GetInstance()->GetWindow()->GetHeight());
 
@@ -156,21 +159,22 @@ namespace CyclopeEditor {
 
 		activeScene = MakeShared<Scene>();
 
-		loader.LoadDLL(componentRegistry, componentNamesList, nativeScriptRegistry, nativeScriptNamesList);
-		auto hash = std::hash<std::string>{}(nativeScriptNamesList[1]);
-		Entity e = activeScene->CreateEntity();
-		activeScene->CreateEntity();
+		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
+#if 0
+		activeScene->CreateEntity("B");
+		Entity e = activeScene->CreateEntity("A");
 		e.AddComponent<NativeScriptComponent>();
+		e.GetComponent<TransformComponent>().position = Vector3(6.9f, 0.0f, .12f);
+#endif
 		//auto f = nativeScriptRegistry.at(hash);
 		//f(e);
-
+		//auto hash = std::hash<std::string>{}(nativeScriptNamesList[1]);
 		DisplayComponent = loader.Load();
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
 		CYCLOPE_PROFILE_FUNCTION();
 		activeScene->Update(dt);
-
 		svc.Update(dt);
 		{
 			CYCLOPE_PROFILE_SCOPE("Framebuffer Scope"); //Example Usage
@@ -189,50 +193,66 @@ namespace CyclopeEditor {
 		}
 
 		RenderCommands::Clear();
-		
+		RenderCommands::Enable(RenderingOperation::DepthTest);
+
 		Renderer::BeginScene(svc.GetCamera());
 
+		{
+			CYCLOPE_PROFILE_SCOPE("Render Scope");
+			activeScene->ForEach([&](Entity e) {
+				if (e.HasComponent<MeshRendererComponent>()) {
+					tex->Bind();
+					Matrix4 mat = Matrix4(1.0f);
+					mat = glm::translate(mat, e.GetComponent<TransformComponent>().position);
+					mat = glm::scale(mat, e.GetComponent<TransformComponent>().scale);
+					sh->Bind();
+					sh->SetMat4("transform", mat);
+					Renderer::Submit(vert, sh);
+					tex->Unbind();
+				}
+				});
+		}
+		
 		/*tex->Bind();
-		Matrix4 mat = Matrix4(1.0f);
-		mat = glm::translate(mat, Vector3(0, 0, -5));
-		mat = glm::scale(mat, Vector3(1.0f, 1.0f, 1.0f));
-		sh->Bind();
-		sh->SetMat4("transform", mat);
-		Renderer::Submit(vert, sh);
+		Renderer::Submit(batch, sh);
 		tex->Unbind();*/
 
-		/*
-		tex->Bind();
-		Renderer::Submit(batch, sh);
-		tex->Unbind();
-		*/
-
-		if(renderGrid)
-			grid.Render(svc);
+		{
+			CYCLOPE_PROFILE_SCOPE("Grid Scope");
+			if (renderGrid)
+				grid.Render(svc);
+		}
 
 		Renderer::EndScene();
 
-		fb->Unbind();
-		RenderCommands::Clear();
+		{
+			CYCLOPE_PROFILE_SCOPE("Blit Scope");
+			fb->Unbind();
+			RenderCommands::Clear();
+			fb->BlitTo(fb2);
+		}
 
-		fb2->Bind();
-		fbShader->Bind();
-		//Draw
-		fbVA->Bind();
-		RenderCommands::Disable(RenderingOperation::DepthTest);
-		//RenderCommands::Disable(RenderingOperation::CullFace);
-		fb->BindTexture(fb->GetColorAttachment());
-		fbShader->Bind();
-		fbShader->SetFloat("iTime", Time::GetTime());
-		Renderer::Submit(fbVA, fbShader);
-		//Draw End
-		fb2->Unbind();
+		//fb2->Bind();
+		{
+			CYCLOPE_PROFILE_SCOPE("Redraw Scope");
+			fbShader->Bind();
+			//Draw
+			fbVA->Bind();
+			RenderCommands::Disable(RenderingOperation::DepthTest);
+			//RenderCommands::Disable(RenderingOperation::CullFace);
+			fb2->BindTexture(fb2->GetColorAttachment());
+			fbShader->Bind();
+			//fbShader->SetFloat("iTime", Time::GetTime());
+			Renderer::Submit(fbVA, fbShader);
+			//Draw End
+			fb2->Unbind();
+		}
 		RenderCommands::Clear();
 
 	}
 
 	void EditorLayer::OnImGuiRender() {
-
+		CYCLOPE_PROFILE_FUNCTION();
 		ImGuiWindowFlags winFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
 			| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
 			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
@@ -255,7 +275,10 @@ namespace CyclopeEditor {
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("Project")) {
 				if (ImGui::MenuItem("Save", "Ctrl+S")) {
-					
+					SerializeScene();
+				}
+				if (ImGui::MenuItem("Load", "Ctrl+L")) {
+					DeserializeScene();
 				}
 				ImGui::EndMenu();
 			}
@@ -271,6 +294,43 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OnDetach() {
 		
+	}
+
+	void EditorLayer::OnEvent(Event& e) {
+		activeScene->OnEvent(e);
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressedEvent));
+	}
+
+	bool EditorLayer::OnKeyPressedEvent(KeyPressedEvent& e) {
+		if (e.IsRepeat())
+			return false;
+
+		bool control = Input::KeyPressed(Key::LEFT_CONTROL) || Input::KeyPressed (Key::RIGHT_CONTROL);
+		if (control) {
+			switch (e.GetKeyCode()) {
+			case Key::S:
+				SerializeScene();
+				break;
+			case Key::L:
+				DeserializeScene();
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	void EditorLayer::SerializeScene() {
+		SceneSerializer serializer(activeScene);
+		serializer.Serialize("Resources/Example.cyclope");
+	}
+
+	void EditorLayer::DeserializeScene() {
+		activeScene = MakeShared<Scene>();
+		selectedEntity = {};
+		SceneSerializer serializer(activeScene);
+		serializer.Deserialize("Resources/Example.cyclope");
 	}
 
 	void EditorLayer::DrawScenePanel() {
@@ -356,8 +416,9 @@ namespace CyclopeEditor {
 			{
 				DisplayAddComponentEntry<NativeScriptComponent>("NativeScript");
 				DisplayAddComponentEntry<CameraComponent>("Camera");
+				DisplayAddComponentEntry<MeshRendererComponent>("MeshRenderer");
 				ImGui::TextColored(ImVec4{0.3f, 0.3f, 0.3f, 1.0f}, "Custom:");
-				for (auto& name : componentNamesList) {
+				for (auto& name : componentNamesList()) {
 					DisplayAddCustomComponentEntry(name);
 				}
 
@@ -376,23 +437,23 @@ namespace CyclopeEditor {
 			DrawComponent<NativeScriptComponent>("NativeScript", selectedEntity, [&](auto& component) {
 				ImGuiComboFlags flags = 0;
 				int item_current_idx = 0;
-				for (auto& s : nativeScriptNamesList) {
+				for (auto& s : nativeScriptNamesList()) {
 					if (component.scriptName == s)
 						break;
 
 					item_current_idx++;
 				}
-				const char* combo_preview_value = nativeScriptNamesList[item_current_idx].c_str();
+				const char* combo_preview_value = nativeScriptNamesList()[item_current_idx].c_str();
 				ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 				if (ImGui::BeginCombo("##", combo_preview_value, flags))
 				{
-					for (int n = 0; n < nativeScriptNamesList.size(); n++)
+					for (int n = 0; n < nativeScriptNamesList().size(); n++)
 					{
 						const bool is_selected = (item_current_idx == n);
-						if (ImGui::Selectable(nativeScriptNamesList[n].c_str(), is_selected)) {
-							component.scriptName = nativeScriptNamesList[n];
+						if (ImGui::Selectable(nativeScriptNamesList()[n].c_str(), is_selected)) {
+							component.scriptName = nativeScriptNamesList()[n];
 							if (component.scriptName != "None") {
-								auto func = nativeScriptRegistry.at(std::hash<std::string>{}(nativeScriptNamesList[n]));
+								auto func = nativeScriptRegistry().at(std::hash<std::string>{}(nativeScriptNamesList()[n]));
 								func(selectedEntity);
 								selectedEntity.GetComponent<NativeScriptComponent>().instance = nullptr;
 							}
@@ -409,6 +470,11 @@ namespace CyclopeEditor {
 				}
 				});
 
+			DrawComponent<MeshRendererComponent>("MeshRenderer", selectedEntity, [](auto& component)
+				{
+
+				});
+
 			DrawComponent<CameraComponent>("Camera", selectedEntity, [](auto& component)
 				{
 					
@@ -418,7 +484,7 @@ namespace CyclopeEditor {
 			ImGui::Dummy(ImVec2(0.0f, 0.0f));
 			ImGui::Text("Custom Components:");
 
-			for (auto& name : componentNamesList) {
+			for (auto& name : componentNamesList()) {
 				DisplayCustomComponent(name);
 			}
 		}
@@ -444,7 +510,7 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DisplayAddCustomComponentEntry(const std::string& entryName) {
-		auto func = componentRegistry.at(std::hash<std::string>{}(entryName));
+		auto func = componentRegistry().at(std::hash<std::string>{}(entryName));
 		if (!func.HasComponent(selectedEntity)) {
 			if (ImGui::MenuItem(entryName.c_str()))
 			{
@@ -455,7 +521,7 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DisplayCustomComponent(const std::string& name) {
-		auto func = componentRegistry.at(std::hash<std::string>{}(name));
+		auto func = componentRegistry().at(std::hash<std::string>{}(name));
 		if (func.HasComponent(selectedEntity)) {
 			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();

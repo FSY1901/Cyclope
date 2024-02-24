@@ -3,6 +3,8 @@
 
 #include "Core.h"
 
+#include "Events/Event.h"
+
 #include "entt.hpp"
 
 namespace Cyclope {
@@ -16,8 +18,10 @@ namespace Cyclope {
 		~Scene();
 
 		void Update(float dt);
+		void OnEvent(Event& e);
+		void Render();
 
-		Entity CreateEntity();
+		Entity CreateEntity(std::string name = "Entity");
 		void DestroyEntity(Entity& entity);
 
 		template<typename T>
@@ -37,6 +41,7 @@ namespace Cyclope {
 		entt::registry m_Registry;
 
 		friend class Entity;
+		extern friend class SceneSerializer;
 
 	};
 

@@ -19,10 +19,10 @@ namespace Scripting {
 
 	void GetRegistries(Cyclope::ComponentRegistry& components, Cyclope::ComponentNamesList& names, 
 		Cyclope::NativeScriptRegistry& scripts, Cyclope::NativeScriptNamesList& scriptNames) {
-		components = Cyclope::componentRegistry;
-		names = Cyclope::componentNamesList;
-		scripts = Cyclope::nativeScriptRegistry;
-		scriptNames = Cyclope::nativeScriptNamesList;
+		components = Cyclope::componentRegistry();
+		names = Cyclope::componentNamesList();
+		scripts = Cyclope::nativeScriptRegistry();
+		scriptNames = Cyclope::nativeScriptNamesList();
 	}
 
 	void PrintComponents(ImGuiContext* ctx, Entity& e, const std::string& componentName) {

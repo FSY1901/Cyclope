@@ -11,6 +11,7 @@
 #define CYCLOPE_CORE_ASSERT(x, ...) {if(!(x)){CYCLOPE_CORE_CRITICAL("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
 #else
 #define CYCLOPE_ASSERT(x, ...)
+#define CYCLOPE_CORE_ASSERT(x, ...)
 #endif
 
 #include <memory>

@@ -172,8 +172,6 @@ namespace Cyclope {
 
 		static float MouseY();
 
-		static Vector2 GetDeltaScroll();
-
 	private:
 		//The window from which the Input is read from
 		static GLFWwindow* s_window;
@@ -183,8 +181,6 @@ namespace Cyclope {
 
 		static float s_mx;
 		static float s_my;
-
-		static Vector2 m_scroll;
 
 		friend class Application;
 		friend class Window;

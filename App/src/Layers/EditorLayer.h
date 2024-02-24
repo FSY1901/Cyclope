@@ -17,6 +17,9 @@ namespace CyclopeEditor {
 
 		void OnDetach() override;
 
+		void OnEvent(Event& e) override;
+		bool OnKeyPressedEvent(KeyPressedEvent& e);
+
 		static EditorLayer* GetEditorLayer() { return s_EditorLayer; }
 		ImVec2 GetPanelSize() { return panelSize; }
 
@@ -45,6 +48,9 @@ namespace CyclopeEditor {
 		DLLLoader loader;
 
 		Shared<Scene> activeScene;
+		void SerializeScene();
+		void DeserializeScene();
+
 		Entity selectedEntity;
 
 		void DrawScenePanel();

@@ -77,6 +77,10 @@ namespace Cyclope {
 
 	};
 
+	struct MeshRendererComponent {
+		int x;
+	};
+
 }
 
 #endif

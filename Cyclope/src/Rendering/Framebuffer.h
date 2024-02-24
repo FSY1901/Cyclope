@@ -17,10 +17,12 @@ namespace Cyclope {
 		virtual void Unbind() const = 0;
 
 		virtual void Invalidate() = 0;
+		virtual void BlitTo(Shared<Framebuffer>& target) = 0;
 
 		virtual const FramebufferSpecification& GetSpecification() const = 0;
 		virtual FramebufferSpecification& GetSpecification() = 0;
 
+		virtual uint32_t GetID() = 0;
 		virtual uint32_t GetColorAttachment() = 0;
 		virtual uint32_t GetDepthAttachment() = 0;
 

@@ -1,0 +1,26 @@
+Scene: Name
+Entities:
+  - Entity: 12321312313
+    TagComponent:
+      Tag: A
+    TransformComponent:
+      Position: [2.4000001, 3.20000005, 0.419999987]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshRendererComponent:
+      {}
+    PlayerComponent:
+      {}
+  - Entity: 12321312313
+    TagComponent:
+      Tag: B
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    MeshRendererComponent:
+      {}
+    PlayerComponent:
+      {}
+    NativeScriptComponent:
+      ScriptName: Script

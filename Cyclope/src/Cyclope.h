@@ -9,6 +9,7 @@
 #include "Maths/Maths.h"
 
 #include "Game/Scene.h"
+#include "Game/SceneSerializer.h"
 #include "Game/Components.h"
 #include "Game/Entity.h"
 #include "Game/ScriptableEntity.h"
@@ -20,6 +21,10 @@
 #include "Rendering/Texture.h"
 #include "Rendering/Rendering.h"
 #include "Rendering/Framebuffer.h"
+
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+#include "Events/ApplicationEvent.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

@@ -19,6 +19,7 @@ namespace Cyclope {
         m_Instance = this;
 
         m_window.Create(spec);
+        m_window.SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
         m_ImGuiLayer = new ImGuiLayer();
         PushLayer(m_ImGuiLayer);
@@ -26,7 +27,8 @@ namespace Cyclope {
         Input::SetWindow(m_window.m_window);
     }
 
-	void Application::Run() {
+    void Application::Run() {
+        //glEnable(GL_MULTISAMPLE);
         while (!glfwWindowShouldClose(m_window.m_window))
         {
             float currentTime = glfwGetTime();
@@ -47,8 +49,6 @@ namespace Cyclope {
                 m_ImGuiLayer->End();
             }
 
-            Input::m_scroll = Vector2(0.0f, 0.0f);
-
             m_window.Update();
         }
 
@@ -59,6 +59,29 @@ namespace Cyclope {
     void Application::PushLayer(Layer* layer) {
         m_LayerStack.PushLayer(layer);
         layer->OnAttach();
+    }
+
+    void Application::OnEvent(Event& e) {
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+        dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(Application::OnMouseMove));
+        for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+        {
+            (*--it)->OnEvent(e);
+            if (e.Handled)
+                break;
+        }
+    }
+
+    bool Application::OnWindowResize(WindowResizeEvent& e){
+        glViewport(0, 0, e.GetWidth(), e.GetHeight());
+        return true;
+    }
+
+    bool Application::OnMouseMove(MouseMovedEvent& e) {
+        Input::s_mx = e.GetX();
+        Input::s_my = e.GetY();
+        return true;
     }
 
     Application* Application::GetInstance() { return m_Instance; }

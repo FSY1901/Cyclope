@@ -37,12 +37,28 @@ namespace Scripting {
 		
 		void OnCreate() {
 			transform = GetComponent<TransformComponent>();
-			//auto p = GetComponent<PlayerComponent>();
+			if (HasComponent<PlayerComponent>()) {
+				auto p = GetComponent<PlayerComponent>();
+			}
+			else {
+				std::cout << "No Player Component";
+			}
 			//std::cout << p.health << std::endl;
 		}
 
 		void OnUpdate(float dt) {
-			std::cout << "Q" << std::endl;
+			
+		}
+
+		void OnEvent(Event& e) {
+			EventDispatcher dispatcher(e);
+			//dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(Script::Scroll));
+			dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(Script::Scroll));
+		}
+
+		bool Scroll(MouseScrolledEvent& e) {
+			std::cout << "Scrolling" << std::endl;
+			return true;
 		}
 
 	};

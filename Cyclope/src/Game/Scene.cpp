@@ -15,7 +15,8 @@ namespace Cyclope {
 
 	void Scene::Update(float dt) {
 		
-		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
+		if (m_playing) {
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
 				//TODO: Revisit this: Should it be allowed to have an unbound NSC?
 				if (script.InstantiateScript == nullptr)
 					return;
@@ -25,23 +26,26 @@ namespace Cyclope {
 					script.instance->m_entity = Entity{ entity, this };
 					script.instance->OnCreate();
 				}
-				
+
 				script.instance->OnUpdate(dt);
 
-			});
+				});
+		}
 	
 	}
 
 	void Scene::OnEvent(Event& e) {
-		m_Registry.view<NativeScriptComponent>().each([&](auto entity, NativeScriptComponent& script) {
-			if (script.InstantiateScript == nullptr)
-				return;
-			//TODO: Revisit this; just a test for now!
-			script.instance->OnEvent(e);
-			if (e.Handled)
-				return;
+		if (m_playing) {
+			m_Registry.view<NativeScriptComponent>().each([&](auto entity, NativeScriptComponent& script) {
+				if (script.InstantiateScript == nullptr)
+					return;
+				//TODO: Revisit this; just a test for now!
+				script.instance->OnEvent(e);
+				if (e.Handled)
+					return;
 
-			});
+				});
+		}
 	}
 
 	void Scene::Render() {

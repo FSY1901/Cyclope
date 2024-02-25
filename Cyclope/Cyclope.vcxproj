@@ -140,6 +140,7 @@
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\NativeScripting\DLLLoader.h" />
     <ClInclude Include="src\NativeScripting\Scripting.h" />
+    <ClInclude Include="src\Platform\Windows\FileDialog.h" />
     <ClInclude Include="src\Rendering\Buffer.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Framebuffer.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="src\Maths\Maths.cpp" />
     <ClCompile Include="src\NativeScripting\DLLLoader.cpp" />
     <ClCompile Include="src\NativeScripting\Scripting.cpp" />
+    <ClCompile Include="src\Platform\Windows\FileDialog.cpp" />
     <ClCompile Include="src\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Framebuffer.cpp" />

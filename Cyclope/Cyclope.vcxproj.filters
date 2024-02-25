@@ -149,6 +149,7 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Windows\FileDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
@@ -225,5 +226,6 @@
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\NativeScripting\Scripting.cpp" />
+    <ClCompile Include="src\Platform\Windows\FileDialog.cpp" />
   </ItemGroup>
 </Project>

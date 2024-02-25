@@ -219,8 +219,11 @@ namespace Cyclope {
 				auto nativeScriptComponent = (*entity)["NativeScriptComponent"];
 				if (nativeScriptComponent) {
 					deserializedEntity.AddComponent<NativeScriptComponent>();
-					auto func = nativeScriptRegistry().at(std::hash<std::string>{}(nativeScriptComponent["ScriptName"].as<std::string>()));
-					func(deserializedEntity);
+					auto scriptName = nativeScriptComponent["ScriptName"].as<std::string>();
+					if (scriptName != "None") {
+						auto func = nativeScriptRegistry().at(std::hash<std::string>{}(scriptName));
+						func(deserializedEntity);
+					}
 					deserializedEntity.GetComponent<NativeScriptComponent>().instance = nullptr;
 				}
 

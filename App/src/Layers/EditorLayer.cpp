@@ -6,6 +6,8 @@
 
 #include "Game/SceneSerializer.h"
 
+#include "Platform/Windows/FileDialog.h"
+
 namespace CyclopeEditor {
 
 	static void DrawVec3Control(const std::string& label, glm::vec3& values)
@@ -174,6 +176,9 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OnUpdate(float dt) {
 		CYCLOPE_PROFILE_FUNCTION();
+		if (Input::KeyPressed(Key::P)) {
+			activeScene->m_playing = !activeScene->m_playing;
+		}
 		activeScene->Update(dt);
 		svc.Update(dt);
 		{
@@ -273,11 +278,15 @@ namespace CyclopeEditor {
 		ImGui::End();
 
 		if (ImGui::BeginMainMenuBar()) {
-			if (ImGui::BeginMenu("Project")) {
-				if (ImGui::MenuItem("Save", "Ctrl+S")) {
+			if (ImGui::BeginMenu("File")) {
+				if (ImGui::MenuItem("New", "Ctrl+N")) {
+					activeScene = MakeShared<Scene>();
+					selectedEntity = {};
+				}
+				if (ImGui::MenuItem("Save...", "Ctrl+S")) {
 					SerializeScene();
 				}
-				if (ImGui::MenuItem("Load", "Ctrl+L")) {
+				if (ImGui::MenuItem("Open...", "Ctrl+L")) {
 					DeserializeScene();
 				}
 				ImGui::EndMenu();
@@ -312,8 +321,12 @@ namespace CyclopeEditor {
 			case Key::S:
 				SerializeScene();
 				break;
-			case Key::L:
+			case Key::O:
 				DeserializeScene();
+				break;
+			case Key::N:
+				activeScene = MakeShared<Scene>();
+				selectedEntity = {};
 				break;
 			}
 		}
@@ -322,15 +335,21 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::SerializeScene() {
-		SceneSerializer serializer(activeScene);
-		serializer.Serialize("Resources/Example.cyclope");
+		auto path = FileDialog::SaveFile("Cyclope Scene (*.cyclope)\0*.cyclope\0");
+		if (!path.empty()) {
+			SceneSerializer serializer(activeScene);
+			serializer.Serialize(path);
+		}
 	}
 
 	void EditorLayer::DeserializeScene() {
-		activeScene = MakeShared<Scene>();
-		selectedEntity = {};
-		SceneSerializer serializer(activeScene);
-		serializer.Deserialize("Resources/Example.cyclope");
+		auto path = FileDialog::OpenFile("Cyclope Scene (*.cyclope)\0*.cyclope\0");
+		if (!path.empty()) {
+			activeScene = MakeShared<Scene>();
+			selectedEntity = {};
+			SceneSerializer serializer(activeScene);
+			serializer.Deserialize(path);
+		}
 	}
 
 	void EditorLayer::DrawScenePanel() {

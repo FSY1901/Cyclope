@@ -27,7 +27,7 @@ namespace Cyclope {
 
 		void Update();
 
-		GLFWwindow* GetWindow() { return m_window; }
+		GLFWwindow* GetGLFWWindow() { return m_window; }
 		int GetWidth() { return m_data.m_width; }
 		int GetHeight() { return m_data.m_height; }
 		float GetAspectRatio() { return (float)m_data.m_width / (float)m_data.m_height; }

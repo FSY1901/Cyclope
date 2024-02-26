@@ -23,6 +23,7 @@ namespace Cyclope {
         virtual void SetVec2(const std::string& name, const Vector2& vec) const = 0;
         virtual void SetVec3(const std::string& name, const Vector3& vec) const = 0;
         virtual void SetVec4(const std::string& name, const Vector4& vec) const = 0;
+        virtual void SetMat3(const std::string& name, const Matrix3& mat) const = 0;
         virtual void SetMat4(const std::string& name, const Matrix4& mat) const = 0;
 
         static Shared<Shader> Create(std::string path);

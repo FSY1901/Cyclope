@@ -66,8 +66,14 @@ namespace Scripting {
 	REGISTER_SCRIPT(Script2);
 	class Script2 : public Cyclope::ScriptableEntity {
 	public:
+		TransformComponent* transform;
+
+		void OnCreate() {
+			transform = &GetComponent<TransformComponent>();
+		}
+
 		void OnUpdate(float dt) {
-			std::cout << "F" << std::endl;
+			transform->position.y = sin(5.0f * Time::GetTime());
 		}
 	};
 

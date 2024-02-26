@@ -77,6 +77,34 @@ namespace Cyclope {
 
 	};
 
+	struct DirectionalLightComponent {
+		Vector3 diffuse = Vector3(1.0f, 1.0f, 1.0f);
+		Vector3 ambient = Vector3(0.2f, 0.2f, 0.2f);
+		float ambientValue = 0.2f;
+	};
+
+	struct PointLightComponent {
+		Vector3 diffuse = Vector3(1.0f, 1.0f, 1.0f);
+		Vector3 ambient = Vector3(0.2f, 0.2f, 0.2f);
+		float ambientValue = 0.2f;
+
+		float radius = 5.0f;
+		float intensity = 1.0f;
+		float cutOff = 0.001f;
+	};
+
+	struct SpotLightComponent {
+		Vector3 diffuse = Vector3(1.0f, 1.0f, 1.0f);
+		Vector3 ambient = Vector3(0.2f, 0.2f, 0.2f);
+		float ambientValue = 0.2f;
+
+		float intensity = 1.0f;
+		float cutOff = 12.5f; //in Degrees
+		float outerCutOff = 17.5f; //in Degrees
+		float linear = 0.0f;
+		float quadratic = 0.05f;
+	};
+
 	struct MeshRendererComponent {
 		int x;
 	};

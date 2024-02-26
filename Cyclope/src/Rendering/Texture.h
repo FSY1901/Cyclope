@@ -26,7 +26,7 @@ namespace Cyclope {
 	public:
 		virtual ~Texture2D() {};
 		virtual void Bind(unsigned int offset = 0) const = 0;
-		virtual void Unbind() const = 0;
+		virtual void Unbind(unsigned int offset = 0) const = 0;
 
 		virtual void SetData(void* data) const = 0;
 

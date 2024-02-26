@@ -68,6 +68,7 @@ namespace Cyclope {
 	struct RendererData
 	{
 		glm::mat4 viewProjectionMatrix;
+		Shared<Scene> scene;
 	};
 
 	struct RendererStats {
@@ -77,7 +78,7 @@ namespace Cyclope {
 
 	class CYCLOPE_API Renderer {
 	public:
-		static void BeginScene(const Camera& camera);
+		static void BeginScene(Shared<Scene> scene, const Camera& camera);
 		static void EndScene();
 		static void Submit(const Shared<VertexArray>& vertexArray, const Shared<Shader>& shader);
 		static void Submit(const Shared<Batch>& batch, const Shared<Shader>& shader);

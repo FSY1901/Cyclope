@@ -12,7 +12,7 @@ namespace Cyclope {
 		~OpenGLTexture2D() override;
 
 		void Bind(unsigned int offset = 0) const override;
-		void Unbind() const override;
+		void Unbind(unsigned int offset = 0) const override;
 
 		void SetData(void* data) const override;
 

@@ -80,7 +80,7 @@ namespace Cyclope {
 
 		std::vector<BufferElement>& GetElements() { return m_elements; }
 
-		static BufferLayout Standard() { return BufferLayout({ {ShaderDataType::Float3}, {ShaderDataType::Float2 } }); }//May change later
+		static BufferLayout Standard() { return BufferLayout({ {ShaderDataType::Float3}, {ShaderDataType::Float3}, {ShaderDataType::Float2 } }); }//May change later
 
 	private:
 		void CalculateOffsetsAndStride();

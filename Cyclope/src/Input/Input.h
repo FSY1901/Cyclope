@@ -163,10 +163,10 @@ namespace Cyclope {
 		static void SetCursorMode(CursorMode mode);
 
 		//checks if the given key is pressed
-		static bool KeyPressed(Key key);
+		static bool KeyDown(Key key);
 
 		//checks if the given mouse _Button is pressed
-		static bool ButtonPressed(Button button);
+		static bool ButtonDown(Button button);
 
 		static float MouseX();
 

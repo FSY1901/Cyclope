@@ -19,6 +19,7 @@ namespace Cyclope {
 	using Vector3 = glm::vec3;
 	using Vector4 = glm::vec4;
 	using Quaternion = glm::quat;
+	using Matrix3 = glm::mat3;
 	using Matrix4 = glm::mat4;
 
 

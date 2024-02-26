@@ -20,7 +20,7 @@ namespace Cyclope {
 		glfwSetInputMode(s_window, GLFW_CURSOR, (int)mode);
 	}
 
-	bool Input::KeyPressed(Key key) {
+	bool Input::KeyDown(Key key) {
 		if (glfwGetKey(s_window, (int)key) == GLFW_PRESS) {
 			return true;
 		}
@@ -28,7 +28,7 @@ namespace Cyclope {
 		return false;
 	}
 
-	bool Input::ButtonPressed(Button button) {
+	bool Input::ButtonDown(Button button) {
 		if (glfwGetMouseButton(s_window, (int)button) == GLFW_PRESS) {
 			return true;
 		}

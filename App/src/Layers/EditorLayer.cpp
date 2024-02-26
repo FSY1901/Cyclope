@@ -101,7 +101,8 @@ namespace CyclopeEditor {
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
 
 		sh = Shader::Create("./Resources/shaders/shader.glsl");
-		tex = Texture2D::Create("./Resources/textures/container.jpg");
+		tex = Texture2D::Create("./Resources/textures/container2.png");
+		tex2 = Texture2D::Create("./Resources/textures/specular.png");
 
 		verts.clear();
 		ind.clear();
@@ -149,7 +150,7 @@ namespace CyclopeEditor {
 			0, 1, 3,   // first triangle
 			1, 2, 3    // second triangle
 		};
-		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout::Standard());
+		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout{{{ShaderDataType::Float3}, {ShaderDataType::Float2}}});
 		fbVA = VertexArray::Create(v1, IndexBuffer::Create(indices, 6));
 		fbShader = Shader::Create("./Resources/shaders/framebuffer.glsl");
 
@@ -176,9 +177,6 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OnUpdate(float dt) {
 		CYCLOPE_PROFILE_FUNCTION();
-		if (Input::KeyPressed(Key::P)) {
-			activeScene->m_playing = !activeScene->m_playing;
-		}
 		activeScene->Update(dt);
 		svc.Update(dt);
 		{
@@ -200,20 +198,29 @@ namespace CyclopeEditor {
 		RenderCommands::Clear();
 		RenderCommands::Enable(RenderingOperation::DepthTest);
 
-		Renderer::BeginScene(svc.GetCamera());
+		Renderer::BeginScene(activeScene, svc.GetCamera());
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
 			activeScene->ForEach([&](Entity e) {
 				if (e.HasComponent<MeshRendererComponent>()) {
-					tex->Bind();
 					Matrix4 mat = Matrix4(1.0f);
 					mat = glm::translate(mat, e.GetComponent<TransformComponent>().position);
 					mat = glm::scale(mat, e.GetComponent<TransformComponent>().scale);
 					sh->Bind();
 					sh->SetMat4("transform", mat);
+					sh->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(mat))));
+					sh->SetVec3("viewPos", svc.transform.position);
+					sh->SetVec3("material.diffuse", Vector3(1.0f, 1.0f, 1.0f));
+					sh->SetVec3("material.specular", Vector3(0.5f));
+					sh->SetFloat("material.shininess", 32.0f);
+					sh->SetInt("material.diffuseMap", 0);
+					sh->SetInt("material.specularMap", 1);
+					tex->Bind();
+					tex2->Bind(1);
 					Renderer::Submit(vert, sh);
 					tex->Unbind();
+					tex2->Unbind();
 				}
 				});
 		}
@@ -315,7 +322,7 @@ namespace CyclopeEditor {
 		if (e.IsRepeat())
 			return false;
 
-		bool control = Input::KeyPressed(Key::LEFT_CONTROL) || Input::KeyPressed (Key::RIGHT_CONTROL);
+		bool control = Input::KeyDown(Key::LEFT_CONTROL) || Input::KeyDown (Key::RIGHT_CONTROL);
 		if (control) {
 			switch (e.GetKeyCode()) {
 			case Key::S:
@@ -329,6 +336,10 @@ namespace CyclopeEditor {
 				selectedEntity = {};
 				break;
 			}
+		}
+
+		if (e.GetKeyCode() == Key::P) {
+			activeScene->m_playing = !activeScene->m_playing;
 		}
 
 		return true;
@@ -401,6 +412,21 @@ namespace CyclopeEditor {
 		{
 			if (ImGui::MenuItem("Create Entity"))
 				activeScene->CreateEntity();
+			else if (ImGui::BeginMenu("Create Light")) {
+				if (ImGui::MenuItem("Directional Light")) {
+					auto& e = activeScene->CreateEntity("Directional Light");
+					e.AddComponent<DirectionalLightComponent>();
+				}
+				else if (ImGui::MenuItem("Point Light")) {
+					auto& e = activeScene->CreateEntity("Point Light");
+					e.AddComponent<PointLightComponent>();
+				}
+				else if (ImGui::MenuItem("Spot Light")) {
+					auto& e = activeScene->CreateEntity("Spot Light");
+					e.AddComponent<SpotLightComponent>();
+				}
+				ImGui::EndMenu();
+			}
 
 			ImGui::EndPopup();
 		}
@@ -435,7 +461,10 @@ namespace CyclopeEditor {
 			{
 				DisplayAddComponentEntry<NativeScriptComponent>("NativeScript");
 				DisplayAddComponentEntry<CameraComponent>("Camera");
-				DisplayAddComponentEntry<MeshRendererComponent>("MeshRenderer");
+				DisplayAddComponentEntry<MeshRendererComponent>("Mesh Renderer");
+				DisplayAddComponentEntry<DirectionalLightComponent>("Directional Light");
+				DisplayAddComponentEntry<PointLightComponent>("Point Light");
+				DisplayAddComponentEntry<SpotLightComponent>("Spot Light");
 				ImGui::TextColored(ImVec4{0.3f, 0.3f, 0.3f, 1.0f}, "Custom:");
 				for (auto& name : componentNamesList()) {
 					DisplayAddCustomComponentEntry(name);
@@ -499,6 +528,102 @@ namespace CyclopeEditor {
 					
 				});
 
+			DrawComponent<DirectionalLightComponent>("Directional Light", selectedEntity, [](auto& component)
+				{
+					float diffuse[3] = { component.diffuse.x, component.diffuse.y, component.diffuse.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Diffuse", diffuse);
+					ImGui::PopItemWidth();
+					component.diffuse.x = diffuse[0];
+					component.diffuse.y = diffuse[1];
+					component.diffuse.z = diffuse[2];
+					float ambient[3] = { component.ambient.x, component.ambient.y, component.ambient.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Ambient", ambient);
+					ImGui::PopItemWidth();
+					component.ambient.x = ambient[0];
+					component.ambient.y = ambient[1];
+					component.ambient.z = ambient[2];
+					ImGui::DragFloat("Ambient Value", &component.ambientValue, 0.01f, 0.0f, 1.0f);
+					if (ImGui::Button("Set Ambient auto")) {
+						component.ambient.x = component.ambientValue * diffuse[0];
+						component.ambient.y = component.ambientValue * diffuse[1];
+						component.ambient.z = component.ambientValue * diffuse[2];
+					}
+				});
+
+			DrawComponent<PointLightComponent>("PointLight", selectedEntity, [](auto& component)
+				{
+					float diffuse[3] = { component.diffuse.x, component.diffuse.y, component.diffuse.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Diffuse", diffuse);
+					ImGui::PopItemWidth();
+					component.diffuse.x = diffuse[0];
+					component.diffuse.y = diffuse[1];
+					component.diffuse.z = diffuse[2];
+					float ambient[3] = { component.ambient.x, component.ambient.y, component.ambient.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Ambient", ambient);
+					ImGui::PopItemWidth();
+					component.ambient.x = ambient[0];
+					component.ambient.y = ambient[1];
+					component.ambient.z = ambient[2];
+					ImGui::DragFloat("Ambient Value", &component.ambientValue, 0.01f, 0.0f, 1.0f);
+					if (ImGui::Button("Set Ambient auto")) {
+						component.ambient.x = component.ambientValue * diffuse[0];
+						component.ambient.y = component.ambientValue * diffuse[1];
+						component.ambient.z = component.ambientValue * diffuse[2];
+					}
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Radius", &component.radius, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Intensity", &component.intensity, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Cut Off", &component.cutOff, 0.0001f);
+					ImGui::PopItemWidth();
+				});
+
+			DrawComponent<SpotLightComponent>("Spot Light", selectedEntity, [](auto& component)
+				{
+					float diffuse[3] = { component.diffuse.x, component.diffuse.y, component.diffuse.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Diffuse", diffuse);
+					ImGui::PopItemWidth();
+					component.diffuse.x = diffuse[0];
+					component.diffuse.y = diffuse[1];
+					component.diffuse.z = diffuse[2];
+					float ambient[3] = { component.ambient.x, component.ambient.y, component.ambient.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Ambient", ambient);
+					ImGui::PopItemWidth();
+					component.ambient.x = ambient[0];
+					component.ambient.y = ambient[1];
+					component.ambient.z = ambient[2];
+					ImGui::DragFloat("Ambient Value", &component.ambientValue, 0.01f, 0.0f, 1.0f);
+					if (ImGui::Button("Set Ambient auto")) {
+						component.ambient.x = component.ambientValue * diffuse[0];
+						component.ambient.y = component.ambientValue * diffuse[1];
+						component.ambient.z = component.ambientValue * diffuse[2];
+					}
+
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Intensity", &component.intensity, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Cut Off", &component.cutOff, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Outer Cut Off", &component.outerCutOff, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Linear Constant", &component.linear, 0.01f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(60.0f);
+					ImGui::DragFloat("Quadratic Constant", &component.quadratic, 0.01f);
+					ImGui::PopItemWidth();
+				});
 
 			ImGui::Dummy(ImVec2(0.0f, 0.0f));
 			ImGui::Text("Custom Components:");

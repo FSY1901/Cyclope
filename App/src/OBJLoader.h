@@ -1176,6 +1176,9 @@ bool LoadOBJFile(std::string path, std::vector<float>& vertices, std::vector<uns
 		vertices.push_back(vertex.Position.X);
 		vertices.push_back(vertex.Position.Y);
 		vertices.push_back(vertex.Position.Z);
+		vertices.push_back(vertex.Normal.X);
+		vertices.push_back(vertex.Normal.Y);
+		vertices.push_back(vertex.Normal.Z);
 		vertices.push_back(vertex.TextureCoordinate.X);
 		vertices.push_back(vertex.TextureCoordinate.Y);
 	}

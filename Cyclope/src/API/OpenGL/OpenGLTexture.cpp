@@ -67,7 +67,8 @@ namespace Cyclope {
         glBindTexture(GL_TEXTURE_2D, m_texture);
     }
 
-    void OpenGLTexture2D::Unbind() const {
+    void OpenGLTexture2D::Unbind(unsigned int offset) const {
+        glActiveTexture(GL_TEXTURE0 + offset);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

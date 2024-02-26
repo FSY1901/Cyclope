@@ -5,24 +5,24 @@ namespace CyclopeEditor {
 
 	void SceneViewCamera::Update(float dt) {
 
-		if (Input::ButtonPressed(Button::Button_RIGHT) && (sceneWindowHovered || controlling)) {
+		if (Input::ButtonDown(Button::Button_RIGHT) && (sceneWindowHovered || controlling)) {
 
 			controlling = true;
 
 			Input::SetCursorMode(CursorMode::Hidden);
 
-			if (Input::KeyPressed(Key::LEFT_SHIFT))
+			if (Input::KeyDown(Key::LEFT_SHIFT))
 				speed = 20.0f;
 			else
 				speed = 5.0f;
 
-			if (Input::KeyPressed(Key::W))
+			if (Input::KeyDown(Key::W))
 				transform.position += speed * front * dt;
-			if (Input::KeyPressed(Key::S))
+			if (Input::KeyDown(Key::S))
 				transform.position -= speed * front * dt;
-			if (Input::KeyPressed(Key::D))
+			if (Input::KeyDown(Key::D))
 				transform.position += speed * right * dt;
-			if (Input::KeyPressed(Key::A))
+			if (Input::KeyDown(Key::A))
 				transform.position -= speed * right * dt;
 
 			float xoffset = Input::MouseX() - lastX;

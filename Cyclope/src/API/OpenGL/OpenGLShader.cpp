@@ -94,6 +94,11 @@ namespace Cyclope {
         glUniform3f(glGetUniformLocation(m_ID, name.c_str()), vec.x, vec.y, vec.z);
     }
 
+    void OpenGLShader::SetMat3(const std::string& name, const Matrix3& mat) const
+    {
+        glUniformMatrix3fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
     void OpenGLShader::SetMat4(const std::string& name, const Matrix4& mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);

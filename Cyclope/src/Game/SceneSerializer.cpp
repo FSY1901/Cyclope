@@ -135,6 +135,44 @@ namespace Cyclope {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<DirectionalLightComponent>()) {
+			out << YAML::Key << "DirectionalLightComponent";
+			out << YAML::BeginMap;
+			auto& light = entity.GetComponent<DirectionalLightComponent>();
+			out << YAML::Key << "ambient" << YAML::Value << light.ambient;
+			out << YAML::Key << "ambientValue" << YAML::Value << light.ambientValue;
+			out << YAML::Key << "diffuse" << YAML::Value << light.diffuse;
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<PointLightComponent>()) {
+			out << YAML::Key << "PointLightComponent";
+			out << YAML::BeginMap;
+			auto& light = entity.GetComponent<PointLightComponent>();
+			out << YAML::Key << "ambient" << YAML::Value << light.ambient;
+			out << YAML::Key << "ambientValue" << YAML::Value << light.ambientValue;
+			out << YAML::Key << "diffuse" << YAML::Value << light.diffuse;
+			out << YAML::Key << "radius" << YAML::Value << light.radius;
+			out << YAML::Key << "intensity" << YAML::Value << light.intensity;
+			out << YAML::Key << "cutOff" << YAML::Value << light.cutOff;
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<SpotLightComponent>()) {
+			out << YAML::Key << "SpotLightComponent";
+			out << YAML::BeginMap;
+			auto& light = entity.GetComponent<SpotLightComponent>();
+			out << YAML::Key << "ambient" << YAML::Value << light.ambient;
+			out << YAML::Key << "ambientValue" << YAML::Value << light.ambientValue;
+			out << YAML::Key << "diffuse" << YAML::Value << light.diffuse;
+			out << YAML::Key << "intensity" << YAML::Value << light.intensity;
+			out << YAML::Key << "cutOff" << YAML::Value << light.cutOff;
+			out << YAML::Key << "outerCutOff" << YAML::Value << light.outerCutOff;
+			out << YAML::Key << "linear" << YAML::Value << light.linear;
+			out << YAML::Key << "quadratic" << YAML::Value << light.quadratic;
+			out << YAML::EndMap;
+		}
+
 		//custom components
 		for (auto& name : componentNamesList()) {
 			auto func = componentRegistry().at(std::hash<std::string>{}(name));
@@ -213,7 +251,39 @@ namespace Cyclope {
 				auto meshRendererComponent = (*entity)["MeshRendererComponent"];
 				if (meshRendererComponent) {
 					deserializedEntity.AddComponent<MeshRendererComponent>();
-					//implement
+					//TODO: implement
+				}
+
+				auto directionalLightComponent = (*entity)["DirectionalLightComponent"];
+				if (directionalLightComponent) {
+					auto& light = deserializedEntity.AddComponent<DirectionalLightComponent>();
+					light.ambient = directionalLightComponent["ambient"].as<Vector3>();
+					light.ambientValue = directionalLightComponent["ambientValue"].as<float>();
+					light.diffuse = directionalLightComponent["diffuse"].as<Vector3>();
+				}
+
+				auto pointLightComponent = (*entity)["PointLightComponent"];
+				if (pointLightComponent) {
+					auto& light = deserializedEntity.AddComponent<PointLightComponent>();
+					light.ambient = pointLightComponent["ambient"].as<Vector3>();
+					light.ambientValue = pointLightComponent["ambientValue"].as<float>();
+					light.diffuse = pointLightComponent["diffuse"].as<Vector3>();
+					light.cutOff = pointLightComponent["cutOff"].as<float>();
+					light.radius = pointLightComponent["radius"].as<float>();
+					light.intensity = pointLightComponent["intensity"].as<float>();
+				}
+
+				auto spotLightComponent = (*entity)["SpotLightComponent"];
+				if (spotLightComponent) {
+					auto& light = deserializedEntity.AddComponent<SpotLightComponent>();
+					light.ambient = spotLightComponent["ambient"].as<Vector3>();
+					light.ambientValue = spotLightComponent["ambientValue"].as<float>();
+					light.diffuse = spotLightComponent["diffuse"].as<Vector3>();
+					light.cutOff = spotLightComponent["cutOff"].as<float>();
+					light.outerCutOff = spotLightComponent["outerCutOff"].as<float>();
+					light.intensity = spotLightComponent["intensity"].as<float>();
+					light.linear = spotLightComponent["linear"].as<float>();
+					light.quadratic = spotLightComponent["quadratic"].as<float>();
 				}
 
 				auto nativeScriptComponent = (*entity)["NativeScriptComponent"];

@@ -2,7 +2,7 @@
 #define SCENE_H
 
 #include "Core.h"
-
+#include "../Cyclope/UUID.h"
 #include "Events/Event.h"
 
 #include "entt.hpp"
@@ -23,6 +23,7 @@ namespace Cyclope {
 		void Render();
 
 		Entity CreateEntity(std::string name = "Entity");
+		Entity CreateEntityWithUUID(UUID uuid, std::string name = "Entity");
 		void DestroyEntity(Entity& entity);
 
 		template<typename T>

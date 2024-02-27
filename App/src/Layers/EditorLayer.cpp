@@ -8,6 +8,8 @@
 
 #include "Platform/Windows/FileDialog.h"
 
+#include "ImGuizmo.h"
+
 namespace CyclopeEditor {
 
 	static void DrawVec3Control(const std::string& label, glm::vec3& values)
@@ -122,14 +124,13 @@ namespace CyclopeEditor {
 
 		batch->GenerateBatch();*/
 
-		/*LoadOBJFile("./Resources/objs/cube.obj", verts, ind);
+		LoadOBJFile("./Resources/objs/plane.obj", verts, ind);
+		auto f = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
+		//v1->SetBufferLayout(BufferLayout::Standard());
+		vert2 = VertexArray::Create(f, IndexBuffer::Create(&ind[0], ind.size()));
 
-		auto v1 = VertexBuffer::Create(&verts[0], verts.size() * sizeof(float));
-		v1->SetBufferLayout(BufferLayout::Standard());
-		vert2 = VertexArray::Create(v1, IndexBuffer::Create(&ind[0], ind.size() * sizeof(unsigned int)));
-
-		sh2 = Shader::Create("./Resources/shaders/shader.glsl");
-		tex2 = Texture2D::Create("./Resources/textures/container.jpg");*/
+		sh2 = Shader::Create("./Resources/shaders/s.glsl");
+		BillboardTex = Texture2D::Create("./Resources/textures/Billboards/DirectionalLight.png");
 		
 		FramebufferSpecification fbs;
 		fbs.width = 800;
@@ -204,12 +205,10 @@ namespace CyclopeEditor {
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
 			activeScene->ForEach([&](Entity e) {
 				if (e.HasComponent<MeshRendererComponent>()) {
-					Matrix4 mat = Matrix4(1.0f);
-					mat = glm::translate(mat, e.GetComponent<TransformComponent>().position);
-					mat = glm::scale(mat, e.GetComponent<TransformComponent>().scale);
+					Matrix4& transform = e.GetComponent<TransformComponent>().GetTransform();
 					sh->Bind();
-					sh->SetMat4("transform", mat);
-					sh->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(mat))));
+					sh->SetMat4("transform", transform);
+					sh->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(transform))));
 					sh->SetVec3("viewPos", svc.transform.position);
 					sh->SetVec3("material.diffuse", Vector3(1.0f, 1.0f, 1.0f));
 					sh->SetVec3("material.specular", Vector3(0.5f));
@@ -221,6 +220,44 @@ namespace CyclopeEditor {
 					Renderer::Submit(vert, sh);
 					tex->Unbind();
 					tex2->Unbind();
+				}
+				});
+
+			activeScene->ForEach([&](Entity e) {
+				if (e.HasComponent<DirectionalLightComponent>()) {
+					auto& tc = e.GetComponent<TransformComponent>();
+					sh2->Bind();
+					sh2->SetVec3("pos", tc.position);
+					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+					Vector3 up = glm::normalize(glm::cross(right, front));
+					sh2->SetVec3("camRight", right);
+					sh2->SetVec3("camUp", up);
+					sh2->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
+					//tex->Bind();
+					//tex2->Bind(1);
+					BillboardTex->Bind();
+					Renderer::Submit(vert2, sh2);
+					BillboardTex->Unbind();
+				}
+				});
+
+			activeScene->ForEach([&](Entity e) {
+				if (e.HasComponent<PointLightComponent>()) {
+					auto& tc = e.GetComponent<TransformComponent>();
+					sh2->Bind();
+					sh2->SetVec3("pos", tc.position);
+					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+					Vector3 up = glm::normalize(glm::cross(right, front));
+					sh2->SetVec3("camRight", right);
+					sh2->SetVec3("camUp", up);
+					sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
+					//tex->Bind();
+					//tex2->Bind(1);
+					BillboardTex->Bind();
+					Renderer::Submit(vert2, sh2);
+					BillboardTex->Unbind();
 				}
 				});
 		}
@@ -323,19 +360,37 @@ namespace CyclopeEditor {
 			return false;
 
 		bool control = Input::KeyDown(Key::LEFT_CONTROL) || Input::KeyDown (Key::RIGHT_CONTROL);
-		if (control) {
-			switch (e.GetKeyCode()) {
-			case Key::S:
+		bool svcControlled = svc.IsControlling();
+		//bool shift = Input::KeyDown(Key::LEFT_SHIFT) || Input::KeyDown(Key::RIGHT_SHIFT);
+		switch (e.GetKeyCode()) {
+		case Key::S:
+			if (control)
 				SerializeScene();
-				break;
-			case Key::O:
+			else if(!svcControlled)
+				m_GizmoType = ImGuizmo::SCALE;
+			break;
+		case Key::O:
+			if(control)
 				DeserializeScene();
-				break;
-			case Key::N:
+			break;
+		case Key::N:
+			if (control) {
 				activeScene = MakeShared<Scene>();
 				selectedEntity = {};
-				break;
 			}
+			break;
+		case Key::G:
+			if (!svcControlled)
+				m_GizmoType = ImGuizmo::TRANSLATE;
+			break;
+		case Key::R:
+			if (!svcControlled)
+				m_GizmoType = ImGuizmo::ROTATE;
+			break;
+		case Key::TAB:
+			if (!svcControlled)
+				m_GizmoType = -1;
+			break;
 		}
 
 		if (e.GetKeyCode() == Key::P) {
@@ -371,6 +426,32 @@ namespace CyclopeEditor {
 		panelSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((void*)fb2->GetColorAttachment(),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+		
+		//Gizmos
+		if (selectedEntity && m_GizmoType != -1 && !svc.IsControlling()) {
+			ImGuizmo::SetOrthographic(true);
+			ImGuizmo::SetDrawlist();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+			auto& tc = selectedEntity.Transform();
+			Matrix4 transform = tc.GetTransform();
+
+			ImGuizmo::Manipulate(glm::value_ptr(svc.GetCamera().GetViewMatrix()), glm::value_ptr(svc.GetCamera().GetProjectionMatrix()), 
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+			
+			if (ImGuizmo::IsUsing()) {
+				
+				Vector3 position, rotation, scale;
+				DecomposeTransform(transform, position, rotation, scale);
+				tc.position = position;
+				Vector3 deltaRotation = glm::degrees(rotation) - ToEulerAngles(tc.rotation);
+				Vector3 rot = ToEulerAngles(tc.rotation) + deltaRotation;
+				tc.rotation = ToQuaternion(rot);
+				tc.scale = scale;
+
+			}
+
+		}
 
 		if (ImGui::IsWindowHovered())
 			svc.sceneWindowHovered = true;

@@ -60,7 +60,7 @@
       <PrecompiledHeaderFile>Cpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_DEBUG;CYCLOPE_ENABLE_ASSERTS;CYCLOPE_PROFILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -85,7 +85,7 @@
       <PrecompiledHeaderFile>Cpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -109,6 +109,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
@@ -122,6 +123,7 @@
     <ClInclude Include="src\Cyclope\Layer.h" />
     <ClInclude Include="src\Cyclope\LayerStack.h" />
     <ClInclude Include="src\Cyclope\Log.h" />
+    <ClInclude Include="src\Cyclope\UUID.h" />
     <ClInclude Include="src\Cyclope\Util.h" />
     <ClInclude Include="src\Cyclope\Window.h" />
     <ClInclude Include="src\Debug\Instrumentor.h" />
@@ -151,6 +153,9 @@
     <ClInclude Include="src\Rendering\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp" />
@@ -162,6 +167,7 @@
     <ClCompile Include="src\Cyclope\Application.cpp" />
     <ClCompile Include="src\Cyclope\LayerStack.cpp" />
     <ClCompile Include="src\Cyclope\Log.cpp" />
+    <ClCompile Include="src\Cyclope\UUID.cpp" />
     <ClCompile Include="src\Cyclope\Window.cpp" />
     <ClCompile Include="src\Game\Entity.cpp" />
     <ClCompile Include="src\Game\Scene.cpp" />

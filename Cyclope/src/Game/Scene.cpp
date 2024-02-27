@@ -56,9 +56,15 @@ namespace Cyclope {
 	}
 
 	Entity Scene::CreateEntity(std::string name) {
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, std::string name)
+	{
 		Entity entity = { m_Registry.create(), this };
-		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TagComponent>(name);
+		entity.AddComponent<TransformComponent>();
 		return entity;
 	}
 

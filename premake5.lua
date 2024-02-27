@@ -64,7 +64,9 @@ project "Cyclope"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.c"
+        "%{prj.name}/src/**.c",
+        "vendor/ImGuizmo/ImGuizmo.h",
+        "vendor/ImGuizmo/ImGuizmo.cpp"
     }
 
     includedirs
@@ -74,6 +76,7 @@ project "Cyclope"
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)vendor/spdlog",
+        "$(SolutionDir)vendor/ImGuizmo",
         "$(SolutionDir)yaml-cpp/include",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src/Cyclope",
@@ -92,6 +95,9 @@ project "Cyclope"
         "OpenGL",
         "yaml-cpp"
     }
+
+    filter "fileS:vendor/ImGuizmo/**.cpp"
+    flags {"NoPCH"}
 
     filter "system:windows"
         cppdialect "C++17"
@@ -186,6 +192,8 @@ project "App"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "vendor/ImGuizmo/ImGuizmo.h",
+        "vendor/ImGuizmo/ImGuizmo.cpp"
     }
 
     includedirs
@@ -194,6 +202,7 @@ project "App"
         "$(SolutionDir)vendor/glm",
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/spdlog",
+        "$(SolutionDir)vendor/ImGuizmo",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src",
         "Cyclope/src/Cyclope"

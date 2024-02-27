@@ -31,6 +31,7 @@ namespace CyclopeEditor {
 		Shared<Shader> sh2;
 		Shared<Texture2D> tex;
 		Shared<Texture2D> tex2;
+		Shared<Texture2D> BillboardTex;
 		SceneViewCamera svc;
 
 		Mesh m;
@@ -52,6 +53,8 @@ namespace CyclopeEditor {
 		void DeserializeScene();
 
 		Entity selectedEntity;
+
+		int m_GizmoType = -1;
 
 		void DrawScenePanel();
 		void DrawSceneHierarchyPanel();

@@ -6,12 +6,16 @@ namespace Cyclope {
 
 	Entity::Entity(entt::entity handle, Scene* scene) : m_Entity(handle), m_Scene(scene) {}
 
-	TransformComponent& Entity::Transform() {
-		return GetComponent<TransformComponent>();
+	UUID Entity::GetUUID() {
+		return GetComponent<IDComponent>().id;
 	}
 
 	std::string& Entity::Tag() {
 		return GetComponent<TagComponent>().tag;
+	}
+
+	TransformComponent& Entity::Transform() {
+		return GetComponent<TransformComponent>();
 	}
 
 	void Entity::Destroy() {

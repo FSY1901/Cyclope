@@ -1,6 +1,6 @@
 #include "Scene.h"
 #include "Components.h"
-
+#include "UUID.h"
 #include "entt.hpp"
 
 #ifndef CYCLOPE_ENTITY_H
@@ -35,8 +35,9 @@ namespace Cyclope {
 			m_Scene->m_Registry.remove<T>(m_Entity);
 		}
 
-		TransformComponent& Transform();
+		UUID GetUUID();
 		std::string& Tag();
+		TransformComponent& Transform();
 
 		void Destroy();
 

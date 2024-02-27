@@ -1,231 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="API">
-      <UniqueIdentifier>{FFD1870B-6BDB-877C-F456-9E7C605F937C}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="API\OpenGL">
-      <UniqueIdentifier>{536662E4-3F1E-A431-A825-7D8D94FC3E22}</UniqueIdentifier>
+    <Filter Include="src\API">
+      <UniqueIdentifier>{965E2FA9-023E-AE44-0B56-391B77B414A6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Cyclope">
-      <UniqueIdentifier>{D451BA4A-4031-39E6-4949-C4BCB5A79F47}</UniqueIdentifier>
+    <Filter Include="src\API\OpenGL">
+      <UniqueIdentifier>{0A03691B-F6D0-5C21-DF64-CD47CBD13886}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Debug">
-      <UniqueIdentifier>{0C95060D-78A9-2EBE-412B-D21DADFE2AEF}</UniqueIdentifier>
+    <Filter Include="src\Cyclope">
+      <UniqueIdentifier>{EB51F453-5707-6D49-E0FB-66204CB0634D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
+    <Filter Include="src\Debug">
+      <UniqueIdentifier>{63A3C3B2-CF0D-7829-184C-29CF84F5557E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</UniqueIdentifier>
+    <Filter Include="src\Events">
+      <UniqueIdentifier>{7162C20E-5D1A-045C-C621-DDB7B2F89E4C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{C0FF640D-2C14-8DBE-F595-301E616989EF}</UniqueIdentifier>
+    <Filter Include="src\Game">
+      <UniqueIdentifier>{F6C81ECF-E295-79DA-0BAF-6782F7DAAE68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
+    <Filter Include="src\ImGui">
+      <UniqueIdentifier>{170E22B3-8378-D629-CCB6-87CF3860B47E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Maths">
-      <UniqueIdentifier>{028BA70D-6E9F-CFBE-3721-731EA3F4CBEF}</UniqueIdentifier>
+    <Filter Include="src\Input">
+      <UniqueIdentifier>{EC4823B3-58B3-D729-A1F1-88CF0D9BB57E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NativeScripting">
-      <UniqueIdentifier>{5FB25D4E-CB3D-CB12-D44E-4E0740592713}</UniqueIdentifier>
+    <Filter Include="src\Maths">
+      <UniqueIdentifier>{599964B3-C503-192A-0E42-CACF7AEBF67E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rendering">
-      <UniqueIdentifier>{E3AE1F7C-4F19-D4F2-9857-85980401B247}</UniqueIdentifier>
+    <Filter Include="src\NativeScripting">
+      <UniqueIdentifier>{76D9C568-E23A-A376-6BA8-E928D708DA35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Rendering">
+      <UniqueIdentifier>{BA10DABB-26D1-55F2-EF0B-9F6F5B8B9ACE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLBuffer.h">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLFramebuffer.h">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLShader.h">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLTexture.h">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Cpch.h" />
-    <ClInclude Include="src\Cyclope.h" />
+    <ClInclude Include="src\Cpch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cyclope.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Cyclope\Application.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\Core.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\EntryPoint.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\Layer.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\LayerStack.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\Log.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cyclope\UUID.h">
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\Util.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Cyclope\Window.h">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClInclude>
     <ClInclude Include="src\Debug\Instrumentor.h">
-      <Filter>Debug</Filter>
+      <Filter>src\Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\ApplicationEvent.h">
-      <Filter>Events</Filter>
+      <Filter>src\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\Event.h">
-      <Filter>Events</Filter>
+      <Filter>src\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\KeyEvent.h">
-      <Filter>Events</Filter>
+      <Filter>src\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\MouseEvent.h">
-      <Filter>Events</Filter>
+      <Filter>src\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Components.h">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Entity.h">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Scene.h">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\SceneSerializer.h">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\ScriptableEntity.h">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\ImGui\ImGuiLayer.h">
-      <Filter>ImGui</Filter>
+      <Filter>src\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\Input.h">
-      <Filter>Input</Filter>
+      <Filter>src\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\Time.h">
-      <Filter>Input</Filter>
+      <Filter>src\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Maths\Maths.h">
-      <Filter>Maths</Filter>
+      <Filter>src\Maths</Filter>
     </ClInclude>
     <ClInclude Include="src\NativeScripting\DLLLoader.h">
-      <Filter>NativeScripting</Filter>
+      <Filter>src\NativeScripting</Filter>
     </ClInclude>
     <ClInclude Include="src\NativeScripting\Scripting.h">
-      <Filter>NativeScripting</Filter>
+      <Filter>src\NativeScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\FileDialog.h">
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Buffer.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Camera.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Framebuffer.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Mesh.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Rendering.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Shader.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\Texture.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Rendering\VertexArray.h">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Windows\FileDialog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLBuffer.cpp">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLFramebuffer.cpp">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLShader.cpp">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLTexture.cpp">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\API\OpenGL\OpenGLVertexArray.cpp">
-      <Filter>API\OpenGL</Filter>
+      <Filter>src\API\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Cpch.cpp" />
+    <ClCompile Include="src\Cpch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Cyclope\Application.cpp">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Cyclope\LayerStack.cpp">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Cyclope\Log.cpp">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cyclope\UUID.cpp">
+      <Filter>src\Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Cyclope\Window.cpp">
-      <Filter>Cyclope</Filter>
+      <Filter>src\Cyclope</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Entity.cpp">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Scene.cpp">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\SceneSerializer.cpp">
-      <Filter>Game</Filter>
+      <Filter>src\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>src\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\Input.cpp">
-      <Filter>Input</Filter>
+      <Filter>src\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\Time.cpp">
-      <Filter>Input</Filter>
+      <Filter>src\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\Maths\Maths.cpp">
-      <Filter>Maths</Filter>
+      <Filter>src\Maths</Filter>
     </ClCompile>
     <ClCompile Include="src\NativeScripting\DLLLoader.cpp">
-      <Filter>NativeScripting</Filter>
+      <Filter>src\NativeScripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NativeScripting\Scripting.cpp">
+      <Filter>src\NativeScripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\FileDialog.cpp">
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Buffer.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Camera.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Framebuffer.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Shader.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Texture.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\VertexArray.cpp">
-      <Filter>Rendering</Filter>
+      <Filter>src\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\NativeScripting\Scripting.cpp" />
-    <ClCompile Include="src\Platform\Windows\FileDialog.cpp" />
   </ItemGroup>
 </Project>

@@ -58,7 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -77,7 +77,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)ImGui\include;..\Cyclope\src;..\Cyclope\src\Cyclope;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -97,12 +97,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="src\Layers\EditorLayer.h" />
     <ClInclude Include="src\OBJLoader.h" />
     <ClInclude Include="src\SceneView\Grid.h" />
     <ClInclude Include="src\SceneView\SceneViewCamera.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Layers\EditorLayer.cpp" />
     <ClCompile Include="src\SceneView\Grid.cpp" />

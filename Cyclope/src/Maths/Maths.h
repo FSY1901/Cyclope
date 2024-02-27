@@ -40,9 +40,9 @@ namespace Cyclope {
 	Quaternion CYCLOPE_API ToQuaternion(Vector3 eulerAngles);
 	Quaternion CYCLOPE_API LookAt(Vector3 direction, Vector3 forward = { 0, 0, 1 }, Vector3 up = { 0, 1, 0 });
 
-	Quaternion RotationBetweenVectors(Vector3 forward, Vector3 direction);
+	Quaternion CYCLOPE_API RotationBetweenVectors(Vector3 forward, Vector3 direction);
 
-	bool DecomposeTransform(const Matrix4& transform, Vector3& translation, Vector3& rotation, Vector3& scale);
+	bool CYCLOPE_API DecomposeTransform(const Matrix4& transform, Vector3& translation, Vector3& rotation, Vector3& scale);
 
 }
 

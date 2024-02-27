@@ -15,6 +15,8 @@ namespace CyclopeEditor {
 		Camera& GetCamera() { return cam; }
 		const Camera& GetCamera() const { return cam; }
 
+		bool IsControlling() { return m_controlling; }
+
 		bool sceneWindowHovered = false;
 
 		TransformComponent transform;
@@ -35,7 +37,7 @@ namespace CyclopeEditor {
 		float lastX = Application::GetInstance()->GetWindow()->GetWidth() / 2.0f;
 		float lastY = Application::GetInstance()->GetWindow()->GetHeight() / 2.0f;
 
-		bool controlling = false;
+		bool m_controlling = false;
 
 	};
 

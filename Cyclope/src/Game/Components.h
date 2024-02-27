@@ -5,10 +5,18 @@
 #include "../Maths/Maths.h"
 #include "../Rendering/Camera.h"
 #include "ScriptableEntity.h"
+#include "../Cyclope/UUID.h"
 
 namespace Cyclope {
 
 	class Scene;
+
+	struct IDComponent {
+		UUID id;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
 
 	struct TagComponent
 	{

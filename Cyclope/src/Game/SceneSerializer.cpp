@@ -108,7 +108,7 @@ namespace Cyclope {
 	static void SerializeEntity(YAML::Emitter& out, Entity entity) {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Entity";
-		out << YAML::Value << "12321312313";
+		out << YAML::Value << entity.GetUUID();
 
 		if (entity.HasComponent<TagComponent>()) {
 			out << YAML::Key << "TagComponent";
@@ -232,13 +232,15 @@ namespace Cyclope {
 			std::vector<YAML::Node> entitiesRev(entities.begin(),
 				entities.end());
 			for (auto entity = entitiesRev.rbegin(); entity != entitiesRev.rend(); ++entity) {
+				uint64_t uuid = (*entity)["Entity"].as<uint64_t>();
+				
 				std::string name;
 				auto tagComponent = (*entity)["TagComponent"];
 				if (tagComponent) {
 					name = tagComponent["Tag"].as<std::string>();
 				}
 
-				Entity deserializedEntity = m_scene->CreateEntity(name);
+				Entity deserializedEntity = m_scene->CreateEntityWithUUID(uuid, name);
 
 				auto transformComponent = (*entity)["TransformComponent"];
 				if (transformComponent) {

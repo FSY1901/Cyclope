@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Layers">
-      <UniqueIdentifier>{157446C0-0116-7196-EAD0-84EAD611F8E6}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SceneView">
-      <UniqueIdentifier>{EE8D907A-5AF8-44F1-A336-F6960FE02246}</UniqueIdentifier>
+    <Filter Include="src\Layers">
+      <UniqueIdentifier>{4C4DA51D-3805-E76A-A10C-C0C68DE3815B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SceneView">
+      <UniqueIdentifier>{C5EF4ABA-31B0-C6F0-FAEA-0F6E666A0BCD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Layers\EditorLayer.h">
-      <Filter>Layers</Filter>
+    <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="src\OBJLoader.h" />
+    <ClInclude Include="src\Layers\EditorLayer.h">
+      <Filter>src\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OBJLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\SceneView\Grid.h">
-      <Filter>SceneView</Filter>
+      <Filter>src\SceneView</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
-      <Filter>SceneView</Filter>
+      <Filter>src\SceneView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Layers\EditorLayer.cpp">
-      <Filter>Layers</Filter>
+      <Filter>src\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneView\Grid.cpp">
-      <Filter>SceneView</Filter>
+      <Filter>src\SceneView</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
-      <Filter>SceneView</Filter>
+      <Filter>src\SceneView</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

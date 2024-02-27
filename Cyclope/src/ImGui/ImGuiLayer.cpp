@@ -6,6 +6,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "ImGuizmo.h"
+
 namespace Cyclope {
 
 	ImGuiLayer::ImGuiLayer() {}
@@ -32,7 +34,7 @@ namespace Cyclope {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		//ImGuizmo::BeginFrame(); --> Add ImGuizmo
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End() {

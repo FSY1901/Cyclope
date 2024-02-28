@@ -9,13 +9,14 @@ namespace Cyclope {
 	class CYCLOPE_API OpenGLShader : public Shader {
 
 	public:
-		OpenGLShader(const char* vShaderCode, const char* fShaderCode);
+		OpenGLShader(const char* vShaderCode, const char* fShaderCode, std::string& path);
 		~OpenGLShader() override;
 
 		void Bind() const override;
 		void Unbind() const override;
 
 		unsigned int GetID() const override;
+		std::string GetPath() const override;
 
 		void SetBool(const std::string& name, bool value) const override;
 		void SetInt(const std::string& name, int value) const override;
@@ -28,6 +29,7 @@ namespace Cyclope {
 
 	private:
 		unsigned int m_ID;
+		std::string m_path;
 
 	};
 

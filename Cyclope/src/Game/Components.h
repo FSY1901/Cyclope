@@ -6,6 +6,7 @@
 #include "../Rendering/Camera.h"
 #include "ScriptableEntity.h"
 #include "../Cyclope/UUID.h"
+#include "../Rendering/Mesh.h"
 
 namespace Cyclope {
 
@@ -113,8 +114,15 @@ namespace Cyclope {
 		float quadratic = 0.05f;
 	};
 
-	struct MeshRendererComponent {
-		int x;
+	struct ModelRendererComponent {
+		//Material Properties
+		Shared<Shader> shader;//TODO: Materials --> will store shaders
+		Vector3 diffuse = Vector3(1.0f);
+		Vector3 specular = Vector3(0.5f);
+		float shininess = 32.0f;
+
+		//Model/Mesh
+		Model model;
 	};
 
 }

@@ -28,6 +28,17 @@ namespace Cyclope {
 
 	}
 
+	Shared<VertexBuffer> VertexBuffer::Create(std::vector<Vertex>& vertices) {
+
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::OpenGL:
+			return std::make_shared<OpenGLVertexBuffer>(vertices);
+			break;
+		}
+
+	}
+
 	Shared<IndexBuffer> IndexBuffer::Create(unsigned int* indices, GLsizeiptr size) {
 
 		switch (Renderer::GetAPI())

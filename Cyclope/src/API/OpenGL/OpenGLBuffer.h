@@ -12,6 +12,7 @@ namespace Cyclope {
 
 	public:
 		OpenGLVertexBuffer(float* vertices, GLsizeiptr size, const BufferLayout& layout);
+		OpenGLVertexBuffer(std::vector<Vertex>& vertices);
 		~OpenGLVertexBuffer() override;
 
 		void Bind() const override;

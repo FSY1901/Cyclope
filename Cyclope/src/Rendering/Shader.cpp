@@ -66,7 +66,7 @@ namespace Cyclope {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::OpenGL:
-			return std::make_shared<OpenGLShader>(vShaderCode, fShaderCode);
+			return std::make_shared<OpenGLShader>(vShaderCode, fShaderCode, path);
 			break;
 		}
 

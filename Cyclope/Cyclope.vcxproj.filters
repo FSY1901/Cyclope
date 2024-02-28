@@ -254,6 +254,9 @@
     <ClCompile Include="src\Rendering\Framebuffer.cpp">
       <Filter>src\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\Mesh.cpp">
+      <Filter>src\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="src\Rendering\Rendering.cpp">
       <Filter>src\Rendering</Filter>
     </ClCompile>

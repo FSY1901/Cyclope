@@ -24,7 +24,7 @@ namespace CyclopeEditor {
 		ImVec2 GetPanelSize() { return panelSize; }
 
 	private:
-
+		Cyclope::Model model;
 		Shared<VertexArray> vert;
 		Shared<VertexArray> vert2;
 		Shared<Shader> sh;

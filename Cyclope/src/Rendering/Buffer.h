@@ -103,6 +103,7 @@ namespace Cyclope {
 		virtual GLsizeiptr GetVertexCount() const = 0;
 
 		static Shared<VertexBuffer> Create(float* vertices, GLsizeiptr size, const BufferLayout& layout);
+		static Shared<VertexBuffer> Create(std::vector<Vertex>& vertices);
 
 	};
 

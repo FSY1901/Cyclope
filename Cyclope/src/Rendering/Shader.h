@@ -15,6 +15,7 @@ namespace Cyclope {
         virtual void Unbind() const = 0;
 
         virtual unsigned int GetID() const = 0;
+        virtual std::string GetPath() const = 0;//TODO: Add Asset System
 
         // utility uniform functions
         virtual void SetBool(const std::string& name, bool value) const = 0;

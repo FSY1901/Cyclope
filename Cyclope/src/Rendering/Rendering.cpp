@@ -34,7 +34,7 @@ namespace Cyclope {
 	{
 		for (const auto& vert : mesh.vertices) {
 			glm::vec3 pos = transform * glm::vec4(vert.position, 1.0f);
-			vertices.push_back(Vertex{ pos, vert.uv });
+			vertices.push_back(Vertex{ pos, vert.normal, vert.uv });
 		}
 
 		for (const auto& i : mesh.indices) {

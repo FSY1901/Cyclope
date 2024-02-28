@@ -102,7 +102,7 @@ namespace CyclopeEditor {
 		auto v = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
 		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
 
-		sh = Shader::Create("./Resources/shaders/shader.glsl");
+		sh = Shader::Create("./Resources/shaders/basic.glsl");//shader.glsl
 		tex = Texture2D::Create("./Resources/textures/container2.png");
 		tex2 = Texture2D::Create("./Resources/textures/specular.png");
 
@@ -174,6 +174,7 @@ namespace CyclopeEditor {
 		//f(e);
 		//auto hash = std::hash<std::string>{}(nativeScriptNamesList[1]);
 		DisplayComponent = loader.Load();
+		model = Model("./Resources/models/backpack/backpack.obj");
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
@@ -204,7 +205,8 @@ namespace CyclopeEditor {
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
 			activeScene->ForEach([&](Entity e) {
-				if (e.HasComponent<MeshRendererComponent>()) {
+				if (e.HasComponent<ModelRendererComponent>()) {
+					/*
 					Matrix4& transform = e.GetComponent<TransformComponent>().GetTransform();
 					sh->Bind();
 					sh->SetMat4("transform", transform);
@@ -220,6 +222,22 @@ namespace CyclopeEditor {
 					Renderer::Submit(vert, sh);
 					tex->Unbind();
 					tex2->Unbind();
+					*/
+					auto& modelComponent = e.GetComponent<ModelRendererComponent>();
+					auto& shader = modelComponent.shader;
+					Matrix4& transform = e.GetComponent<TransformComponent>().GetTransform();
+					if (shader.get() && shader->GetID()) {
+						shader->Bind();
+						shader->SetMat4("transform", transform);
+						//Dependent on the shader
+						shader->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(transform))));
+						shader->SetVec3("viewPos", svc.transform.position);
+						shader->SetVec3("material.diffuse", modelComponent.diffuse);
+						shader->SetVec3("material.specular", modelComponent.specular);
+						shader->SetFloat("material.shininess", modelComponent.shininess);
+						modelComponent.model.Draw(shader);
+					}
+					//model.Draw(sh);
 				}
 				});
 
@@ -253,6 +271,25 @@ namespace CyclopeEditor {
 					sh2->SetVec3("camRight", right);
 					sh2->SetVec3("camUp", up);
 					sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
+					//tex->Bind();
+					//tex2->Bind(1);
+					BillboardTex->Bind();
+					Renderer::Submit(vert2, sh2);
+					BillboardTex->Unbind();
+				}
+				});
+
+			activeScene->ForEach([&](Entity e) {
+				if (e.HasComponent<SpotLightComponent>()) {
+					auto& tc = e.GetComponent<TransformComponent>();
+					sh2->Bind();
+					sh2->SetVec3("pos", tc.position);
+					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+					Vector3 up = glm::normalize(glm::cross(right, front));
+					sh2->SetVec3("camRight", right);
+					sh2->SetVec3("camUp", up);
+					sh2->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
 					//tex->Bind();
 					//tex2->Bind(1);
 					BillboardTex->Bind();
@@ -294,6 +331,7 @@ namespace CyclopeEditor {
 			//fbShader->SetFloat("iTime", Time::GetTime());
 			Renderer::Submit(fbVA, fbShader);
 			//Draw End
+			fb2->BindTexture(0);
 			fb2->Unbind();
 		}
 		RenderCommands::Clear();
@@ -436,8 +474,15 @@ namespace CyclopeEditor {
 			auto& tc = selectedEntity.Transform();
 			Matrix4 transform = tc.GetTransform();
 
+			//Snap
+			bool snap = Input::KeyDown(Key::LEFT_SHIFT);
+			float snapAmount = 0.5f;
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapAmount = 10.0f;
+			float snapValues[3] = { snapAmount, snapAmount, snapAmount };
+
 			ImGuizmo::Manipulate(glm::value_ptr(svc.GetCamera().GetViewMatrix()), glm::value_ptr(svc.GetCamera().GetProjectionMatrix()), 
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
 			
 			if (ImGuizmo::IsUsing()) {
 				
@@ -542,7 +587,7 @@ namespace CyclopeEditor {
 			{
 				DisplayAddComponentEntry<NativeScriptComponent>("NativeScript");
 				DisplayAddComponentEntry<CameraComponent>("Camera");
-				DisplayAddComponentEntry<MeshRendererComponent>("Mesh Renderer");
+				DisplayAddComponentEntry<ModelRendererComponent>("Model Renderer");
 				DisplayAddComponentEntry<DirectionalLightComponent>("Directional Light");
 				DisplayAddComponentEntry<PointLightComponent>("Point Light");
 				DisplayAddComponentEntry<SpotLightComponent>("Spot Light");
@@ -599,14 +644,37 @@ namespace CyclopeEditor {
 				}
 				});
 
-			DrawComponent<MeshRendererComponent>("MeshRenderer", selectedEntity, [](auto& component)
+			DrawComponent<ModelRendererComponent>("Model Renderer", selectedEntity, [](auto& component)
 				{
+					ImGui::Text("Material Properties:");
+					if (ImGui::Button("Change Shader")) {
+						auto& path = FileDialog::GetFilePath("Shader File (*.glsl)\0*.glsl\0");
+						component.shader = Shader::Create(path);
+					}
+					float col[3] = { component.diffuse.x, component.diffuse.y, component.diffuse.z };
+					ImGui::PushItemWidth(170);
+					ImGui::ColorEdit3("Diffuse", col);
+					component.diffuse = Vector3(col[0], col[1], col[2]);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(170);
+					float* val = &component.specular.x;
+					ImGui::DragFloat("Specular", val, 0.005f, 0.0f, 1.0f);
+					component.specular = Vector3(*val, *val, *val);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(170);
+					ImGui::InputFloat("Shininess", &component.shininess);
+					ImGui::PopItemWidth();
+					ImGui::Text("Model:");
+					if (ImGui::Button("Change Model")) {
+						auto& path = FileDialog::GetFilePath("obj File (*.obj)\0*.obj\0");
+						component.model = Model(path);
+					}
 
 				});
 
 			DrawComponent<CameraComponent>("Camera", selectedEntity, [](auto& component)
 				{
-					
+
 				});
 
 			DrawComponent<DirectionalLightComponent>("Directional Light", selectedEntity, [](auto& component)

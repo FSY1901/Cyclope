@@ -51,4 +51,7 @@
       <Filter>src\SceneView</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\basic.glsl" />
+  </ItemGroup>
 </Project>

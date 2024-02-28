@@ -77,6 +77,7 @@ project "Cyclope"
         "$(SolutionDir)vendor/stb_image",
         "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)vendor/ImGuizmo",
+        "$(SolutionDir)vendor/assimp",
         "$(SolutionDir)yaml-cpp/include",
         "$(SolutionDir)ImGui/include",
         "Cyclope/src/Cyclope",
@@ -86,11 +87,13 @@ project "Cyclope"
     libdirs
     {
         "$(SolutionDir)OpenGL/src",
+        "$(SolutionDir)vendor/assimp/lib",
     }
 
     links
     {
         "glfw3.lib",
+        "assimp-vc143-mt.lib",
         "ImGui",
         "OpenGL",
         "yaml-cpp"
@@ -146,6 +149,7 @@ project "Scripting"
         "$(SolutionDir)vendor/entt",
         "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)ImGui/include",
+        "$(SolutionDir)vendor/assimp",
         "Cyclope/src",
         "Cyclope/src/Cyclope",
         "Cyclope/src/NativeScripting",
@@ -204,6 +208,7 @@ project "App"
         "$(SolutionDir)vendor/spdlog",
         "$(SolutionDir)vendor/ImGuizmo",
         "$(SolutionDir)ImGui/include",
+        "$(SolutionDir)vendor/assimp",
         "Cyclope/src",
         "Cyclope/src/Cyclope"
     }
@@ -211,11 +216,13 @@ project "App"
     libdirs
     {
         "$(SolutionDir)OpenGL/src",
+        "$(SolutionDir)vendor/assimp/lib"
     }
 
     links
     {
         "glfw3.lib",
+        "assimp-vc143-mt.lib",
         "Cyclope",
         "ImGui",
         "Scripting"

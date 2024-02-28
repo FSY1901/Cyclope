@@ -128,10 +128,15 @@ namespace Cyclope {
 			out << YAML::EndMap;
 		}
 
-		if (entity.HasComponent<MeshRendererComponent>()) {
-			out << YAML::Key << "MeshRendererComponent";
+		if (entity.HasComponent<ModelRendererComponent>()) {
+			out << YAML::Key << "ModelRendererComponent";
 			out << YAML::BeginMap;
-			//TODO: Implement this
+			auto& model = entity.GetComponent<ModelRendererComponent>();
+			out << YAML::Key << "Path" << YAML::Value << model.model.GetPath();
+			out << YAML::Key << "Shader" << YAML::Value << model.shader->GetPath();
+			out << YAML::Key << "Diffuse" << YAML::Value << model.diffuse;
+			out << YAML::Key << "Specular" << YAML::Value << model.specular;
+			out << YAML::Key << "Shininess" << YAML::Value << model.shininess;
 			out << YAML::EndMap;
 		}
 
@@ -250,10 +255,14 @@ namespace Cyclope {
 					transform.scale = transformComponent["Scale"].as<Vector3>();
 				}
 
-				auto meshRendererComponent = (*entity)["MeshRendererComponent"];
+				auto meshRendererComponent = (*entity)["ModelRendererComponent"];
 				if (meshRendererComponent) {
-					deserializedEntity.AddComponent<MeshRendererComponent>();
-					//TODO: implement
+					auto& model = deserializedEntity.AddComponent<ModelRendererComponent>();
+					model.model = Model(meshRendererComponent["Path"].as<std::string>());
+					model.shader = Shader::Create(meshRendererComponent["Shader"].as<std::string>());
+					model.diffuse = meshRendererComponent["Diffuse"].as<Vector3>();
+					model.specular = meshRendererComponent["Specular"].as<Vector3>();
+					model.shininess = meshRendererComponent["Shininess"].as<float>();
 				}
 
 				auto directionalLightComponent = (*entity)["DirectionalLightComponent"];

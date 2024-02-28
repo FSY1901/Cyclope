@@ -60,7 +60,7 @@
       <PrecompiledHeaderFile>Cpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_DEBUG;CYCLOPE_ENABLE_ASSERTS;CYCLOPE_PROFILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)vendor\assimp;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -71,8 +71,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\Cyclope\Cyclope.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -85,7 +85,7 @@
       <PrecompiledHeaderFile>Cpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>CYCLOPE_BUILD_DLL;CYCLOPE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)OpenGL\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\entt;$(SolutionDir)vendor\stb_image;$(SolutionDir)vendor\spdlog;$(SolutionDir)vendor\ImGuizmo;$(SolutionDir)vendor\assimp;$(SolutionDir)yaml-cpp\include;$(SolutionDir)ImGui\include;src\Cyclope;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -100,8 +100,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\Cyclope\Cyclope.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -182,6 +182,7 @@
     <ClCompile Include="src\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Framebuffer.cpp" />
+    <ClCompile Include="src\Rendering\Mesh.cpp" />
     <ClCompile Include="src\Rendering\Rendering.cpp" />
     <ClCompile Include="src\Rendering\Shader.cpp" />
     <ClCompile Include="src\Rendering\Texture.cpp" />

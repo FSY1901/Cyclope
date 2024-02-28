@@ -15,7 +15,7 @@ Entities:
     TagComponent:
       Tag: A
     TransformComponent:
-      Position: [2.4000001, 3.20000005, 0.419999987]
+      Position: [-4.0999999, 1, 0]
       Rotation: [1, 0, 0, 0]
       Scale: [1, 1, 1]
     MeshRendererComponent:

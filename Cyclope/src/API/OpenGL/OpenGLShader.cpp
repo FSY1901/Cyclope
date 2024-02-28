@@ -6,7 +6,9 @@
 
 namespace Cyclope {
 
-    OpenGLShader::OpenGLShader(const char* vShaderCode, const char* fShaderCode) {
+    OpenGLShader::OpenGLShader(const char* vShaderCode, const char* fShaderCode, std::string& path) {
+
+        m_path = path;
 
         unsigned int vertex, fragment;
         int success;
@@ -49,11 +51,12 @@ namespace Cyclope {
         {
             glGetProgramInfoLog(m_ID, 512, NULL, infoLog);
             CYCLOPE_CORE_ERROR("[SHADER::PROGRAM::LINKING_FAILED]:\n" + std::string(infoLog));
+            m_ID = 0;
         }
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
-
+        
     }
 
     OpenGLShader::~OpenGLShader() {
@@ -69,6 +72,11 @@ namespace Cyclope {
     }
 
     unsigned int OpenGLShader::GetID() const { return m_ID; }
+
+    std::string OpenGLShader::GetPath() const
+    {
+        return m_path;
+    }
 
     void OpenGLShader::SetBool(const std::string& name, bool value) const {
         glUniform1i(glGetUniformLocation(m_ID, name.c_str()), (int)value);

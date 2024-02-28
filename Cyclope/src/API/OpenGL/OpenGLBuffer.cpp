@@ -12,6 +12,14 @@ namespace Cyclope {
 		glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);
 	}
 
+	OpenGLVertexBuffer::OpenGLVertexBuffer(std::vector<Vertex>& vertices){
+		glGenBuffers(1, &m_ID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+		SetBufferLayout(BufferLayout::Standard());
+		m_vertexCount = vertices.size() / BufferLayout::Standard().GetOffset();
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+	}
+
 	OpenGLVertexBuffer::~OpenGLVertexBuffer() {
 		glDeleteBuffers(1, &m_ID);
 	}

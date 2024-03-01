@@ -28,6 +28,7 @@ namespace Cyclope {
         virtual void SetMat4(const std::string& name, const Matrix4& mat) const = 0;
 
         static Shared<Shader> Create(std::string path);
+        static Shared<Shader> CreateRealtiveToProject(std::string path);
     };
 
 }

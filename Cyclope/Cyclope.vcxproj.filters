@@ -40,6 +40,9 @@
     <Filter Include="src\Platform\Windows">
       <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Project">
+      <UniqueIdentifier>{732C2D2D-DFE1-A522-68D6-9FF9D48A9C26}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Rendering">
       <UniqueIdentifier>{BA10DABB-26D1-55F2-EF0B-9F6F5B8B9ACE}</UniqueIdentifier>
     </Filter>
@@ -153,6 +156,12 @@
     <ClInclude Include="src\Platform\Windows\FileDialog.h">
       <Filter>src\Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Project\Project.h">
+      <Filter>src\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Project\ProjectSerializer.h">
+      <Filter>src\Project</Filter>
+    </ClInclude>
     <ClInclude Include="src\Rendering\Buffer.h">
       <Filter>src\Rendering</Filter>
     </ClInclude>
@@ -244,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\FileDialog.cpp">
       <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Project\Project.cpp">
+      <Filter>src\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Project\ProjectSerializer.cpp">
+      <Filter>src\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\Buffer.cpp">
       <Filter>src\Rendering</Filter>

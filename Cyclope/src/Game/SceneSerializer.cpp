@@ -6,6 +6,8 @@
 
 #include "NativeScripting/Scripting.h"
 
+#include "Project/Project.h"
+
 #define YAML_CPP_STATIC_DEFINE
 #include "yaml-cpp/yaml.h"
 
@@ -132,7 +134,7 @@ namespace Cyclope {
 			out << YAML::Key << "ModelRendererComponent";
 			out << YAML::BeginMap;
 			auto& model = entity.GetComponent<ModelRendererComponent>();
-			out << YAML::Key << "Path" << YAML::Value << model.model.GetPath();
+			out << YAML::Key << "Path" << YAML::Value << model.model->GetPath();
 			out << YAML::Key << "Shader" << YAML::Value << model.shader->GetPath();
 			out << YAML::Key << "Diffuse" << YAML::Value << model.diffuse;
 			out << YAML::Key << "Specular" << YAML::Value << model.specular;
@@ -258,8 +260,8 @@ namespace Cyclope {
 				auto meshRendererComponent = (*entity)["ModelRendererComponent"];
 				if (meshRendererComponent) {
 					auto& model = deserializedEntity.AddComponent<ModelRendererComponent>();
-					model.model = Model(meshRendererComponent["Path"].as<std::string>());
-					model.shader = Shader::Create(meshRendererComponent["Shader"].as<std::string>());
+					model.model = Model::Create(meshRendererComponent["Path"].as<std::string>());
+					model.shader = Shader::CreateRealtiveToProject(meshRendererComponent["Shader"].as<std::string>());
 					model.diffuse = meshRendererComponent["Diffuse"].as<Vector3>();
 					model.specular = meshRendererComponent["Specular"].as<Vector3>();
 					model.shininess = meshRendererComponent["Shininess"].as<float>();

@@ -42,14 +42,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-x86_64\Scripting\</OutDir>
+    <OutDir>bin\</OutDir>
     <IntDir>..\bin-int\Debug-windows-x86_64\Scripting\</IntDir>
     <TargetName>Scripting</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Release-windows-x86_64\Scripting\</OutDir>
+    <OutDir>bin\</OutDir>
     <IntDir>..\bin-int\Release-windows-x86_64\Scripting\</IntDir>
     <TargetName>Scripting</TargetName>
     <TargetExt>.dll</TargetExt>
@@ -68,7 +68,7 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>..\bin\Debug-windows-x86_64\Scripting\Scripting.lib</ImportLibrary>
+      <ImportLibrary>bin\Scripting.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Scripting\Scripting.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
@@ -88,20 +88,20 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>..\bin\Release-windows-x86_64\Scripting\Scripting.lib</ImportLibrary>
+      <ImportLibrary>bin\Scripting.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\Scripting\Scripting.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Scripting\Scripting.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Scripting\Scripting.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Components\Components.h" />
-    <ClInclude Include="Export.h" />
-    <ClInclude Include="GUI.h" />
+    <ClInclude Include="src\Components.h" />
+    <ClInclude Include="src\Export.h" />
+    <ClInclude Include="src\GUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Export.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Export.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

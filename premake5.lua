@@ -132,14 +132,15 @@ project "Scripting"
     kind "SharedLib"
     language "C++"
 
-    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    --targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{prj.name}/bin")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
-        "%{prj.name}/**.h",
-        "%{prj.name}/**.cpp",
-        "%{prj.name}/**.c"
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/src/**.c"
     }
 
     includedirs

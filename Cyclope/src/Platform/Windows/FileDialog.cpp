@@ -1,6 +1,7 @@
 #include "Cpch.h"
 #include "FileDialog.h"
 #include "Application.h"
+#include "Project/Project.h"
 
 #include <commdlg.h>
 #include <glfw3.h>
@@ -21,8 +22,7 @@ namespace Cyclope {
 		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::GetInstance()->GetWindow()->GetGLFWWindow());
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = sizeof(szFile);
-		if (GetCurrentDirectoryA(256, currentDir))
-			ofn.lpstrInitialDir = currentDir;
+		ofn.lpstrInitialDir = Project::GetActive()->GetAssetDirectory().string().c_str();
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
@@ -43,8 +43,7 @@ namespace Cyclope {
 		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::GetInstance()->GetWindow()->GetGLFWWindow());
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = sizeof(szFile);
-		if (GetCurrentDirectoryA(256, currentDir))
-			ofn.lpstrInitialDir = currentDir;
+		ofn.lpstrInitialDir = Project::GetActive()->GetAssetDirectory().string().c_str();
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
@@ -58,7 +57,7 @@ namespace Cyclope {
 		return std::string();
 	}
 
-	std::string FileDialog::GetFilePath(const char* filter)
+	std::string FileDialog::GetRelativeFilePath(const char* filter)
 	{
 		OPENFILENAMEA ofn;
 		CHAR szFile[260] = { 0 };
@@ -68,15 +67,16 @@ namespace Cyclope {
 		ofn.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::GetInstance()->GetWindow()->GetGLFWWindow());
 		ofn.lpstrFile = szFile;
 		ofn.nMaxFile = sizeof(szFile);
-		if (GetCurrentDirectoryA(256, currentDir))
-			ofn.lpstrInitialDir = currentDir;
+		ofn.lpstrInitialDir = Project::GetActive()->GetAssetDirectory().string().c_str();
 		ofn.lpstrFilter = filter;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 		
 
 		if (GetOpenFileNameA(&ofn) == TRUE) {
-			return std::filesystem::path(ofn.lpstrFile).string();//TODO: make this relative to Project
+			auto& base = Project::GetActive()->GetProjectDirectory() / Project::GetActive()->GetAssetDirectory();
+			auto& path = std::filesystem::path(ofn.lpstrFile).string();
+			return std::filesystem::relative(path, base).string();
 		}
 
 		return std::string();

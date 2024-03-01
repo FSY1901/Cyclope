@@ -5,6 +5,8 @@
 
 #include "../NativeScripting/DLLLoader.h"
 
+#include "ContentBrowserPanel.h"
+
 namespace CyclopeEditor {
 
 	class EditorLayer : public Layer {
@@ -24,7 +26,6 @@ namespace CyclopeEditor {
 		ImVec2 GetPanelSize() { return panelSize; }
 
 	private:
-		Cyclope::Model model;
 		Shared<VertexArray> vert;
 		Shared<VertexArray> vert2;
 		Shared<Shader> sh;
@@ -48,18 +49,26 @@ namespace CyclopeEditor {
 
 		DLLLoader loader;
 
+		void NewProject();
+		void OpenProject(const std::filesystem::path& path);
+		void SaveProject();
+
 		Shared<Scene> activeScene;
 		void SerializeScene();
 		void DeserializeScene();
+
+		void OpenScene(const std::filesystem::path& path);
 
 		Entity selectedEntity;
 
 		int m_GizmoType = -1;
 
-		void DrawScenePanel();
+		void DrawViewportPanel();
 		void DrawSceneHierarchyPanel();
 		void DrawInspectorPanel();
 		void DrawDebugPanel();
+		ContentBrowserPanel contentBrowser;
+		
 
 		GUIFunction DisplayComponent;
 

@@ -33,6 +33,7 @@
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
       <Filter>src\SceneView</Filter>
     </ClInclude>
+    <ClInclude Include="src\Layers\ContentBrowserPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
@@ -50,8 +51,6 @@
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
       <Filter>src\SceneView</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shaders\basic.glsl" />
+    <ClCompile Include="src\Layers\ContentBrowserPanel.cpp" />
   </ItemGroup>
 </Project>

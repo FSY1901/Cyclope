@@ -7,6 +7,7 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Project/Project.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -50,14 +51,33 @@ namespace Cyclope {
 
 	};
 
+	class Model;
+
+	//temporary
+	struct CYCLOPE_API ModelManager {
+		static std::unordered_map<std::string, Shared<Model>> loadedModels;
+	};
+
 	class CYCLOPE_API Model
 	{
 	public:
-		Model(){}
-		Model(std::string path)
+		Model() = default;
+		static Shared<Model> Create(std::string path)
 		{
-			m_path = path;
-			loadModel(path);
+			if (ModelManager::loadedModels.find(path) != ModelManager::loadedModels.end()) {
+				return ModelManager::loadedModels[path];
+			}
+			else {
+				Shared<Model> model = MakeShared<Model>();
+				model->m_path = path;
+				auto& p = (Project::GetActive()->GetProjectDirectory() /
+					Project::GetActive()->GetAssetDirectory()
+					/ path).string();
+				model->loadModel(p);
+				ModelManager::loadedModels[path] = model;
+			}
+
+			return ModelManager::loadedModels[path];
 		}
 		void Draw(Shared<Shader> shader);
 		std::string GetPath() { return m_path; }

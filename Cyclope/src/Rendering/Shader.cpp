@@ -72,4 +72,10 @@ namespace Cyclope {
 
     }
 
+    Shared<Shader> Shader::CreateRealtiveToProject(std::string path)
+    {
+        return Create((Project::GetActive()->GetProjectDirectory() / 
+            Project::GetActive()->GetAssetDirectory() / path).string());
+    }
+
 }

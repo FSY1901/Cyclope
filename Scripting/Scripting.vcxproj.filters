@@ -11,9 +11,16 @@
     </ClInclude>
     <ClInclude Include="Export.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="Components\Scripts.h" />
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="src\Components.h" />
+    <ClInclude Include="src\Export.h" />
+    <ClInclude Include="src\GUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Export.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Export.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,8 @@
 #include "Game/Entity.h"
 #include "Game/ScriptableEntity.h"
 
+#include "Project/Project.h"
+
 #include "Input/Input.h"
 #include "Input/Time.h"
 

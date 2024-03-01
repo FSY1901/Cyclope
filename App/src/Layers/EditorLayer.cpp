@@ -129,7 +129,7 @@ namespace CyclopeEditor {
 		//v1->SetBufferLayout(BufferLayout::Standard());
 		vert2 = VertexArray::Create(f, IndexBuffer::Create(&ind[0], ind.size()));
 
-		sh2 = Shader::Create("./Resources/shaders/s.glsl");
+		sh2 = Shader::Create("./Resources/shaders/billboard.glsl");
 		BillboardTex = Texture2D::Create("./Resources/textures/Billboards/DirectionalLight.png");
 		
 		FramebufferSpecification fbs;
@@ -174,7 +174,9 @@ namespace CyclopeEditor {
 		//f(e);
 		//auto hash = std::hash<std::string>{}(nativeScriptNamesList[1]);
 		DisplayComponent = loader.Load();
-		model = Model("./Resources/models/backpack/backpack.obj");
+
+		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
+		contentBrowser.Init();
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
@@ -235,7 +237,7 @@ namespace CyclopeEditor {
 						shader->SetVec3("material.diffuse", modelComponent.diffuse);
 						shader->SetVec3("material.specular", modelComponent.specular);
 						shader->SetFloat("material.shininess", modelComponent.shininess);
-						modelComponent.model.Draw(shader);
+						modelComponent.model->Draw(shader);
 					}
 					//model.Draw(sh);
 				}
@@ -376,10 +378,11 @@ namespace CyclopeEditor {
 			ImGui::EndMainMenuBar();
 		}
 
-		DrawScenePanel();
+		DrawViewportPanel();
 		DrawSceneHierarchyPanel();
 		DrawInspectorPanel();
 		DrawDebugPanel();
+		contentBrowser.Draw();
 
 	}
 
@@ -438,6 +441,24 @@ namespace CyclopeEditor {
 		return true;
 	}
 
+	void EditorLayer::NewProject()
+	{
+		Project::New();
+	}
+
+	void EditorLayer::OpenProject(const std::filesystem::path& path)
+	{
+		if (Project::Load(path)) {
+			auto& config = Project::GetActive()->GetConfig();
+			auto& scenePath = Project::GetActive()->GetProjectDirectory() / config.assetDirectory / config.startScene;
+			OpenScene(scenePath.string());
+		}
+	}
+
+	void EditorLayer::SaveProject()
+	{
+	}
+
 	void EditorLayer::SerializeScene() {
 		auto path = FileDialog::SaveFile("Cyclope Scene (*.cyclope)\0*.cyclope\0");
 		if (!path.empty()) {
@@ -449,22 +470,35 @@ namespace CyclopeEditor {
 	void EditorLayer::DeserializeScene() {
 		auto path = FileDialog::OpenFile("Cyclope Scene (*.cyclope)\0*.cyclope\0");
 		if (!path.empty()) {
-			activeScene = MakeShared<Scene>();
-			selectedEntity = {};
-			SceneSerializer serializer(activeScene);
-			serializer.Deserialize(path);
+			OpenScene(path);
 		}
 	}
 
-	void EditorLayer::DrawScenePanel() {
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		activeScene = MakeShared<Scene>();
+		selectedEntity = {};
+		SceneSerializer serializer(activeScene);
+		serializer.Deserialize(path.string());
+	}
+
+	void EditorLayer::DrawViewportPanel() {
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
-		ImGui::Begin("Scene");
+		ImGui::Begin("Viewport");
 		ImGui::PopStyleVar();
 		panelSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((void*)fb2->GetColorAttachment(),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
-		
+
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				OpenScene(path);
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		//Gizmos
 		if (selectedEntity && m_GizmoType != -1 && !svc.IsControlling()) {
 			ImGuizmo::SetOrthographic(true);
@@ -647,9 +681,14 @@ namespace CyclopeEditor {
 			DrawComponent<ModelRendererComponent>("Model Renderer", selectedEntity, [](auto& component)
 				{
 					ImGui::Text("Material Properties:");
+					ImGui::Text("Shader:");
+					ImGui::SameLine();
+					ImGui::TextWrapped(component.shader->GetPath().c_str());
 					if (ImGui::Button("Change Shader")) {
-						auto& path = FileDialog::GetFilePath("Shader File (*.glsl)\0*.glsl\0");
-						component.shader = Shader::Create(path);
+						auto& path = FileDialog::GetRelativeFilePath("Shader File (*.glsl)\0*.glsl\0");
+						if (path != "") {
+							component.shader = Shader::CreateRealtiveToProject(path);
+						}
 					}
 					float col[3] = { component.diffuse.x, component.diffuse.y, component.diffuse.z };
 					ImGui::PushItemWidth(170);
@@ -665,9 +704,13 @@ namespace CyclopeEditor {
 					ImGui::InputFloat("Shininess", &component.shininess);
 					ImGui::PopItemWidth();
 					ImGui::Text("Model:");
+					ImGui::SameLine();
+					ImGui::TextWrapped(component.model->GetPath().c_str());
 					if (ImGui::Button("Change Model")) {
-						auto& path = FileDialog::GetFilePath("obj File (*.obj)\0*.obj\0");
-						component.model = Model(path);
+						auto& path = FileDialog::GetRelativeFilePath("obj File (*.obj)\0*.obj\0");
+						if (path != "") {
+							component.model = Model::Create(path);
+						}
 					}
 
 				});

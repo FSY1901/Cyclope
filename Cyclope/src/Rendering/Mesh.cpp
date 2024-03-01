@@ -178,4 +178,6 @@ namespace Cyclope {
         return textures;
     }
 
+    std::unordered_map<std::string, Shared<Model>> ModelManager::loadedModels = std::unordered_map<std::string, Shared<Model>>();
+
 }

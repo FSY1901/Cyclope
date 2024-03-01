@@ -1,5 +1,6 @@
 #include "Cpch.h"
 #include "OpenGLShader.h"
+#include "Project/Project.h"
 
 #include "glad.h"
 #include "Log.h"
@@ -8,7 +9,14 @@ namespace Cyclope {
 
     OpenGLShader::OpenGLShader(const char* vShaderCode, const char* fShaderCode, std::string& path) {
 
-        m_path = path;
+        if (Project::GetActive()) {
+            auto& base = Project::GetActive()->GetProjectDirectory() / Project::GetActive()->GetAssetDirectory();
+            auto& p = std::filesystem::path(path).string();
+            m_path = std::filesystem::relative(p, base).string();
+        }
+        else {
+            m_path = path;
+        }
 
         unsigned int vertex, fragment;
         int success;

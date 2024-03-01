@@ -1,0 +1,31 @@
+Scene: Name
+Entities:
+  - Entity: 11012900838961582922
+    TagComponent:
+      Tag: Spot Light
+    TransformComponent:
+      Position: [1.69009387, 2.37456608, 7.07637119]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      ambient: [0.137857676, 0.0814516172, 0.200000003]
+      ambientValue: 0.200000003
+      diffuse: [0.689288378, 0.407258093, 1]
+      radius: 5
+      intensity: 1
+      cutOff: 0.00100000005
+  - Entity: 13931769447418185037
+    TagComponent:
+      Tag: A
+    TransformComponent:
+      Position: [2.4000001, 3.20000005, 0.419999987]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelRendererComponent:
+      Path: models\backpack\backpack.obj
+      Shader: shaders\basic.glsl
+      Diffuse: [1, 1, 1]
+      Specular: [0.5, 0.5, 0.5]
+      Shininess: 32
+    PlayerComponent:
+      {}

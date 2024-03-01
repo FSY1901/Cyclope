@@ -122,7 +122,7 @@ namespace Cyclope {
 		float shininess = 32.0f;
 
 		//Model/Mesh
-		Model model;
+		Shared<Model> model;
 	};
 
 }

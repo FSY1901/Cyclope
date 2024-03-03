@@ -3,7 +3,6 @@
 
 namespace Scripting {
 	
-	REGISTER_COMPONENT(PlayerComponent);
 	struct PlayerComponent {
 
 		PlayerComponent() = default;
@@ -11,17 +10,18 @@ namespace Scripting {
 
 		float health = 100.0f;
 	};
+	REGISTER_COMPONENT(PlayerComponent);
 
 	REGISTER_GUI_FUNCTION(PlayerComponent, 
 	{
 		ImGui::DragFloat("health", &e.GetComponent<PlayerComponent>().health);
 	})
 
-	REGISTER_COMPONENT(TestC);
 	struct TestC {
 
 		float value = 100.0f;
 	};
+	REGISTER_COMPONENT(TestC);
 
 	REGISTER_GUI_FUNCTION(TestC,
 	{

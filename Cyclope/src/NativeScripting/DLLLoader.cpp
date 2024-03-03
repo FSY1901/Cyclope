@@ -5,7 +5,7 @@ namespace Cyclope {
 
 	void DLLLoader::LoadDLL(ComponentRegistry& components, ComponentNamesList& componentNames, NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames) {
 		//TODO: Make relative to project directory
-		hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\bin\\Release-windows-x86_64\\Scripting\\Scripting.dll");
+		hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\Scripting\\bin\\Scripting.dll");
 
 		if (hDLL != NULL)
 		{

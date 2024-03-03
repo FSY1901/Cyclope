@@ -53,4 +53,8 @@
     </ClCompile>
     <ClCompile Include="src\Layers\ContentBrowserPanel.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\textures\Toolbar\Pause.png" />
+    <Image Include="Resources\textures\Toolbar\Play.png" />
+  </ItemGroup>
 </Project>

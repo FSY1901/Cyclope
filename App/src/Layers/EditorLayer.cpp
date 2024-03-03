@@ -93,6 +93,7 @@ namespace CyclopeEditor {
 	void EditorLayer::OnAttach() {
 		s_EditorLayer = this;
 
+#pragma region Test
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
 
@@ -128,10 +129,14 @@ namespace CyclopeEditor {
 		auto f = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
 		//v1->SetBufferLayout(BufferLayout::Standard());
 		vert2 = VertexArray::Create(f, IndexBuffer::Create(&ind[0], ind.size()));
+#pragma endregion
 
 		sh2 = Shader::Create("./Resources/shaders/billboard.glsl");
 		BillboardTex = Texture2D::Create("./Resources/textures/Billboards/DirectionalLight.png");
 		
+		playButtonTexture = Texture2D::Create("./Resources/textures/Toolbar/Play.png");
+		stopButtonTexture = Texture2D::Create("./Resources/textures/Toolbar/Pause.png");
+
 		FramebufferSpecification fbs;
 		fbs.width = 800;
 		fbs.height = 600;
@@ -170,9 +175,6 @@ namespace CyclopeEditor {
 		e.AddComponent<NativeScriptComponent>();
 		e.GetComponent<TransformComponent>().position = Vector3(6.9f, 0.0f, .12f);
 #endif
-		//auto f = nativeScriptRegistry.at(hash);
-		//f(e);
-		//auto hash = std::hash<std::string>{}(nativeScriptNamesList[1]);
 		DisplayComponent = loader.Load();
 
 		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
@@ -181,7 +183,10 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OnUpdate(float dt) {
 		CYCLOPE_PROFILE_FUNCTION();
-		activeScene->Update(dt);
+		
+		if(sceneState == SceneState::Play)
+			activeScene->Update(dt);
+
 		svc.Update(dt);
 		{
 			CYCLOPE_PROFILE_SCOPE("Framebuffer Scope"); //Example Usage
@@ -375,6 +380,7 @@ namespace CyclopeEditor {
 				}
 				ImGui::EndMenu();
 			}
+			DrawToolbar();
 			ImGui::EndMainMenuBar();
 		}
 
@@ -383,7 +389,7 @@ namespace CyclopeEditor {
 		DrawInspectorPanel();
 		DrawDebugPanel();
 		contentBrowser.Draw();
-
+		//DrawToolbar();
 	}
 
 	void EditorLayer::OnDetach() {
@@ -391,7 +397,9 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
-		activeScene->OnEvent(e);
+		if(sceneState == SceneState::Play)
+			activeScene->OnEvent(e);
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditorLayer::OnKeyPressedEvent));
 	}
@@ -408,7 +416,7 @@ namespace CyclopeEditor {
 			if (control)
 				SerializeScene();
 			else if(!svcControlled)
-				m_GizmoType = ImGuizmo::SCALE;
+				gizmoType = ImGuizmo::SCALE;
 			break;
 		case Key::O:
 			if(control)
@@ -422,20 +430,16 @@ namespace CyclopeEditor {
 			break;
 		case Key::G:
 			if (!svcControlled)
-				m_GizmoType = ImGuizmo::TRANSLATE;
+				gizmoType = ImGuizmo::TRANSLATE;
 			break;
 		case Key::R:
 			if (!svcControlled)
-				m_GizmoType = ImGuizmo::ROTATE;
+				gizmoType = ImGuizmo::ROTATE;
 			break;
 		case Key::TAB:
 			if (!svcControlled)
-				m_GizmoType = -1;
+				gizmoType = -1;
 			break;
-		}
-
-		if (e.GetKeyCode() == Key::P) {
-			activeScene->m_playing = !activeScene->m_playing;
 		}
 
 		return true;
@@ -451,12 +455,14 @@ namespace CyclopeEditor {
 		if (Project::Load(path)) {
 			auto& config = Project::GetActive()->GetConfig();
 			auto& scenePath = Project::GetActive()->GetProjectDirectory() / config.assetDirectory / config.startScene;
+			//TODO: Add LoadDLL here
 			OpenScene(scenePath.string());
 		}
 	}
 
 	void EditorLayer::SaveProject()
 	{
+		//TODO: implement saving projects
 	}
 
 	void EditorLayer::SerializeScene() {
@@ -476,10 +482,13 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		activeScene = MakeShared<Scene>();
+		if (sceneState != SceneState::Edit)
+			sceneState = SceneState::Edit;
+		editorScene = MakeShared<Scene>();
 		selectedEntity = {};
-		SceneSerializer serializer(activeScene);
+		SceneSerializer serializer(editorScene);
 		serializer.Deserialize(path.string());
+		activeScene = editorScene;
 	}
 
 	void EditorLayer::DrawViewportPanel() {
@@ -500,7 +509,7 @@ namespace CyclopeEditor {
 		}
 
 		//Gizmos
-		if (selectedEntity && m_GizmoType != -1 && !svc.IsControlling()) {
+		if (selectedEntity && gizmoType != -1 && !svc.IsControlling()) {
 			ImGuizmo::SetOrthographic(true);
 			ImGuizmo::SetDrawlist();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
@@ -511,12 +520,12 @@ namespace CyclopeEditor {
 			//Snap
 			bool snap = Input::KeyDown(Key::LEFT_SHIFT);
 			float snapAmount = 0.5f;
-			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+			if (gizmoType == ImGuizmo::OPERATION::ROTATE)
 				snapAmount = 10.0f;
 			float snapValues[3] = { snapAmount, snapAmount, snapAmount };
 
 			ImGuizmo::Manipulate(glm::value_ptr(svc.GetCamera().GetViewMatrix()), glm::value_ptr(svc.GetCamera().GetProjectionMatrix()), 
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+				(ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
 			
 			if (ImGuizmo::IsUsing()) {
 				
@@ -843,6 +852,27 @@ namespace CyclopeEditor {
 		ImGui::Checkbox("Grid", &renderGrid);
 		ImGui::End();
 
+	}
+
+	void EditorLayer::DrawToolbar()
+	{
+		Shared<Texture2D> icon = sceneState == SceneState::Edit ? playButtonTexture : stopButtonTexture;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SameLine((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+		if (ImGui::ImageButton((void*)(intptr_t)icon->GetTexture(), ImVec2(size, size), { 0, 1 }, { 1, 0 })) {
+			if (sceneState == SceneState::Edit) {
+				sceneState = SceneState::Play;
+				selectedEntity = {};
+				activeScene = Scene::Copy(editorScene);
+			}
+			else if (sceneState == SceneState::Play) {
+				sceneState = SceneState::Edit;
+				selectedEntity = {};
+				activeScene = editorScene;
+			}
+		}
+		ImGui::PopStyleColor();
 	}
 
 	void EditorLayer::DisplayAddCustomComponentEntry(const std::string& entryName) {

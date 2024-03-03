@@ -240,7 +240,7 @@ namespace Cyclope {
 				entities.end());
 			for (auto entity = entitiesRev.rbegin(); entity != entitiesRev.rend(); ++entity) {
 				uint64_t uuid = (*entity)["Entity"].as<uint64_t>();
-				
+
 				std::string name;
 				auto tagComponent = (*entity)["TagComponent"];
 				if (tagComponent) {
@@ -310,6 +310,7 @@ namespace Cyclope {
 					deserializedEntity.GetComponent<NativeScriptComponent>().instance = nullptr;
 				}
 
+				//Custom Components
 				for (auto& _name : componentNamesList()) {
 					auto customComponent = (*entity)[_name];
 					if (customComponent) {

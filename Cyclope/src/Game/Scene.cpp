@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Components.h"
+#include "NativeScripting/Scripting.h"
 
 namespace Cyclope {
 
@@ -13,39 +14,81 @@ namespace Cyclope {
 
 	}
 
+	template<typename Component>
+	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap) {
+		auto view = src.view<Component>();
+		for (auto e : view) {
+			UUID uuid = src.get<IDComponent>(e).id;
+			entt::entity id = enttMap.at(uuid);
+
+			auto& component = src.get<Component>(e);
+			dst.emplace_or_replace<Component>(id, component);
+		}
+	}
+
+	Shared<Scene> Scene::Copy(Shared<Scene> other)
+	{
+		Shared<Scene> newScene = MakeShared<Scene>();
+
+		auto& src = other->m_Registry;
+		auto& dest = newScene->m_Registry;
+
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		auto idView = src.view<IDComponent>();
+		//TODO: Fix reverse order loading
+		for (auto e : idView) {
+			UUID uuid = src.get<IDComponent>(e).id;
+			const auto& name = src.get<TagComponent>(e).tag;
+			Entity entity = newScene->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = entity;
+		}
+
+		CopyComponent<TransformComponent>(dest, src, enttMap);
+		CopyComponent<CameraComponent>(dest, src, enttMap);
+		CopyComponent<DirectionalLightComponent>(dest, src, enttMap);
+		CopyComponent<PointLightComponent>(dest, src, enttMap);
+		CopyComponent<SpotLightComponent>(dest, src, enttMap);
+		CopyComponent<ModelRendererComponent>(dest, src, enttMap);
+		CopyComponent<NativeScriptComponent>(dest, src, enttMap);
+
+		for (auto& name : componentNamesList()) {
+			auto func = componentRegistry().at(std::hash<std::string>{}(name));
+			func.CopyComponent(dest, src, enttMap);
+		}
+		
+		return newScene;
+	}
+
 	void Scene::Update(float dt) {
 		
-		if (m_playing) {
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
-				//TODO: Revisit this: Should it be allowed to have an unbound NSC?
-				if (script.InstantiateScript == nullptr)
-					return;
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
+			//TODO: Revisit this: Should it be allowed to have an unbound NSC?
+			if (script.InstantiateScript == nullptr)
+				return;
 
-				if (!script.instance) {
-					script.instance = script.InstantiateScript();
-					script.instance->m_entity = Entity{ entity, this };
-					script.instance->OnCreate();
-				}
+			if (!script.instance) {
+				script.instance = script.InstantiateScript();
+				script.instance->m_entity = Entity{ entity, this };
+				script.instance->OnCreate();
+			}
 
-				script.instance->OnUpdate(dt);
+			script.instance->OnUpdate(dt);
 
-				});
-		}
+			});
 	
 	}
 
 	void Scene::OnEvent(Event& e) {
-		if (m_playing) {
-			m_Registry.view<NativeScriptComponent>().each([&](auto entity, NativeScriptComponent& script) {
-				if (script.InstantiateScript == nullptr)
-					return;
-				//TODO: Revisit this; just a test for now!
-				script.instance->OnEvent(e);
-				if (e.Handled)
-					return;
+		m_Registry.view<NativeScriptComponent>().each([&](auto entity, NativeScriptComponent& script) {
+			if (script.InstantiateScript == nullptr)
+				return;
+			//TODO: Revisit this; just a test for now!
+			script.instance->OnEvent(e);
+			if (e.Handled)
+				return;
 
-				});
-		}
+			});
 	}
 
 	void Scene::Render() {

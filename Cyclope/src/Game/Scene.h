@@ -14,9 +14,10 @@ namespace Cyclope {
 	class CYCLOPE_API Scene {
 
 	public:
-		bool m_playing = false; // temporary until scene playing is added
 		Scene();
 		~Scene();
+
+		static Shared<Scene> Copy(Shared<Scene> other);
 
 		void Update(float dt);
 		void OnEvent(Event& e);

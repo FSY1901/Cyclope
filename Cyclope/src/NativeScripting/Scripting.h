@@ -5,11 +5,13 @@
 
 namespace Cyclope {
 	using AddComponentFunction = void(*)(Entity& e);
+	using CopyComponentFunction = void(*)(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap);
 	using HasComponentFunction = bool(*)(Entity& e);
 	using RemoveComponentFunction = void(*)(Entity& e);
 	using AddNativeScriptFunction = void(*)(Entity& e);
 	using ComponentFunctions = struct { 
 		AddComponentFunction AddComponent; 
+		CopyComponentFunction CopyComponent;
 		HasComponentFunction HasComponent;
 		RemoveComponentFunction RemoveComponent;
 	};
@@ -23,10 +25,10 @@ namespace Cyclope {
 	extern CYCLOPE_API ComponentNamesList& componentNamesList();
 	extern CYCLOPE_API NativeScriptNamesList& nativeScriptNamesList(); //= std::vector<std::string>{"None"};
 
-	inline uint8_t RegisterComponent(const std::string& name, AddComponentFunction aFunc, HasComponentFunction hFunc, RemoveComponentFunction rFunc) {
+	inline uint8_t RegisterComponent(const std::string& name, AddComponentFunction aFunc, CopyComponentFunction cFunc, HasComponentFunction hFunc, RemoveComponentFunction rFunc) {
 		componentNamesList().push_back(name);
 		size_t tag = std::hash<std::string>()(name);
-		return componentRegistry().insert(ComponentRegistry::value_type({tag, {aFunc, hFunc, rFunc}})).second;
+		return componentRegistry().insert(ComponentRegistry::value_type({tag, {aFunc, cFunc, hFunc, rFunc}})).second;
 	}
 
 	inline uint8_t RegisterNativeScript(const std::string& name, AddNativeScriptFunction func) {
@@ -42,6 +44,15 @@ namespace Cyclope {
 		{ Cyclope::RegisterComponent(								\
 			(#TYPE),												\
 			[](Cyclope::Entity& e){e.AddComponent<TYPE>();},		\
+			[](entt::registry& dst, entt::registry& src, const std::unordered_map<Cyclope::UUID, entt::entity>& enttMap){ \
+			auto view = src.view<TYPE>();		\
+			for (auto e : view) {		\
+			Cyclope::UUID uuid = src.get<Cyclope::IDComponent>(e).id;						\
+			entt::entity id = enttMap.at(uuid);	\
+			auto& component = src.get<TYPE>(e);	\
+			dst.emplace_or_replace<TYPE>(id, component);\
+			}\
+			},		\
 			[](Cyclope::Entity& e){return e.HasComponent<TYPE>();},	\
 			[](Cyclope::Entity& e){e.RemoveComponent<TYPE>();})		\
 		};															\

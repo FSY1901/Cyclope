@@ -5,7 +5,7 @@
 
 namespace Cyclope {
 
-	class UUID {
+	class CYCLOPE_API UUID {
 
 	public:
 		UUID();
@@ -23,7 +23,7 @@ namespace Cyclope {
 namespace std {
 
 	template<>
-	struct hash<Cyclope::UUID> {
+	struct CYCLOPE_API hash<Cyclope::UUID> {
 		std::size_t operator()(const Cyclope::UUID& uuid) const {
 			return hash<uint64_t>()((uint64_t)uuid);
 		}

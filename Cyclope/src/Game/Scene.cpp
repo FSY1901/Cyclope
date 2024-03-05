@@ -62,6 +62,12 @@ namespace Cyclope {
 
 	void Scene::Update(float dt) {
 		
+		m_Registry.view<CameraComponent>().each([=](auto entity, CameraComponent& camera) {
+			//Perspective Matrix must be set by Editor/Game because it depends on Aspect Ratio
+			//TODO: maybe find solution to this so it happens automatically
+			camera.camera.RecalculateViewMatrix(Entity{entity, this}.GetComponent<TransformComponent>());
+			});
+
 		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& script) {
 			//TODO: Revisit this: Should it be allowed to have an unbound NSC?
 			if (script.InstantiateScript == nullptr)

@@ -1,10 +1,21 @@
 Scene: Name
 Entities:
+  - Entity: 6297431794250944484
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      zNear: 0.100000001
+      zFar: 1000
+      fov: 45
   - Entity: 11012900838961582922
     TagComponent:
       Tag: Spot Light
     TransformComponent:
-      Position: [1.69009387, 2.37456608, 7.07637119]
+      Position: [1.69009387, 2.37456608, -3.72000003]
       Rotation: [1, 0, 0, 0]
       Scale: [1, 1, 1]
     PointLightComponent:
@@ -18,7 +29,7 @@ Entities:
     TagComponent:
       Tag: A
     TransformComponent:
-      Position: [2.4000001, 3.20000005, 0.419999987]
+      Position: [0, 0, -7]
       Rotation: [1, 0, 0, 0]
       Scale: [1, 1, 1]
     ModelRendererComponent:

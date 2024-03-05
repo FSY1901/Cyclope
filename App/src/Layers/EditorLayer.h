@@ -38,6 +38,9 @@ namespace CyclopeEditor {
 		Shared<Texture2D> BillboardTex;
 		
 		SceneViewCamera svc;
+		Camera* activeCamera;//TODO: should this be in Scene?
+		Entity cameraEntity;
+		float rotY = 0.0f;
 
 		Mesh m;
 		Shared<Batch> batch;

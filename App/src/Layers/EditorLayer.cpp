@@ -179,15 +179,20 @@ namespace CyclopeEditor {
 
 		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
 		contentBrowser.Init();
+
+		activeCamera = &svc.GetCamera();
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
 		CYCLOPE_PROFILE_FUNCTION();
 		
-		if(sceneState == SceneState::Play)
+		if (sceneState == SceneState::Play) {
 			activeScene->Update(dt);
+			activeCamera->SetPerspectiveMatrix((float)(panelSize.x / panelSize.y));
+		}
+		else if(sceneState == SceneState::Edit)
+			svc.Update(dt);
 
-		svc.Update(dt);
 		{
 			CYCLOPE_PROFILE_SCOPE("Framebuffer Scope"); //Example Usage
 			RenderCommands::Enable(RenderingOperation::DepthTest);
@@ -207,7 +212,7 @@ namespace CyclopeEditor {
 		RenderCommands::Clear();
 		RenderCommands::Enable(RenderingOperation::DepthTest);
 
-		Renderer::BeginScene(activeScene, svc.GetCamera());
+		Renderer::BeginScene(activeScene, activeCamera);
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
@@ -238,7 +243,10 @@ namespace CyclopeEditor {
 						shader->SetMat4("transform", transform);
 						//Dependent on the shader
 						shader->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(transform))));
-						shader->SetVec3("viewPos", svc.transform.position);
+						if(sceneState == SceneState::Edit)
+							shader->SetVec3("viewPos", svc.transform.position);
+						else if(sceneState == SceneState::Play)
+							shader->SetVec3("viewPos", svc.transform.position);//TODO find camera position
 						shader->SetVec3("material.diffuse", modelComponent.diffuse);
 						shader->SetVec3("material.specular", modelComponent.specular);
 						shader->SetFloat("material.shininess", modelComponent.shininess);
@@ -248,62 +256,64 @@ namespace CyclopeEditor {
 				}
 				});
 
-			activeScene->ForEach([&](Entity e) {
-				if (e.HasComponent<DirectionalLightComponent>()) {
-					auto& tc = e.GetComponent<TransformComponent>();
-					sh2->Bind();
-					sh2->SetVec3("pos", tc.position);
-					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
-					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
-					Vector3 up = glm::normalize(glm::cross(right, front));
-					sh2->SetVec3("camRight", right);
-					sh2->SetVec3("camUp", up);
-					sh2->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
-					//tex->Bind();
-					//tex2->Bind(1);
-					BillboardTex->Bind();
-					Renderer::Submit(vert2, sh2);
-					BillboardTex->Unbind();
-				}
-				});
+			if (sceneState == SceneState::Edit) {
+				activeScene->ForEach([&](Entity e) {
+					if (e.HasComponent<DirectionalLightComponent>()) {
+						auto& tc = e.GetComponent<TransformComponent>();
+						sh2->Bind();
+						sh2->SetVec3("pos", tc.position);
+						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+						Vector3 up = glm::normalize(glm::cross(right, front));
+						sh2->SetVec3("camRight", right);
+						sh2->SetVec3("camUp", up);
+						sh2->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
+						//tex->Bind();
+						//tex2->Bind(1);
+						BillboardTex->Bind();
+						Renderer::Submit(vert2, sh2);
+						BillboardTex->Unbind();
+					}
+					});
 
-			activeScene->ForEach([&](Entity e) {
-				if (e.HasComponent<PointLightComponent>()) {
-					auto& tc = e.GetComponent<TransformComponent>();
-					sh2->Bind();
-					sh2->SetVec3("pos", tc.position);
-					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
-					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
-					Vector3 up = glm::normalize(glm::cross(right, front));
-					sh2->SetVec3("camRight", right);
-					sh2->SetVec3("camUp", up);
-					sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
-					//tex->Bind();
-					//tex2->Bind(1);
-					BillboardTex->Bind();
-					Renderer::Submit(vert2, sh2);
-					BillboardTex->Unbind();
-				}
-				});
+				activeScene->ForEach([&](Entity e) {
+					if (e.HasComponent<PointLightComponent>()) {
+						auto& tc = e.GetComponent<TransformComponent>();
+						sh2->Bind();
+						sh2->SetVec3("pos", tc.position);
+						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+						Vector3 up = glm::normalize(glm::cross(right, front));
+						sh2->SetVec3("camRight", right);
+						sh2->SetVec3("camUp", up);
+						sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
+						//tex->Bind();
+						//tex2->Bind(1);
+						BillboardTex->Bind();
+						Renderer::Submit(vert2, sh2);
+						BillboardTex->Unbind();
+					}
+					});
 
-			activeScene->ForEach([&](Entity e) {
-				if (e.HasComponent<SpotLightComponent>()) {
-					auto& tc = e.GetComponent<TransformComponent>();
-					sh2->Bind();
-					sh2->SetVec3("pos", tc.position);
-					Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
-					Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
-					Vector3 up = glm::normalize(glm::cross(right, front));
-					sh2->SetVec3("camRight", right);
-					sh2->SetVec3("camUp", up);
-					sh2->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
-					//tex->Bind();
-					//tex2->Bind(1);
-					BillboardTex->Bind();
-					Renderer::Submit(vert2, sh2);
-					BillboardTex->Unbind();
-				}
-				});
+				activeScene->ForEach([&](Entity e) {
+					if (e.HasComponent<SpotLightComponent>()) {
+						auto& tc = e.GetComponent<TransformComponent>();
+						sh2->Bind();
+						sh2->SetVec3("pos", tc.position);
+						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
+						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
+						Vector3 up = glm::normalize(glm::cross(right, front));
+						sh2->SetVec3("camRight", right);
+						sh2->SetVec3("camUp", up);
+						sh2->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
+						//tex->Bind();
+						//tex2->Bind(1);
+						BillboardTex->Bind();
+						Renderer::Submit(vert2, sh2);
+						BillboardTex->Unbind();
+					}
+					});
+			}
 		}
 		
 		/*tex->Bind();
@@ -312,7 +322,7 @@ namespace CyclopeEditor {
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Grid Scope");
-			if (renderGrid)
+			if (renderGrid && sceneState == SceneState::Edit)
 				grid.Render(svc);
 		}
 
@@ -389,7 +399,6 @@ namespace CyclopeEditor {
 		DrawInspectorPanel();
 		DrawDebugPanel();
 		contentBrowser.Draw();
-		//DrawToolbar();
 	}
 
 	void EditorLayer::OnDetach() {
@@ -408,38 +417,40 @@ namespace CyclopeEditor {
 		if (e.IsRepeat())
 			return false;
 
-		bool control = Input::KeyDown(Key::LEFT_CONTROL) || Input::KeyDown (Key::RIGHT_CONTROL);
-		bool svcControlled = svc.IsControlling();
-		//bool shift = Input::KeyDown(Key::LEFT_SHIFT) || Input::KeyDown(Key::RIGHT_SHIFT);
-		switch (e.GetKeyCode()) {
-		case Key::S:
-			if (control)
-				SerializeScene();
-			else if(!svcControlled)
-				gizmoType = ImGuizmo::SCALE;
-			break;
-		case Key::O:
-			if(control)
-				DeserializeScene();
-			break;
-		case Key::N:
-			if (control) {
-				activeScene = MakeShared<Scene>();
-				selectedEntity = {};
+		if (sceneState == SceneState::Edit) {
+			bool control = Input::KeyDown(Key::LEFT_CONTROL) || Input::KeyDown(Key::RIGHT_CONTROL);
+			bool svcControlled = svc.IsControlling();
+			//bool shift = Input::KeyDown(Key::LEFT_SHIFT) || Input::KeyDown(Key::RIGHT_SHIFT);
+			switch (e.GetKeyCode()) {
+			case Key::S:
+				if (control)
+					SerializeScene();
+				else if (!svcControlled)
+					gizmoType = ImGuizmo::SCALE;
+				break;
+			case Key::O:
+				if (control)
+					DeserializeScene();
+				break;
+			case Key::N:
+				if (control) {
+					activeScene = MakeShared<Scene>();
+					selectedEntity = {};
+				}
+				break;
+			case Key::G:
+				if (!svcControlled)
+					gizmoType = ImGuizmo::TRANSLATE;
+				break;
+			case Key::R:
+				if (!svcControlled)
+					gizmoType = ImGuizmo::ROTATE;
+				break;
+			case Key::TAB:
+				if (!svcControlled)
+					gizmoType = -1;
+				break;
 			}
-			break;
-		case Key::G:
-			if (!svcControlled)
-				gizmoType = ImGuizmo::TRANSLATE;
-			break;
-		case Key::R:
-			if (!svcControlled)
-				gizmoType = ImGuizmo::ROTATE;
-			break;
-		case Key::TAB:
-			if (!svcControlled)
-				gizmoType = -1;
-			break;
 		}
 
 		return true;
@@ -509,42 +520,44 @@ namespace CyclopeEditor {
 		}
 
 		//Gizmos
-		if (selectedEntity && gizmoType != -1 && !svc.IsControlling()) {
-			ImGuizmo::SetOrthographic(true);
-			ImGuizmo::SetDrawlist();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+		if (sceneState == SceneState::Edit) {
+			if (selectedEntity && gizmoType != -1 && !svc.IsControlling()) {
+				ImGuizmo::SetOrthographic(true);
+				ImGuizmo::SetDrawlist();
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-			auto& tc = selectedEntity.Transform();
-			Matrix4 transform = tc.GetTransform();
+				auto& tc = selectedEntity.Transform();
+				Matrix4 transform = tc.GetTransform();
 
-			//Snap
-			bool snap = Input::KeyDown(Key::LEFT_SHIFT);
-			float snapAmount = 0.5f;
-			if (gizmoType == ImGuizmo::OPERATION::ROTATE)
-				snapAmount = 10.0f;
-			float snapValues[3] = { snapAmount, snapAmount, snapAmount };
+				//Snap
+				bool snap = Input::KeyDown(Key::LEFT_SHIFT);
+				float snapAmount = 0.5f;
+				if (gizmoType == ImGuizmo::OPERATION::ROTATE)
+					snapAmount = 10.0f;
+				float snapValues[3] = { snapAmount, snapAmount, snapAmount };
 
-			ImGuizmo::Manipulate(glm::value_ptr(svc.GetCamera().GetViewMatrix()), glm::value_ptr(svc.GetCamera().GetProjectionMatrix()), 
-				(ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
-			
-			if (ImGuizmo::IsUsing()) {
-				
-				Vector3 position, rotation, scale;
-				DecomposeTransform(transform, position, rotation, scale);
-				tc.position = position;
-				Vector3 deltaRotation = glm::degrees(rotation) - ToEulerAngles(tc.rotation);
-				Vector3 rot = ToEulerAngles(tc.rotation) + deltaRotation;
-				tc.rotation = ToQuaternion(rot);
-				tc.scale = scale;
+				ImGuizmo::Manipulate(glm::value_ptr(svc.GetCamera().GetViewMatrix()), glm::value_ptr(svc.GetCamera().GetProjectionMatrix()),
+					(ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+
+				if (ImGuizmo::IsUsing()) {
+
+					Vector3 position, rotation, scale;
+					DecomposeTransform(transform, position, rotation, scale);
+					tc.position = position;
+					Vector3 deltaRotation = glm::degrees(rotation) - ToEulerAngles(tc.rotation);
+					Vector3 rot = ToEulerAngles(tc.rotation) + deltaRotation;
+					tc.rotation = ToQuaternion(rot);
+					tc.scale = scale;
+
+				}
 
 			}
 
+			if (ImGui::IsWindowHovered())
+				svc.sceneWindowHovered = true;
+			else
+				svc.sceneWindowHovered = false;
 		}
-
-		if (ImGui::IsWindowHovered())
-			svc.sceneWindowHovered = true;
-		else
-			svc.sceneWindowHovered = false;
 
 		ImGui::End();
 
@@ -581,6 +594,10 @@ namespace CyclopeEditor {
 		{
 			if (ImGui::MenuItem("Create Entity"))
 				activeScene->CreateEntity();
+			else if (ImGui::MenuItem("Create Camera")) {
+				auto& e = activeScene->CreateEntity("Create Camera");
+				e.AddComponent<CameraComponent>();
+			}
 			else if (ImGui::BeginMenu("Create Light")) {
 				if (ImGui::MenuItem("Directional Light")) {
 					auto& e = activeScene->CreateEntity("Directional Light");
@@ -726,7 +743,18 @@ namespace CyclopeEditor {
 
 			DrawComponent<CameraComponent>("Camera", selectedEntity, [](auto& component)
 				{
-
+					ImGui::PushItemWidth(170);
+					float* val = &component.camera.zNear;
+					ImGui::DragFloat("Z-Near", val, 0.001f, 0.0f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(170);
+					val = &component.camera.zFar;
+					ImGui::DragFloat("Z-Far", val, 1.0f, 0.0f);
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(170);
+					val = &component.camera.fov;
+					ImGui::DragFloat("FOV", val, 0.1f, 0.0f, 180.0f);
+					ImGui::PopItemWidth();
 				});
 
 			DrawComponent<DirectionalLightComponent>("Directional Light", selectedEntity, [](auto& component)
@@ -865,11 +893,18 @@ namespace CyclopeEditor {
 				sceneState = SceneState::Play;
 				selectedEntity = {};
 				activeScene = Scene::Copy(editorScene);
+				auto& view = activeScene->View<CameraComponent>();
+				for (auto e : view) {
+					cameraEntity = Entity{ e, activeScene.get()};
+					activeCamera = &cameraEntity.GetComponent<CameraComponent>().camera;
+					break;
+				}
 			}
 			else if (sceneState == SceneState::Play) {
 				sceneState = SceneState::Edit;
 				selectedEntity = {};
 				activeScene = editorScene;
+				activeCamera = &svc.GetCamera();
 			}
 		}
 		ImGui::PopStyleColor();

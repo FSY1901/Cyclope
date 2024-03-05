@@ -1,5 +1,16 @@
 Scene: Name
 Entities:
+  - Entity: 9512991495502351373
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Position: [0, 0, 6.03987932]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      zNear: 0.100000001
+      zFar: 1000
+      fov: 45
   - Entity: 13473253883767362038
     TagComponent:
       Tag: Directional Light

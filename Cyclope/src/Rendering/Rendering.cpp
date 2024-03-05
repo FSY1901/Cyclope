@@ -69,8 +69,8 @@ namespace Cyclope {
 	RendererData Renderer::s_data = RendererData();
 	RendererStats Renderer::s_stats = RendererStats();
 
-	void Renderer::BeginScene(Shared<Scene> scene, const Camera& camera) {
-		s_data.viewProjectionMatrix = camera.GetViewProjectionMatrix();
+	void Renderer::BeginScene(Shared<Scene> scene, const Camera* camera) {
+		s_data.viewProjectionMatrix = camera->GetViewProjectionMatrix();
 		s_data.scene = scene;
 		s_stats.drawCalls = 0;
 		s_stats.renderedVertices = 0;

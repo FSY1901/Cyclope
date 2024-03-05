@@ -142,6 +142,16 @@ namespace Cyclope {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CameraComponent>()) {
+			out << YAML::Key << "CameraComponent";
+			out << YAML::BeginMap;
+			auto& camera = entity.GetComponent<CameraComponent>().camera;
+			out << YAML::Key << "zNear" << YAML::Value << camera.zNear;
+			out << YAML::Key << "zFar" << YAML::Value << camera.zFar;
+			out << YAML::Key << "fov" << YAML::Value << camera.fov;
+			out << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<DirectionalLightComponent>()) {
 			out << YAML::Key << "DirectionalLightComponent";
 			out << YAML::BeginMap;
@@ -265,6 +275,14 @@ namespace Cyclope {
 					model.diffuse = meshRendererComponent["Diffuse"].as<Vector3>();
 					model.specular = meshRendererComponent["Specular"].as<Vector3>();
 					model.shininess = meshRendererComponent["Shininess"].as<float>();
+				}
+
+				auto cameraComponent = (*entity)["CameraComponent"];
+				if (cameraComponent) {
+					auto& camera = deserializedEntity.AddComponent<CameraComponent>().camera;
+					camera.zNear = cameraComponent["zNear"].as<float>();
+					camera.zFar = cameraComponent["zFar"].as<float>();
+					camera.fov = cameraComponent["fov"].as<float>();
 				}
 
 				auto directionalLightComponent = (*entity)["DirectionalLightComponent"];

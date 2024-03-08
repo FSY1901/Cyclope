@@ -167,6 +167,7 @@ namespace CyclopeEditor {
 		grid = Grid();
 
 		activeScene = MakeShared<Scene>();
+		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
 
 		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
 #if 0
@@ -177,7 +178,6 @@ namespace CyclopeEditor {
 #endif
 		DisplayComponent = loader.Load();
 
-		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
 		contentBrowser.Init();
 
 		activeCamera = &svc.GetCamera();
@@ -188,7 +188,10 @@ namespace CyclopeEditor {
 		
 		if (sceneState == SceneState::Play) {
 			activeScene->Update(dt);
-			activeCamera->SetPerspectiveMatrix((float)(panelSize.x / panelSize.y));
+			if (activeCamera->GetProjectionType() == ProjectionType::Perspective)
+				activeCamera->SetPerspectiveMatrix((float)(panelSize.x / panelSize.y));
+			else
+				activeCamera->SetOrthographicMatrix(0.0f, (float)(panelSize.x / panelSize.y), 0.0f, 1.0f);
 		}
 		else if(sceneState == SceneState::Edit)
 			svc.Update(dt);
@@ -246,13 +249,14 @@ namespace CyclopeEditor {
 						if(sceneState == SceneState::Edit)
 							shader->SetVec3("viewPos", svc.transform.position);
 						else if(sceneState == SceneState::Play)
-							shader->SetVec3("viewPos", svc.transform.position);//TODO find camera position
+							shader->SetVec3("viewPos", cameraEntity.GetComponent<TransformComponent>().position);
 						shader->SetVec3("material.diffuse", modelComponent.diffuse);
 						shader->SetVec3("material.specular", modelComponent.specular);
 						shader->SetFloat("material.shininess", modelComponent.shininess);
-						modelComponent.model->Draw(shader);
+						if (modelComponent.model && modelComponent.shader) {
+							modelComponent.model->Draw(shader);
+						}
 					}
-					//model.Draw(sh);
 				}
 				});
 
@@ -709,7 +713,8 @@ namespace CyclopeEditor {
 					ImGui::Text("Material Properties:");
 					ImGui::Text("Shader:");
 					ImGui::SameLine();
-					ImGui::TextWrapped(component.shader->GetPath().c_str());
+					if(component.shader)
+						ImGui::TextWrapped(component.shader->GetPath().c_str());
 					if (ImGui::Button("Change Shader")) {
 						auto& path = FileDialog::GetRelativeFilePath("Shader File (*.glsl)\0*.glsl\0");
 						if (path != "") {
@@ -731,7 +736,8 @@ namespace CyclopeEditor {
 					ImGui::PopItemWidth();
 					ImGui::Text("Model:");
 					ImGui::SameLine();
-					ImGui::TextWrapped(component.model->GetPath().c_str());
+					if(component.model)
+						ImGui::TextWrapped(component.model->GetPath().c_str());
 					if (ImGui::Button("Change Model")) {
 						auto& path = FileDialog::GetRelativeFilePath("obj File (*.obj)\0*.obj\0");
 						if (path != "") {
@@ -755,6 +761,30 @@ namespace CyclopeEditor {
 					val = &component.camera.fov;
 					ImGui::DragFloat("FOV", val, 0.1f, 0.0f, 180.0f);
 					ImGui::PopItemWidth();
+
+					ImGuiComboFlags flags = 0;
+					int idx = component.camera.GetProjectionType() == ProjectionType::Perspective ? 0 : 1;
+					std::string names[2] = { "Perspective", "Orthographic" };
+					const char* combo_preview_value = names[idx].c_str();
+					ImGui::SetNextItemWidth(170);
+					if (ImGui::BeginCombo("Projection Type", combo_preview_value, flags))
+					{
+						for (int n = 0; n < 2; n++)
+						{
+							const bool is_selected = (idx == n);
+							if (ImGui::Selectable(names[n].c_str(), is_selected)) {
+								if (n == 0)
+									component.camera.SetProjectionType(ProjectionType::Perspective);
+								else 
+									component.camera.SetProjectionType(ProjectionType::Orthographic);
+							}
+
+							// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndCombo();
+					}
 				});
 
 			DrawComponent<DirectionalLightComponent>("Directional Light", selectedEntity, [](auto& component)

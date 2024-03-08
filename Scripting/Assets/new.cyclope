@@ -11,6 +11,7 @@ Entities:
       zNear: 0.100000001
       zFar: 1000
       fov: 45
+      Projection: 0
   - Entity: 11012900838961582922
     TagComponent:
       Tag: Spot Light
@@ -38,5 +39,3 @@ Entities:
       Diffuse: [1, 1, 1]
       Specular: [0.5, 0.5, 0.5]
       Shininess: 32
-    PlayerComponent:
-      {}

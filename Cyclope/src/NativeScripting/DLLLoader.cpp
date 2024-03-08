@@ -1,11 +1,15 @@
 #include "Cpch.h"
 #include "DLLLoader.h"
+#include "Project/Project.h"
 
 namespace Cyclope {
 
 	void DLLLoader::LoadDLL(ComponentRegistry& components, ComponentNamesList& componentNames, NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames) {
-		//TODO: Make relative to project directory
-		hDLL = LoadLibrary(L"D:\\VS_Projects\\Cyclope\\Scripting\\bin\\Scripting.dll");
+		auto& project = Project::GetActive();
+		std::string s = (project->GetProjectDirectory() / project->GetConfig().scriptPath).string().c_str();
+		std::wstring stemp = std::wstring(s.begin(), s.end());
+		LPCWSTR sw = stemp.c_str();
+		hDLL = LoadLibrary(sw);
 
 		if (hDLL != NULL)
 		{

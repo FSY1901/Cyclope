@@ -1,5 +1,5 @@
 Project:
   Name: New Project
   Asset Directory: "Assets"
-  Scripts Path: "bin/Scripting.dll"
+  Scripts Path: "bin\\Scripting.dll"
   Start Scene: "new.cyclope"

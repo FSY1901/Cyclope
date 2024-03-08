@@ -31,6 +31,7 @@ namespace Cyclope {
 		const glm::mat4& GetViewMatrix() const { return m_viewMatrix; }
 		const glm::mat4& GetViewProjectionMatrix() const { return m_viewProjectionMatrix; }
 
+		void SetProjectionType(ProjectionType projection) { m_projection = projection; }
 		ProjectionType GetProjectionType() { return m_projection; }
 
 	private:

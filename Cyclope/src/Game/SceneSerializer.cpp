@@ -149,6 +149,7 @@ namespace Cyclope {
 			out << YAML::Key << "zNear" << YAML::Value << camera.zNear;
 			out << YAML::Key << "zFar" << YAML::Value << camera.zFar;
 			out << YAML::Key << "fov" << YAML::Value << camera.fov;
+			out << YAML::Key << "Projection" << YAML::Value << (int)camera.GetProjectionType();
 			out << YAML::EndMap;
 		}
 
@@ -283,6 +284,7 @@ namespace Cyclope {
 					camera.zNear = cameraComponent["zNear"].as<float>();
 					camera.zFar = cameraComponent["zFar"].as<float>();
 					camera.fov = cameraComponent["fov"].as<float>();
+					camera.SetProjectionType((ProjectionType)cameraComponent["Projection"].as<int>());
 				}
 
 				auto directionalLightComponent = (*entity)["DirectionalLightComponent"];

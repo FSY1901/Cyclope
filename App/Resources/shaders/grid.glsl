@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 450 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;
 
@@ -36,7 +36,7 @@ void main() {
 
 #type fragment
 
-#version 330 core
+#version 450 core
 
 in float near;
 in float far;
@@ -45,7 +45,8 @@ in vec3 farPoint; // farPoint calculated in vertex shader
 in mat4 fragView;
 in mat4 fragProj;
 
-out vec4 outColor;
+layout(location = 0) out vec4 outColor;
+layout(location = 1) out int entityID;
 
 vec4 grid(vec3 fragPos3D, float scale, bool drawAxis) {
     vec2 coord = fragPos3D.xz * scale;
@@ -54,7 +55,7 @@ vec4 grid(vec3 fragPos3D, float scale, bool drawAxis) {
     float line = min(grid.x, grid.y);
     float minimumz = min(derivative.y, 1);
     float minimumx = min(derivative.x, 1);
-    vec4 color = vec4(0.2, 0.2, 0.2, 1.0 - min(line, 1.0));
+    vec4 color = vec4(0.5, 0.5, 0.5, 1.0 - min(line, 1.0));
     // z axis
     if(fragPos3D.x > -0.1 * minimumx && fragPos3D.x < 0.1 * minimumx)
         color.z = 1.0;
@@ -83,6 +84,9 @@ void main() {
     float linearDepth = computeLinearDepth(fragPos3D);
     float fading = max(0, (0.5 - linearDepth));
 
-    outColor = (grid(fragPos3D, 10, true) + grid(fragPos3D, 1, true))* float(t > 0); // adding multiple resolution for the grid
+    outColor = (grid(fragPos3D, 0.1, true)); // adding multiple resolution for the grid: + grid(fragPos3D, 0.1, true))* float(t > 0)
     outColor.a *= fading;
+    if(outColor.a < 0.1)
+        discard;
+    //entityID = -1;
 }

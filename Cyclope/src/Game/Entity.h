@@ -35,6 +35,7 @@ namespace Cyclope {
 			m_Scene->m_Registry.remove<T>(m_Entity);
 		}
 
+		uint32_t GetID(){ return (uint32_t)m_Entity; }
 		UUID GetUUID();
 		std::string& Tag();
 		TransformComponent& Transform();

@@ -50,6 +50,7 @@ namespace CyclopeEditor {
 		Shared<VertexArray> fbVA;
 		Shared<Shader> fbShader;
 		ImVec2 panelSize;
+		Vector2 viewportBounds[2];
 
 		Grid grid;
 		bool renderGrid = true;

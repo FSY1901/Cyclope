@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 450 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
@@ -24,7 +24,8 @@ void main()
 #type fragment
 
 #version 330 core
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 color2;
 
 in vec3 Normal;
 in vec2 TexCoord;
@@ -172,6 +173,7 @@ void main()
     for(int i = 0; i < NR_SPOT_LIGHTS; i++)
         color += calcSpotLight(spotLights[i], norm, FragPos, viewDir);
 
+    color2 = vec4(1.0, 0.0, 0.0, 1.0);
     FragColor = vec4(color, 1.0);
 
 }

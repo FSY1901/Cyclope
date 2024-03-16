@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 450 core
 
 layout (location = 0) in vec3 inPos;
 layout (location = 1) in vec2 TexCoords;
@@ -27,7 +27,6 @@ void main(){
 
 	//no effect
 	color = texture(screenTexture, texCoords);
-
 	//inverse effect
 	//color = vec4(vec3(1.0 - texture(screenTexture, texCoords)), 1.0);
 

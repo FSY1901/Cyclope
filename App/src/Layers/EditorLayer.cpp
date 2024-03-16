@@ -140,6 +140,7 @@ namespace CyclopeEditor {
 		FramebufferSpecification fbs;
 		fbs.width = 800;
 		fbs.height = 600;
+		fbs.attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH};
 		fb2 = Framebuffer::Create(fbs);
 		fbs.samples = 4;//Set to 4 for Anti Aliasing
 		fb = Framebuffer::Create(fbs);
@@ -217,6 +218,17 @@ namespace CyclopeEditor {
 
 		Renderer::BeginScene(activeScene, activeCamera);
 
+		//TODO: Find fix for mouse picking
+/*
+		{
+			CYCLOPE_PROFILE_SCOPE("Grid Scope");
+			if (renderGrid && sceneState == SceneState::Edit)
+				grid.Render(svc);
+		}
+*/
+
+		fb->ClearAttachment(1, -1);
+
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
 			activeScene->ForEach([&](Entity e) {
@@ -244,6 +256,7 @@ namespace CyclopeEditor {
 					if (shader.get() && shader->GetID()) {
 						shader->Bind();
 						shader->SetMat4("transform", transform);
+						shader->SetInt("entityID", e.GetID());//Maybe Temporary
 						//Dependent on the shader
 						shader->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(transform))));
 						if(sceneState == SceneState::Edit)
@@ -272,6 +285,7 @@ namespace CyclopeEditor {
 						sh2->SetVec3("camRight", right);
 						sh2->SetVec3("camUp", up);
 						sh2->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
+						sh2->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
@@ -291,6 +305,7 @@ namespace CyclopeEditor {
 						sh2->SetVec3("camRight", right);
 						sh2->SetVec3("camUp", up);
 						sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
+						sh2->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
@@ -310,6 +325,7 @@ namespace CyclopeEditor {
 						sh2->SetVec3("camRight", right);
 						sh2->SetVec3("camUp", up);
 						sh2->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
+						sh2->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
@@ -324,22 +340,16 @@ namespace CyclopeEditor {
 		Renderer::Submit(batch, sh);
 		tex->Unbind();*/
 
-		{
-			CYCLOPE_PROFILE_SCOPE("Grid Scope");
-			if (renderGrid && sceneState == SceneState::Edit)
-				grid.Render(svc);
-		}
-
 		Renderer::EndScene();
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Blit Scope");
 			fb->Unbind();
 			RenderCommands::Clear();
-			fb->BlitTo(fb2);
+			fb->BlitTextureTo(fb2, 0);
 		}
 
-		//fb2->Bind();
+		fb2->Bind();
 		{
 			CYCLOPE_PROFILE_SCOPE("Redraw Scope");
 			fbShader->Bind();
@@ -347,8 +357,7 @@ namespace CyclopeEditor {
 			fbVA->Bind();
 			RenderCommands::Disable(RenderingOperation::DepthTest);
 			//RenderCommands::Disable(RenderingOperation::CullFace);
-			fb2->BindTexture(fb2->GetColorAttachment());
-			fbShader->Bind();
+			fb2->BindTexture(fb2->GetColorAttachment(0));
 			//fbShader->SetFloat("iTime", Time::GetTime());
 			Renderer::Submit(fbVA, fbShader);
 			//Draw End
@@ -356,6 +365,26 @@ namespace CyclopeEditor {
 			fb2->Unbind();
 		}
 		RenderCommands::Clear();
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= viewportBounds[0].x;
+		my -= viewportBounds[0].y;
+
+		if ((mx >= 0 && my >= 0 && mx < panelSize.x && my < panelSize.y) && Input::ButtonDown(Button::Button_LEFT)) {
+			my = panelSize.y - my;
+			fb->BlitTextureTo(fb2, 1);
+			fb2->Bind();
+			int data = fb2->ReadPixel(1, mx, my);
+			if (!ImGuizmo::IsOver()) {
+				if (data != -1)
+					selectedEntity = Entity((entt::entity)data, activeScene.get());
+				else {
+					selectedEntity = {};
+					gizmoType = -1;
+				}
+			}
+			fb2->Unbind();
+		}
 
 	}
 
@@ -420,7 +449,6 @@ namespace CyclopeEditor {
 	bool EditorLayer::OnKeyPressedEvent(KeyPressedEvent& e) {
 		if (e.IsRepeat())
 			return false;
-
 		if (sceneState == SceneState::Edit) {
 			bool control = Input::KeyDown(Key::LEFT_CONTROL) || Input::KeyDown(Key::RIGHT_CONTROL);
 			bool svcControlled = svc.IsControlling();
@@ -511,10 +539,17 @@ namespace CyclopeEditor {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 		ImGui::Begin("Viewport");
 		ImGui::PopStyleVar();
+		auto offset = ImGui::GetCursorPos();
 		panelSize = ImGui::GetContentRegionAvail();
-		ImGui::Image((void*)fb2->GetColorAttachment(),
+		ImGui::Image((void*)fb2->GetColorAttachment(0),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
-
+		auto windowSize = ImGui::GetWindowSize();
+		auto minBound = ImGui::GetWindowPos();
+		minBound.x += offset.x;
+		minBound.y += offset.y;
+		ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+		viewportBounds[0] = { minBound.x, minBound.y };
+		viewportBounds[1] = { maxBound.x, maxBound.y };
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;

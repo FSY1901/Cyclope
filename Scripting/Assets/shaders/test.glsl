@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 450 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
@@ -19,11 +19,15 @@ void main()
 #type fragment
 
 #version 330 core
-out vec4 FragColor;
+layout(location = 0) out vec4 color;
+layout(location = 1) out int color2;
 
 in vec2 TexCoords;
 
+uniform int entityID;
+
 void main()
 {
-	FragColor = vec4(1.0, 0.2, 0.8, 1.0);
+	color = vec4(1.0, 0.2, 0.8, 1.0);
+	color2 = entityID;
 }

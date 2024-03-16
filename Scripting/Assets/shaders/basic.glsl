@@ -1,6 +1,6 @@
 #type vertex
 
-#version 330 core
+#version 450 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
@@ -23,8 +23,9 @@ void main()
 
 #type fragment
 
-#version 330 core
-out vec4 FragColor;
+#version 450 core
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out int colorID;
 
 in vec3 Normal;
 in vec2 TexCoord;
@@ -32,6 +33,7 @@ in vec3 FragPos;
 
 uniform sampler2D tex;
 uniform vec3 viewPos;
+uniform int entityID;
 
 struct Material {
     sampler2D texture_diffuse1;
@@ -173,5 +175,5 @@ void main()
         color += calcSpotLight(spotLights[i], norm, FragPos, viewDir);
 
     FragColor = vec4(color, 1.0);
-
+    colorID = entityID;
 }

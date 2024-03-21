@@ -39,4 +39,13 @@ namespace Cyclope {
 
 	}
 
+	Shared<CubeMapTexture> CubeMapTexture::Create(const std::vector<std::string>& faces) {
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::OpenGL:
+			return  std::make_shared<OpenGLCubeMapTexture>(faces);
+			break;
+		}
+	}
+
 }

@@ -57,4 +57,8 @@
     <Image Include="Resources\textures\Toolbar\Pause.png" />
     <Image Include="Resources\textures\Toolbar\Play.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\selection.glsl" />
+    <None Include="Resources\shaders\skybox.glsl" />
+  </ItemGroup>
 </Project>

@@ -93,59 +93,37 @@ namespace CyclopeEditor {
 	void EditorLayer::OnAttach() {
 		s_EditorLayer = this;
 
-#pragma region Test
+#pragma region PlaneVA
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
-
-		LoadOBJFile("./Resources/objs/cube.obj", verts, ind);
-		//LoadOBJFile("./Resources/objs/cube.obj", m.vertices, m.indices);
-
-		auto v = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
-		vert = VertexArray::Create(v, IndexBuffer::Create(&ind[0], ind.size()));
-
-		sh = Shader::Create("./Resources/shaders/basic.glsl");//shader.glsl
-		tex = Texture2D::Create("./Resources/textures/container2.png");
-		tex2 = Texture2D::Create("./Resources/textures/specular.png");
 
 		verts.clear();
 		ind.clear();
 
-		/*batch = MakeShared<Batch>();
-
-		const int bound = 1250;
-		for (int i = 0; i < bound; i++) {
-			for (int j = 0; j < bound; j++) {
-				Matrix4 mat = Matrix4(1.0f);
-				mat = glm::translate(mat, Vector3((i-0.5f) - bound*0.5f, 0, (j-0.5f) - bound*0.5f));
-				mat = glm::scale(mat, Vector3(0.3f, 0.3f, 0.3f));
-				//sh->SetMat4("transform", mat);
-				batch->AddToBatch(m, mat);
-			}
-		}
-
-		batch->GenerateBatch();*/
-
 		LoadOBJFile("./Resources/objs/plane.obj", verts, ind);
 		auto f = VertexBuffer::Create(&verts[0], verts.size(), BufferLayout::Standard());
-		//v1->SetBufferLayout(BufferLayout::Standard());
-		vert2 = VertexArray::Create(f, IndexBuffer::Create(&ind[0], ind.size()));
+		planeVA = VertexArray::Create(f, IndexBuffer::Create(&ind[0], ind.size()));
 #pragma endregion
 
-		sh2 = Shader::Create("./Resources/shaders/billboard.glsl");
+#pragma region Textures & Shaders
+		selectedObjectShader = Shader::Create("./Resources/shaders/selection.glsl");
+		billboardShader = Shader::Create("./Resources/shaders/billboard.glsl");
 		BillboardTex = Texture2D::Create("./Resources/textures/Billboards/DirectionalLight.png");
-		
+
 		playButtonTexture = Texture2D::Create("./Resources/textures/Toolbar/Play.png");
 		stopButtonTexture = Texture2D::Create("./Resources/textures/Toolbar/Pause.png");
+#pragma endregion
 
+#pragma region Framebuffer
 		FramebufferSpecification fbs;
 		fbs.width = 800;
 		fbs.height = 600;
-		fbs.attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH};
-		fb2 = Framebuffer::Create(fbs);
+		fbs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH };
+		framebuffer2 = Framebuffer::Create(fbs);
 		fbs.samples = 4;//Set to 4 for Anti Aliasing
-		fb = Framebuffer::Create(fbs);
+		framebuffer = Framebuffer::Create(fbs);
 		panelSize = ImVec2(Application::GetInstance()->GetWindow()->GetWidth(),
-							Application::GetInstance()->GetWindow()->GetHeight());
+			Application::GetInstance()->GetWindow()->GetHeight());
 
 		float vertices[] = {
 		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, // top right
@@ -157,31 +135,97 @@ namespace CyclopeEditor {
 			0, 1, 3,   // first triangle
 			1, 2, 3    // second triangle
 		};
-		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout{{{ShaderDataType::Float3}, {ShaderDataType::Float2}}});
+		auto v1 = VertexBuffer::Create(vertices, 20, BufferLayout{ {{ShaderDataType::Float3}, {ShaderDataType::Float2}} });
 		fbVA = VertexArray::Create(v1, IndexBuffer::Create(indices, 6));
 		fbShader = Shader::Create("./Resources/shaders/framebuffer.glsl");
+#pragma endregion
 
+#pragma region Rendering Commands
 		RenderCommands::Enable(RenderingOperation::DepthTest);
 		RenderCommands::Enable(RenderingOperation::Blending);
+		RenderCommands::Enable(RenderingOperation::StencilTest);
 		RenderCommands::SetClearColor(0.1f, 0.1f, 0.1f);
 
-		grid = Grid();
+		//grid = Grid();
+#pragma endregion
 
+#pragma region Project and Scripting
 		activeScene = MakeShared<Scene>();
-		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");
+
+		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
 
 		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
-#if 0
-		activeScene->CreateEntity("B");
-		Entity e = activeScene->CreateEntity("A");
-		e.AddComponent<NativeScriptComponent>();
-		e.GetComponent<TransformComponent>().position = Vector3(6.9f, 0.0f, .12f);
-#endif
+
 		DisplayComponent = loader.Load();
+#pragma endregion
+
+#pragma region SkyBox
+		skyboxShader = Shader::Create("./Resources/shaders/skybox.glsl");
+		//TODO: Make this customizable
+		std::vector<std::string> faces
+		{
+			"./Resources/textures/Skybox/right.jpg",
+			"./Resources/textures/Skybox/left.jpg",
+			"./Resources/textures/Skybox/top.jpg",
+			"./Resources/textures/Skybox/bottom.jpg",
+			"./Resources/textures/Skybox/front.jpg",
+			"./Resources/textures/Skybox/back.jpg"
+	};
+		skybox = CubeMapTexture::Create(faces);
+		GLfloat verticessb[] = {
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		};
+		// index data
+		GLuint indicessb[] = {
+			// front and back
+			0, 3, 2,
+			2, 1, 0,
+			4, 5, 6,
+			6, 7 ,4,
+			// left and right
+			11, 8, 9,
+			9, 10, 11,
+			12, 13, 14,
+			14, 15, 12,
+			// bottom and top
+			16, 17, 18,
+			18, 19, 16,
+			20, 21, 22,
+			22, 23, 20
+		};
+		auto skyBoxVB = VertexBuffer::Create(verticessb, sizeof(verticessb) / sizeof(float), BufferLayout{ {ShaderDataType::Float3} });
+		skyboxVA = VertexArray::Create(skyBoxVB, IndexBuffer::Create(indicessb, 36));
+#pragma endregion
 
 		contentBrowser.Init();
 
 		activeCamera = &svc.GetCamera();
+
 	}
 
 	void EditorLayer::OnUpdate(float dt) {
@@ -200,21 +244,22 @@ namespace CyclopeEditor {
 		{
 			CYCLOPE_PROFILE_SCOPE("Framebuffer Scope"); //Example Usage
 			RenderCommands::Enable(RenderingOperation::DepthTest);
-			if (fb->GetSpecification().width != panelSize.x ||
-				fb->GetSpecification().height != panelSize.y) {
-				fb->GetSpecification().width = panelSize.x;
-				fb->GetSpecification().height = panelSize.y;
-				fb2->GetSpecification().width = panelSize.x;
-				fb2->GetSpecification().height = panelSize.y;
+			if (framebuffer->GetSpecification().width != panelSize.x ||
+				framebuffer->GetSpecification().height != panelSize.y) {
+				framebuffer->GetSpecification().width = panelSize.x;
+				framebuffer->GetSpecification().height = panelSize.y;
+				framebuffer2->GetSpecification().width = panelSize.x;
+				framebuffer2->GetSpecification().height = panelSize.y;
 				RenderCommands::SetViewport(panelSize.x, panelSize.y);
-				fb->Invalidate();
-				fb2->Invalidate();
+				framebuffer->Invalidate();
+				framebuffer2->Invalidate();
 			}
-			fb->Bind();
+			framebuffer->Bind();
 		}
 
+		RenderCommands::StencilOp(StencilOperation::Keep, StencilOperation::Keep, StencilOperation::Replace);
+
 		RenderCommands::Clear();
-		RenderCommands::Enable(RenderingOperation::DepthTest);
 
 		Renderer::BeginScene(activeScene, activeCamera);
 
@@ -227,7 +272,21 @@ namespace CyclopeEditor {
 		}
 */
 
-		fb->ClearAttachment(1, -1);
+		framebuffer->ClearAttachment(1, -1);
+
+#pragma region Skybox
+		RenderCommands::StencilMask(0x00);
+		RenderCommands::Disable(RenderingOperation::DepthTest);
+		RenderCommands::Disable(RenderingOperation::CullFace);
+		skyboxShader->Bind();
+		skyboxShader->SetMat4("projection", activeCamera->GetProjectionMatrix());
+		glm::mat4 view = glm::mat4(glm::mat3(activeCamera->GetViewMatrix()));
+		skyboxShader->SetMat4("view", view);
+		skybox->Bind();
+		Renderer::Submit(skyboxVA, skyboxShader);
+		RenderCommands::Enable(RenderingOperation::CullFace);
+		RenderCommands::Enable(RenderingOperation::DepthTest);
+#pragma endregion
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
@@ -253,6 +312,8 @@ namespace CyclopeEditor {
 					auto& modelComponent = e.GetComponent<ModelRendererComponent>();
 					auto& shader = modelComponent.shader;
 					Matrix4& transform = e.GetComponent<TransformComponent>().GetTransform();
+					RenderCommands::StencilFunc(CompareFunction::Always, 1, 0xFF);
+					RenderCommands::StencilMask(0xFF);
 					if (shader.get() && shader->GetID()) {
 						shader->Bind();
 						shader->SetMat4("transform", transform);
@@ -277,60 +338,77 @@ namespace CyclopeEditor {
 				activeScene->ForEach([&](Entity e) {
 					if (e.HasComponent<DirectionalLightComponent>()) {
 						auto& tc = e.GetComponent<TransformComponent>();
-						sh2->Bind();
-						sh2->SetVec3("pos", tc.position);
+						billboardShader->Bind();
+						billboardShader->SetVec3("pos", tc.position);
 						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
 						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
 						Vector3 up = glm::normalize(glm::cross(right, front));
-						sh2->SetVec3("camRight", right);
-						sh2->SetVec3("camUp", up);
-						sh2->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
-						sh2->SetInt("entityID", e.GetID());
+						billboardShader->SetVec3("camRight", right);
+						billboardShader->SetVec3("camUp", up);
+						billboardShader->SetVec3("diffuse", e.GetComponent<DirectionalLightComponent>().diffuse);
+						billboardShader->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
-						Renderer::Submit(vert2, sh2);
+						Renderer::Submit(planeVA, billboardShader);
 						BillboardTex->Unbind();
 					}
-					});
 
-				activeScene->ForEach([&](Entity e) {
 					if (e.HasComponent<PointLightComponent>()) {
 						auto& tc = e.GetComponent<TransformComponent>();
-						sh2->Bind();
-						sh2->SetVec3("pos", tc.position);
+						billboardShader->Bind();
+						billboardShader->SetVec3("pos", tc.position);
 						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
 						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
 						Vector3 up = glm::normalize(glm::cross(right, front));
-						sh2->SetVec3("camRight", right);
-						sh2->SetVec3("camUp", up);
-						sh2->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
-						sh2->SetInt("entityID", e.GetID());
+						billboardShader->SetVec3("camRight", right);
+						billboardShader->SetVec3("camUp", up);
+						billboardShader->SetVec3("diffuse", e.GetComponent<PointLightComponent>().diffuse);
+						billboardShader->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
-						Renderer::Submit(vert2, sh2);
+						Renderer::Submit(planeVA, billboardShader);
 						BillboardTex->Unbind();
 					}
-					});
 
-				activeScene->ForEach([&](Entity e) {
 					if (e.HasComponent<SpotLightComponent>()) {
 						auto& tc = e.GetComponent<TransformComponent>();
-						sh2->Bind();
-						sh2->SetVec3("pos", tc.position);
+						billboardShader->Bind();
+						billboardShader->SetVec3("pos", tc.position);
 						Vector3 front = glm::normalize(svc.transform.rotation * Vector3(0.0f, 0.0f, -1.0f));
 						Vector3 right = glm::normalize(glm::cross(front, Vector3(0.0f, 1.0f, 0.0f)));
 						Vector3 up = glm::normalize(glm::cross(right, front));
-						sh2->SetVec3("camRight", right);
-						sh2->SetVec3("camUp", up);
-						sh2->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
-						sh2->SetInt("entityID", e.GetID());
+						billboardShader->SetVec3("camRight", right);
+						billboardShader->SetVec3("camUp", up);
+						billboardShader->SetVec3("diffuse", e.GetComponent<SpotLightComponent>().diffuse);
+						billboardShader->SetInt("entityID", e.GetID());
 						//tex->Bind();
 						//tex2->Bind(1);
 						BillboardTex->Bind();
-						Renderer::Submit(vert2, sh2);
+						Renderer::Submit(planeVA, billboardShader);
 						BillboardTex->Unbind();
+					}
+
+					if ((e.GetID() == selectedEntity.GetID())) {
+						if (e.HasComponent<ModelRendererComponent>())
+						{
+							RenderCommands::StencilFunc(CompareFunction::Notequal, 1, 0xFF);
+							RenderCommands::StencilMask(0x00);
+							RenderCommands::Disable(RenderingOperation::DepthTest);
+							auto& modelComponent = e.GetComponent<ModelRendererComponent>();
+							auto transform = e.GetComponent<TransformComponent>().GetTransform();
+							selectedObjectShader->Bind();
+							selectedObjectShader->SetMat4("transform", transform);
+							selectedObjectShader->SetInt("entityID", e.GetID());//Maybe Temporary
+							//Dependent on the shader
+							if (modelComponent.model && modelComponent.shader) {
+								modelComponent.model->Draw(selectedObjectShader);
+							}
+							RenderCommands::StencilMask(0xFF);
+							RenderCommands::StencilFunc(CompareFunction::Always, 1, 0xFF);
+							RenderCommands::Enable(RenderingOperation::DepthTest);
+						}
 					}
 					});
 			}
@@ -344,12 +422,12 @@ namespace CyclopeEditor {
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Blit Scope");
-			fb->Unbind();
+			framebuffer->Unbind();
 			RenderCommands::Clear();
-			fb->BlitTextureTo(fb2, 0);
+			framebuffer->BlitTextureTo(framebuffer2, 0);
 		}
 
-		fb2->Bind();
+		framebuffer2->Bind();
 		{
 			CYCLOPE_PROFILE_SCOPE("Redraw Scope");
 			fbShader->Bind();
@@ -357,24 +435,25 @@ namespace CyclopeEditor {
 			fbVA->Bind();
 			RenderCommands::Disable(RenderingOperation::DepthTest);
 			//RenderCommands::Disable(RenderingOperation::CullFace);
-			fb2->BindTexture(fb2->GetColorAttachment(0));
+			framebuffer2->BindTexture(framebuffer2->GetColorAttachment(0));
 			//fbShader->SetFloat("iTime", Time::GetTime());
 			Renderer::Submit(fbVA, fbShader);
 			//Draw End
-			fb2->BindTexture(0);
-			fb2->Unbind();
+			framebuffer2->BindTexture(0);
+			framebuffer2->Unbind();
 		}
 		RenderCommands::Clear();
 
+#pragma region Mouse Picking
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= viewportBounds[0].x;
 		my -= viewportBounds[0].y;
 
-		if ((mx >= 0 && my >= 0 && mx < panelSize.x && my < panelSize.y) && Input::ButtonDown(Button::Button_LEFT)) {
+		if ((mx >= 0 && my >= 0 && mx < panelSize.x && my < panelSize.y) && Input::ButtonDown(Button::Button_LEFT) && sceneState != SceneState::Play) {
 			my = panelSize.y - my;
-			fb->BlitTextureTo(fb2, 1);
-			fb2->Bind();
-			int data = fb2->ReadPixel(1, mx, my);
+			framebuffer->BlitTextureTo(framebuffer2, 1);
+			framebuffer2->Bind();
+			int data = framebuffer2->ReadPixel(1, mx, my);
 			if (!ImGuizmo::IsOver()) {
 				if (data != -1)
 					selectedEntity = Entity((entt::entity)data, activeScene.get());
@@ -383,8 +462,9 @@ namespace CyclopeEditor {
 					gizmoType = -1;
 				}
 			}
-			fb2->Unbind();
+			framebuffer2->Unbind();
 		}
+#pragma endregion
 
 	}
 
@@ -541,7 +621,7 @@ namespace CyclopeEditor {
 		ImGui::PopStyleVar();
 		auto offset = ImGui::GetCursorPos();
 		panelSize = ImGui::GetContentRegionAvail();
-		ImGui::Image((void*)fb2->GetColorAttachment(0),
+		ImGui::Image((void*)framebuffer2->GetColorAttachment(0),
 			panelSize, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 		auto windowSize = ImGui::GetWindowSize();
 		auto minBound = ImGui::GetWindowPos();
@@ -632,23 +712,27 @@ namespace CyclopeEditor {
 		if (ImGui::BeginPopupContextWindow(0, 1, false))
 		{
 			if (ImGui::MenuItem("Create Entity"))
-				activeScene->CreateEntity();
+				selectedEntity = activeScene->CreateEntity();
 			else if (ImGui::MenuItem("Create Camera")) {
 				auto& e = activeScene->CreateEntity("Create Camera");
 				e.AddComponent<CameraComponent>();
+				selectedEntity = e;
 			}
 			else if (ImGui::BeginMenu("Create Light")) {
 				if (ImGui::MenuItem("Directional Light")) {
 					auto& e = activeScene->CreateEntity("Directional Light");
 					e.AddComponent<DirectionalLightComponent>();
+					selectedEntity = e;
 				}
 				else if (ImGui::MenuItem("Point Light")) {
 					auto& e = activeScene->CreateEntity("Point Light");
 					e.AddComponent<PointLightComponent>();
+					selectedEntity = e;
 				}
 				else if (ImGui::MenuItem("Spot Light")) {
 					auto& e = activeScene->CreateEntity("Spot Light");
 					e.AddComponent<SpotLightComponent>();
+					selectedEntity = e;
 				}
 				ImGui::EndMenu();
 			}

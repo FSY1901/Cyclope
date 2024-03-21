@@ -27,4 +27,17 @@ namespace Cyclope {
 
 	};
 
+	class CYCLOPE_API OpenGLCubeMapTexture : public CubeMapTexture {
+
+	public:
+		OpenGLCubeMapTexture(const std::vector<std::string>& faces);
+		~OpenGLCubeMapTexture() override;
+
+		void Bind(unsigned int offset = 0) const override;
+		void Unbind(unsigned int offset = 0) const override;
+
+	private:
+		GLuint m_texture;
+	};
+
 }

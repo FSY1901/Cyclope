@@ -127,6 +127,10 @@
     <Image Include="Resources\textures\Toolbar\Pause.png" />
     <Image Include="Resources\textures\Toolbar\Play.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\selection.glsl" />
+    <None Include="Resources\shaders\skybox.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

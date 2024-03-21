@@ -40,4 +40,14 @@ namespace Cyclope {
 
 	};
 
+	class CYCLOPE_API CubeMapTexture {
+	public:
+		virtual ~CubeMapTexture() {};
+
+		virtual void Bind(unsigned int offset = 0) const = 0;
+		virtual void Unbind(unsigned int offset = 0) const = 0;
+
+		static Shared<CubeMapTexture> Create(const std::vector<std::string>& faces);
+	};
+
 }

@@ -33,8 +33,31 @@ namespace Cyclope {
 
 	enum class CYCLOPE_API RenderingOperation{
 		DepthTest = GL_DEPTH_TEST,
+		StencilTest = GL_STENCIL_TEST,
 		Blending = GL_BLEND,
 		CullFace = GL_CULL_FACE
+	};
+
+	enum class CYCLOPE_API CompareFunction {
+		Never = GL_NEVER, 
+		Less = GL_LESS, 
+		Lequal = GL_LEQUAL, 
+		Greater = GL_GREATER, 
+		Gequal = GL_GEQUAL, 
+		Equal = GL_EQUAL, 
+		Notequal = GL_NOTEQUAL,
+		Always = GL_ALWAYS
+	};
+
+	enum class CYCLOPE_API StencilOperation {
+		Keep = GL_KEEP,
+		Zero = GL_ZERO,
+		Replace = GL_REPLACE,
+		Incr = GL_INCR,
+		Incr_Wrap = GL_INCR_WRAP,
+		Decr = GL_DECR,
+		Decr_Wrap = GL_DECR_WRAP,
+		Invert = GL_INVERT
 	};
 
 	struct CYCLOPE_API RenderCommands
@@ -46,6 +69,12 @@ namespace Cyclope {
 
 		static void Enable(RenderingOperation op);
 		static void Disable(RenderingOperation op);
+
+		static void StencilMask(unsigned int mask);
+		static void StencilFunc(CompareFunction func, int ref, unsigned int mask);
+		static void StencilOp(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass);
+
+		static void DepthFunc(CompareFunction func);
 	};
 
 	struct CYCLOPE_API Batch {

@@ -8,7 +8,7 @@ namespace Cyclope {
 	}
 
 	void RenderCommands::Clear() {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
 	void RenderCommands::SetDrawMode(DrawMode mode) {
@@ -28,6 +28,26 @@ namespace Cyclope {
 
 	void RenderCommands::Disable(RenderingOperation op) {
 		glDisable((int)op);
+	}
+
+	void RenderCommands::StencilMask(unsigned int mask)
+	{
+		glStencilMask(mask);
+	}
+
+	void RenderCommands::StencilFunc(CompareFunction func, int ref, unsigned int mask)
+	{
+		glStencilFunc((int)func, ref, mask);
+	}
+
+	void RenderCommands::StencilOp(StencilOperation sfail, StencilOperation dpfail, StencilOperation dppass)
+	{
+		glStencilOp((int)sfail, (int)dpfail, int(dppass));
+	}
+
+	void RenderCommands::DepthFunc(CompareFunction func)
+	{
+		glDepthFunc((int)func);
 	}
 
 	void Batch::AddToBatch(const Mesh& mesh, const Matrix4& transform)

@@ -140,7 +140,9 @@ project "Scripting"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.c"
+        "%{prj.name}/src/**.c",
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp"
     }
 
     includedirs
@@ -178,11 +180,6 @@ project "Scripting"
         defines
         {
             
-        }
-
-        postbuildcommands
-        {
-            ("{COPY} ../bin/" .. outputdir .. "/Scripting/Scripting.dll ../bin/" .. outputdir .. "/App")
         }
 
 project "App"
@@ -227,6 +224,11 @@ project "App"
         "Cyclope",
         "ImGui",
         "Scripting"
+    }
+
+    postbuildcommands
+    {
+        ("{COPY} ../vendor/assimp/lib/assimp-vc143-mt.dll ../bin/" .. outputdir .. "/App")
     }
 
     filter "system:windows"
@@ -293,10 +295,10 @@ project "yaml-cpp"
     
         files
         {
-            "src/**.h",
-            "src/**.cpp",
+            "%{prj.name}/src/**.h",
+            "%{prj.name}/src/**.cpp",
             
-            "include/**.h"
+            "%{prj.name}/include/**.h"
         }
     
         includedirs

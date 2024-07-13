@@ -10,6 +10,9 @@
     <Filter Include="src\API\OpenGL">
       <UniqueIdentifier>{0A03691B-F6D0-5C21-DF64-CD47CBD13886}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Asset">
+      <UniqueIdentifier>{7C4D95B2-E8B7-4929-31F6-FACE9D9F277E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Cyclope">
       <UniqueIdentifier>{EB51F453-5707-6D49-E0FB-66204CB0634D}</UniqueIdentifier>
     </Filter>
@@ -71,6 +74,15 @@
     </ClInclude>
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h">
       <Filter>src\API\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Asset\Asset.h">
+      <Filter>src\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Asset\AssetManager.h">
+      <Filter>src\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Asset\AssetMetaData.h">
+      <Filter>src\Asset</Filter>
     </ClInclude>
     <ClInclude Include="src\Cpch.h">
       <Filter>src</Filter>
@@ -186,9 +198,6 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>src\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Asset\Asset.h" />
-    <ClInclude Include="src\Asset\AssetMetaData.h" />
-    <ClInclude Include="src\Asset\AssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">

@@ -21,6 +21,9 @@
     <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h">
       <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\Layers\ContentBrowserPanel.h">
+      <Filter>src\Layers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Layers\EditorLayer.h">
       <Filter>src\Layers</Filter>
     </ClInclude>
@@ -33,7 +36,6 @@
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
       <Filter>src\SceneView</Filter>
     </ClInclude>
-    <ClInclude Include="src\Layers\ContentBrowserPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
@@ -41,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="src\App.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Layers\ContentBrowserPanel.cpp">
+      <Filter>src\Layers</Filter>
     </ClCompile>
     <ClCompile Include="src\Layers\EditorLayer.cpp">
       <Filter>src\Layers</Filter>
@@ -51,14 +56,5 @@
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
       <Filter>src\SceneView</Filter>
     </ClCompile>
-    <ClCompile Include="src\Layers\ContentBrowserPanel.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\textures\Toolbar\Pause.png" />
-    <Image Include="Resources\textures\Toolbar\Play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shaders\selection.glsl" />
-    <None Include="Resources\shaders\skybox.glsl" />
   </ItemGroup>
 </Project>

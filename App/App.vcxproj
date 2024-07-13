@@ -72,6 +72,9 @@
       <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -95,6 +98,9 @@
       <AdditionalDependencies>glfw3.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h" />
@@ -122,14 +128,6 @@
     <ProjectReference Include="..\Scripting\Scripting.vcxproj">
       <Project>{985A7358-04C5-27CF-4D03-D974B9AC0524}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\textures\Toolbar\Pause.png" />
-    <Image Include="Resources\textures\Toolbar\Play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shaders\selection.glsl" />
-    <None Include="Resources\shaders\skybox.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -186,6 +186,9 @@
     <ClInclude Include="src\Rendering\VertexArray.h">
       <Filter>src\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Asset\Asset.h" />
+    <ClInclude Include="src\Asset\AssetMetaData.h" />
+    <ClInclude Include="src\Asset\AssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">

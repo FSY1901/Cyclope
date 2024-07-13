@@ -95,6 +95,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Components\Scripts.h" />
     <ClInclude Include="src\Components.h" />
     <ClInclude Include="src\Export.h" />
     <ClInclude Include="src\GUI.h" />

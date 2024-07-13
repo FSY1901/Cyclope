@@ -115,6 +115,9 @@
     <ClInclude Include="src\API\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\API\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Asset\Asset.h" />
+    <ClInclude Include="src\Asset\AssetManager.h" />
+    <ClInclude Include="src\Asset\AssetMetaData.h" />
     <ClInclude Include="src\Cpch.h" />
     <ClInclude Include="src\Cyclope.h" />
     <ClInclude Include="src\Cyclope\Application.h" />

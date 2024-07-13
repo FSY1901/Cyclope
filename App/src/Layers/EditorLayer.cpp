@@ -335,6 +335,7 @@ namespace CyclopeEditor {
 				});
 
 			if (sceneState == SceneState::Edit) {
+				CYCLOPE_PROFILE_SCOPE("Editor Rendering");
 				activeScene->ForEach([&](Entity e) {
 					if (e.HasComponent<DirectionalLightComponent>()) {
 						auto& tc = e.GetComponent<TransformComponent>();
@@ -443,28 +444,6 @@ namespace CyclopeEditor {
 			framebuffer2->Unbind();
 		}
 		RenderCommands::Clear();
-
-#pragma region Mouse Picking
-		auto [mx, my] = ImGui::GetMousePos();
-		mx -= viewportBounds[0].x;
-		my -= viewportBounds[0].y;
-
-		if ((mx >= 0 && my >= 0 && mx < panelSize.x && my < panelSize.y) && Input::ButtonDown(Button::Button_LEFT) && sceneState != SceneState::Play) {
-			my = panelSize.y - my;
-			framebuffer->BlitTextureTo(framebuffer2, 1);
-			framebuffer2->Bind();
-			int data = framebuffer2->ReadPixel(1, mx, my);
-			if (!ImGuizmo::IsOver()) {
-				if (data != -1)
-					selectedEntity = Entity((entt::entity)data, activeScene.get());
-				else {
-					selectedEntity = {};
-					gizmoType = -1;
-				}
-			}
-			framebuffer2->Unbind();
-		}
-#pragma endregion
 
 	}
 
@@ -593,6 +572,7 @@ namespace CyclopeEditor {
 		if (!path.empty()) {
 			SceneSerializer serializer(activeScene);
 			serializer.Serialize(path);
+			serializer.Serialize(path);
 		}
 	}
 
@@ -679,6 +659,28 @@ namespace CyclopeEditor {
 		}
 
 		ImGui::End();
+
+#pragma region Mouse Picking
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= viewportBounds[0].x;
+		my -= viewportBounds[0].y;
+
+		if ((mx >= 0 && my >= 0 && mx < panelSize.x && my < panelSize.y) && Input::ButtonDown(Button::Button_LEFT) && sceneState != SceneState::Play) {
+			my = panelSize.y - my;
+			framebuffer->BlitTextureTo(framebuffer2, 1);
+			framebuffer2->Bind();
+			int data = framebuffer2->ReadPixel(1, mx, my);
+			if (!ImGuizmo::IsOver()) {
+				if (data != -1)
+					selectedEntity = Entity((entt::entity)data, activeScene.get());
+				else {
+					selectedEntity = {};
+					gizmoType = -1;
+				}
+			}
+			framebuffer2->Unbind();
+		}
+#pragma endregion
 
 	}
 

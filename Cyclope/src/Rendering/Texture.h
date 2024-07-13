@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include "Asset/Asset.h"
+
 namespace Cyclope {
 
 	enum class CYCLOPE_API ImageFormat {
@@ -21,7 +23,7 @@ namespace Cyclope {
 		ImageFormat Format = ImageFormat::RGBA8;
 	};
 
-	class CYCLOPE_API Texture2D {
+	class CYCLOPE_API Texture2D : public Asset{
 
 	public:
 		virtual ~Texture2D() {};

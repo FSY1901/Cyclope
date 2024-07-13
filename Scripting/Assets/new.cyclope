@@ -14,7 +14,7 @@ Entities:
       Projection: 0
   - Entity: 11012900838961582922
     TagComponent:
-      Tag: Spot Light
+      Tag: Point Light
     TransformComponent:
       Position: [1.69009387, 2.37456608, -3.72000003]
       Rotation: [1, 0, 0, 0]
@@ -28,7 +28,7 @@ Entities:
       cutOff: 0.00100000005
   - Entity: 13931769447418185037
     TagComponent:
-      Tag: A
+      Tag: Backpack
     TransformComponent:
       Position: [0, 0, -7]
       Rotation: [1, 0, 0, 0]

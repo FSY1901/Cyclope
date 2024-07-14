@@ -93,6 +93,17 @@ namespace CyclopeEditor {
 	void EditorLayer::OnAttach() {
 		s_EditorLayer = this;
 
+#pragma region Project and Scripting
+		activeScene = MakeShared<Scene>();
+
+		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
+
+		//TODO: Add custom layers to DLL
+		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
+
+		DisplayComponent = loader.Load();
+#pragma endregion
+
 #pragma region PlaneVA
 		std::vector<float> verts;
 		std::vector<unsigned int> ind;
@@ -147,16 +158,6 @@ namespace CyclopeEditor {
 		RenderCommands::SetClearColor(0.1f, 0.1f, 0.1f);
 
 		//grid = Grid();
-#pragma endregion
-
-#pragma region Project and Scripting
-		activeScene = MakeShared<Scene>();
-
-		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
-
-		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
-
-		DisplayComponent = loader.Load();
 #pragma endregion
 
 #pragma region SkyBox

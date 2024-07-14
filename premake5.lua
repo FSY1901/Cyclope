@@ -49,6 +49,86 @@ project "ImGui"
         staticruntime "On"
         systemversion "latest"
 
+project "yaml-cpp"
+    location "yaml-cpp"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp",
+        
+        "%{prj.name}/include/**.h"
+    }
+
+    includedirs
+    {
+        "$(SolutionDir)yaml-cpp/include"
+    }
+
+    defines
+    {
+        "YAML_CPP_STATIC_DEFINE"
+    }
+
+    filter "system:windows"
+        systemversion "latest"
+        cppdialect "C++17"
+        staticruntime "off"
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"
+
+project "OpenGL"
+    location "OpenGL"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp",
+        "%{prj.name}/**.c",
+        "%{prj.name}/**.lib"
+    }
+
+    includedirs
+    {
+        "$(SolutionDir)OpenGL/include"
+    }
+
+    libdirs
+    {
+        
+    }
+
+    links
+    {
+        
+    }
+
+    defines 
+    { 
+        
+    }
+
+filter "system:windows"
+    cppdialect "C++17"
+    staticruntime "On"
+    systemversion "latest"
+
 project "Cyclope"
     location "Cyclope"
     kind "SharedLib"
@@ -110,11 +190,6 @@ project "Cyclope"
         defines
         {
             "CYCLOPE_BUILD_DLL",
-        }
-
-        postbuildcommands
-        {
-            ("{COPY} ../bin/" .. outputdir .. "/Cyclope/Cyclope.dll ../bin/" .. outputdir .. "/App")
         }
 
     filter "configurations:Debug"
@@ -228,7 +303,8 @@ project "App"
 
     postbuildcommands
     {
-        ("{COPY} ../vendor/assimp/lib/assimp-vc143-mt.dll ../bin/" .. outputdir .. "/App")
+        ("{COPY} ../vendor/assimp/lib/assimp-vc143-mt.dll ../bin/" .. outputdir .. "/App"),
+        ("{COPY} ../bin/" .. outputdir .. "/Cyclope/Cyclope.dll ../bin/" .. outputdir .. "/App")
     }
 
     filter "system:windows"
@@ -243,83 +319,3 @@ project "App"
     filter "configurations:Release"
         optimize "On"
         buildoptions "/MT"
-
-project "OpenGL"
-        location "OpenGL"
-        kind "StaticLib"
-        language "C++"
-    
-        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-    
-        files
-        {
-            "%{prj.name}/**.h",
-            "%{prj.name}/**.cpp",
-            "%{prj.name}/**.c",
-            "%{prj.name}/**.lib"
-        }
-    
-        includedirs
-        {
-            "$(SolutionDir)OpenGL/include"
-        }
-    
-        libdirs
-        {
-            
-        }
-    
-        links
-        {
-            
-        }
-    
-        defines 
-        { 
-            
-        }
-    
-        filter "system:windows"
-            cppdialect "C++17"
-            staticruntime "On"
-            systemversion "latest"
-
-project "yaml-cpp"
-        location "yaml-cpp"
-        kind "StaticLib"
-        language "C++"
-    
-        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-    
-        files
-        {
-            "%{prj.name}/src/**.h",
-            "%{prj.name}/src/**.cpp",
-            
-            "%{prj.name}/include/**.h"
-        }
-    
-        includedirs
-        {
-            "$(SolutionDir)yaml-cpp/include"
-        }
-    
-        defines
-        {
-            "YAML_CPP_STATIC_DEFINE"
-        }
-    
-        filter "system:windows"
-            systemversion "latest"
-            cppdialect "C++17"
-            staticruntime "off"
-    
-        filter "configurations:Debug"
-            runtime "Debug"
-            symbols "on"
-    
-        filter "configurations:Release"
-            runtime "Release"
-            optimize "on"

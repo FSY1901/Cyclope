@@ -49,6 +49,21 @@ namespace Cyclope {
                 WindowCloseEvent event;
                 data.EventCallback(event);
             });
+        glfwSetWindowPosCallback(m_window, [](GLFWwindow* window, int x, int y) {
+                WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+                WindowMovedEvent event(x, y);
+                data.EventCallback(event);
+            });
+        glfwSetWindowFocusCallback(m_window, [](GLFWwindow* window, int focused) {
+                WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+                if (focused) {
+                    WindowFocusEvent event;
+                    data.EventCallback(event);
+                } else{
+                    WindowLostFocusEvent event;
+                    data.EventCallback(event);
+                }
+            });
         glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
                 WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
                 switch (action) {
@@ -71,6 +86,13 @@ namespace Cyclope {
                     break;
                 }
                 }
+            });
+        glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int keycode)
+            {
+                WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+                KeyTypedEvent event((Key)keycode);
+                data.EventCallback(event);
             });
         glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods) {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

@@ -5,18 +5,6 @@
 #include <iostream>
 namespace Scripting {
 
-	void Serialize() {
-
-		std::cout << "Hello" << std::endl;
-
-	}
-
-	void Deserialize() {
-
-		std::cout << "DeHello" << std::endl;
-
-	}
-
 	void GetRegistries(Cyclope::ComponentRegistry& components, Cyclope::ComponentNamesList& names, 
 		Cyclope::NativeScriptRegistry& scripts, Cyclope::NativeScriptNamesList& scriptNames) {
 		components = Cyclope::componentRegistry();

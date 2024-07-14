@@ -73,7 +73,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Debug-windows-x86_64\App &gt; nul)
+IF EXIST ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Debug-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Debug-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,7 +100,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)OpenGL\src;$(SolutionDir)vendor\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
+      <Command>IF EXIST ..\vendor\assimp\lib\assimp-vc143-mt.dll\ (xcopy /Q /E /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\assimp\lib\assimp-vc143-mt.dll ..\bin\Release-windows-x86_64\App &gt; nul)
+IF EXIST ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Release-windows-x86_64\App &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll ..\bin\Release-windows-x86_64\App &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

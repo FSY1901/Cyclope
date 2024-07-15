@@ -30,7 +30,6 @@ namespace Scripting {
 
 	using namespace Cyclope;
 
-	REGISTER_SCRIPT(Script);
 	class Script : public Cyclope::ScriptableEntity {
 
 	public:
@@ -63,8 +62,8 @@ namespace Scripting {
 		}
 
 	};
+	REGISTER_SCRIPT(Script);
 
-	REGISTER_SCRIPT(Script2);
 	class Script2 : public Cyclope::ScriptableEntity {
 	public:
 		TransformComponent* transform;
@@ -77,5 +76,18 @@ namespace Scripting {
 			transform->position.y = sin(5.0f * Time::GetTime());
 		}
 	};
+	REGISTER_SCRIPT(Script2);
+
+	class MyLayer : public Cyclope::Layer {
+	public:
+		void OnAttach() {
+			CYCLOPE_INFO("MyLayer Attached");
+		}
+
+		void OnUpdate(float dt) {
+			CYCLOPE_INFO("Message from MyLayer");
+		}
+	};
+	//REGISTER_LAYER(MyLayer);
 
 }

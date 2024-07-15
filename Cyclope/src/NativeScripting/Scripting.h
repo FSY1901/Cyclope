@@ -2,8 +2,11 @@
 
 #include <unordered_map>
 #include "../Game/Entity.h"
+#include "Layer.h"
 
 namespace Cyclope {
+
+	//Components and Scripts
 	using AddComponentFunction = void(*)(Entity& e);
 	using CopyComponentFunction = void(*)(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap);
 	using HasComponentFunction = bool(*)(Entity& e);
@@ -20,10 +23,17 @@ namespace Cyclope {
 	using ComponentNamesList = std::vector<std::string>;
 	using NativeScriptNamesList = std::vector<std::string>;
 
+	//Layers
+	extern class Application;
+	
+	using AddLayerFunction = void(*)(Application& app);
+	using LayerList = std::vector<AddLayerFunction>;
+
 	extern CYCLOPE_API ComponentRegistry& componentRegistry();
 	extern CYCLOPE_API NativeScriptRegistry& nativeScriptRegistry();
 	extern CYCLOPE_API ComponentNamesList& componentNamesList();
-	extern CYCLOPE_API NativeScriptNamesList& nativeScriptNamesList(); //= std::vector<std::string>{"None"};
+	extern CYCLOPE_API NativeScriptNamesList& nativeScriptNamesList();
+	extern CYCLOPE_API LayerList& layerList();
 
 	inline uint8_t RegisterComponent(const std::string& name, AddComponentFunction aFunc, CopyComponentFunction cFunc, HasComponentFunction hFunc, RemoveComponentFunction rFunc) {
 		componentNamesList().push_back(name);
@@ -37,10 +47,15 @@ namespace Cyclope {
 		return nativeScriptRegistry().insert(NativeScriptRegistry::value_type({tag, func})).second;
 	}
 
+	inline uint8_t RegisterLayer(AddLayerFunction func) {
+		layerList().push_back(func);
+		return 1;//Layers dont need IDs
+	}
+
 #define REGISTER_COMPONENT(TYPE)									\
 	struct TYPE;													\
 	namespace {														\
-		const uint8_t reg_##TYPE									\
+		const uint8_t comp_##TYPE									\
 		{ Cyclope::RegisterComponent(								\
 			(#TYPE),												\
 			[](Cyclope::Entity& e){e.AddComponent<TYPE>();},		\
@@ -61,10 +76,19 @@ namespace Cyclope {
 #define REGISTER_SCRIPT(TYPE)									\
 	class TYPE;													\
 	namespace {													\
-		const uint8_t reg_##TYPE								\
+		const uint8_t script_##TYPE								\
 		{ Cyclope::RegisterNativeScript(						\
 			(#TYPE),											\
 			[](Cyclope::Entity& e){e.GetComponent<Cyclope::NativeScriptComponent>().Bind<TYPE>(#TYPE);})	\
+		};														\
+	}
+
+#define REGISTER_LAYER(LAYER)									\
+	class LAYER;												\
+	namespace {													\
+		const uint8_t layer_##LAYER								\
+		{ Cyclope::RegisterLayer(								\
+			[](Cyclope::Application& app){app.PushLayer(new LAYER());})					\
 		};														\
 	}
 

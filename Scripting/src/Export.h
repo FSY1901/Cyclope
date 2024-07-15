@@ -7,7 +7,7 @@
 namespace Scripting {
 
 	extern "C" EXPORT void GetRegistries(Cyclope::ComponentRegistry& components, Cyclope::ComponentNamesList& componentNames, 
-		Cyclope::NativeScriptRegistry& scripts, Cyclope::NativeScriptNamesList& scriptNames);
+		Cyclope::NativeScriptRegistry& scripts, Cyclope::NativeScriptNamesList& scriptNames, Cyclope::LayerList& layers);
 	extern "C" EXPORT void PrintComponents(ImGuiContext* ctx, Cyclope::Entity& e, const std::string & componentName);
 
 }

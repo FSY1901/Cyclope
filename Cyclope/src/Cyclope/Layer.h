@@ -1,3 +1,4 @@
+#pragma once
 #ifndef LAYER_H
 #define LAYER_H
 

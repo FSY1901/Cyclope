@@ -4,7 +4,8 @@
 
 namespace Cyclope {
 
-	void DLLLoader::LoadDLL(ComponentRegistry& components, ComponentNamesList& componentNames, NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames) {
+	void DLLLoader::LoadDLL(ComponentRegistry& components, ComponentNamesList& componentNames, 
+		NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames, LayerList& layers) {
 		auto& project = Project::GetActive();
 		std::string s = (project->GetProjectDirectory() / project->GetConfig().scriptPath).string().c_str();
 		std::wstring stemp = std::wstring(s.begin(), s.end());
@@ -20,7 +21,7 @@ namespace Cyclope {
 				std::cout << "could not locate the function \n";
 			}
 			else {
-				func(components, componentNames, scripts, scriptNames);
+				func(components, componentNames, scripts, scriptNames, layers);
 			}
 		}
 		else {

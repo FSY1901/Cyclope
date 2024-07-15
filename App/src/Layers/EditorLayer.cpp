@@ -99,7 +99,13 @@ namespace CyclopeEditor {
 		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
 
 		//TODO: Add custom layers to DLL
-		loader.LoadDLL(componentRegistry(), componentNamesList(), nativeScriptRegistry(), nativeScriptNamesList());
+		loader.LoadDLL(componentRegistry(), componentNamesList(), 
+			nativeScriptRegistry(), nativeScriptNamesList(), layerList());
+
+		//load all layers
+		for (auto addLayer : layerList()) {
+			addLayer(*Application::GetInstance());
+		}
 
 		DisplayComponent = loader.Load();
 #pragma endregion

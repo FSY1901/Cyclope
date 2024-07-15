@@ -22,4 +22,10 @@ namespace Cyclope {
 		static NativeScriptNamesList nsnl = std::vector<std::string>{ "None" };
 		return nsnl;
 	}
+
+	LayerList& layerList() {
+		static LayerList ll;
+		return ll;
+	}
+
 }

@@ -30,6 +30,18 @@ namespace Cyclope {
 
 	}
 
+	GUIFunction DLLLoader::LoadComponentGUIFunction() {
+		if (hDLL != NULL)
+		{
+			GUIFunction func = (GUIFunction)GetProcAddress(hDLL, "ComponentGUIFunction");
+			return func;
+		}
+
+		std::cout << "First call LoadDLL()!" << std::endl;
+
+		return{};
+	}
+
 	void DLLLoader::FreeDLL() {
 		FreeLibrary(hDLL);
 		std::cout << "Freed DLL" << std::endl;

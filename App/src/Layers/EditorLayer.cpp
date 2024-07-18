@@ -1,4 +1,5 @@
 #include "EditorLayer.h"
+#include "ScriptLoaderLayer.h"
 
 #include "../OBJLoader.h"
 
@@ -93,22 +94,11 @@ namespace CyclopeEditor {
 	void EditorLayer::OnAttach() {
 		s_EditorLayer = this;
 
-#pragma region Project and Scripting
+
 		activeScene = MakeShared<Scene>();
 
 		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
 
-		//TODO: Add custom layers to DLL
-		loader.LoadDLL(componentRegistry(), componentNamesList(), 
-			nativeScriptRegistry(), nativeScriptNamesList(), layerList());
-
-		//load all layers
-		for (auto addLayer : layerList()) {
-			addLayer(*Application::GetInstance());
-		}
-
-		DisplayComponent = loader.Load();
-#pragma endregion
 
 #pragma region PlaneVA
 		std::vector<float> verts;
@@ -1109,7 +1099,7 @@ namespace CyclopeEditor {
 					ImGui::EndPopup();
 				}
 
-				DisplayComponent(ImGui::GetCurrentContext(), selectedEntity, _name);
+				ScriptLoaderLayer::GetComponentDisplayFunction()(ImGui::GetCurrentContext(), selectedEntity, _name);
 
 				ImGui::TreePop();
 				if (removeComponent)

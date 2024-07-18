@@ -36,6 +36,7 @@
     <ClInclude Include="src\SceneView\SceneViewCamera.h">
       <Filter>src\SceneView</Filter>
     </ClInclude>
+    <ClInclude Include="src\Layers\ScriptLoaderLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\ImGuizmo\ImGuizmo.cpp">
@@ -56,5 +57,6 @@
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp">
       <Filter>src\SceneView</Filter>
     </ClCompile>
+    <ClCompile Include="src\Layers\ScriptLoaderLayer.cpp" />
   </ItemGroup>
 </Project>

@@ -108,6 +108,7 @@ IF EXIST ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I .
     <ClInclude Include="..\vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="src\Layers\ContentBrowserPanel.h" />
     <ClInclude Include="src\Layers\EditorLayer.h" />
+    <ClInclude Include="src\Layers\ScriptLoaderLayer.h" />
     <ClInclude Include="src\OBJLoader.h" />
     <ClInclude Include="src\SceneView\Grid.h" />
     <ClInclude Include="src\SceneView\SceneViewCamera.h" />
@@ -117,6 +118,7 @@ IF EXIST ..\bin\Release-windows-x86_64\Cyclope\Cyclope.dll\ (xcopy /Q /E /Y /I .
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\Layers\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Layers\EditorLayer.cpp" />
+    <ClCompile Include="src\Layers\ScriptLoaderLayer.cpp" />
     <ClCompile Include="src\SceneView\Grid.cpp" />
     <ClCompile Include="src\SceneView\SceneViewCamera.cpp" />
   </ItemGroup>

@@ -17,17 +17,9 @@ namespace Cyclope {
 	public:
 		void LoadDLL(ComponentRegistry& components, ComponentNamesList& names, 
 			NativeScriptRegistry& scripts, NativeScriptNamesList& scriptNames, LayerList& layers);
-		GUIFunction Load() {
-			if (hDLL != NULL)
-			{
-				GUIFunction func = (GUIFunction)GetProcAddress(hDLL, "PrintComponents");
-				return func;
-			}
-
-			std::cout << "First call LoadDLL()!" << std::endl;
-
-			return{};
-		}
+		
+		GUIFunction LoadComponentGUIFunction();
+		
 		void FreeDLL();
 
 	private:

@@ -14,7 +14,7 @@ namespace Scripting {
 		layers = Cyclope::layerList();
 	}
 
-	void PrintComponents(ImGuiContext* ctx, Cyclope::Entity& e, const std::string& componentName) {
+	void ComponentGUIFunction(ImGuiContext* ctx, Cyclope::Entity& e, const std::string& componentName) {
 
 		ImGui::SetCurrentContext(ctx);
 		size_t hash = std::hash<std::string>()(componentName);

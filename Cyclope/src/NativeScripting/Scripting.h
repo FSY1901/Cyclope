@@ -26,7 +26,7 @@ namespace Cyclope {
 	//Layers
 	extern class Application;
 	
-	using AddLayerFunction = void(*)(Application& app);
+	using AddLayerFunction = void(*)(Application* app);
 	using LayerList = std::vector<AddLayerFunction>;
 
 	extern CYCLOPE_API ComponentRegistry& componentRegistry();
@@ -88,7 +88,7 @@ namespace Cyclope {
 	namespace {													\
 		const uint8_t layer_##LAYER								\
 		{ Cyclope::RegisterLayer(								\
-			[](Cyclope::Application& app){app.PushLayer(new LAYER());})					\
+			[](Cyclope::Application* app){app->PushLayer(new LAYER());})					\
 		};														\
 	}
 

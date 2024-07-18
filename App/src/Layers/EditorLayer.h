@@ -102,9 +102,6 @@ namespace CyclopeEditor {
 		void DrawToolbar();
 		ContentBrowserPanel contentBrowser;
 
-
-		GUIFunction DisplayComponent;
-
 		template<typename T>
 		void DisplayAddComponentEntry(const std::string& entryName) {
 			if (!selectedEntity.HasComponent<T>())

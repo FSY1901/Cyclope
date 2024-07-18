@@ -4,6 +4,7 @@
 #include "Cyclope/EntryPoint.h"
 
 #include "Layers/EditorLayer.h"
+#include "Layers/ScriptLoaderLayer.h"
 
 using namespace Cyclope;
 
@@ -13,6 +14,7 @@ public:
 
 	App(const WindowSpecification& spec) : Application(spec) {
 		PushLayer(new CyclopeEditor::EditorLayer());
+		PushLayer(new CyclopeEditor::ScriptLoaderLayer());
 	}
 
 };

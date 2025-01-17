@@ -122,7 +122,7 @@ namespace Cyclope {
 
 }
 
-#define CYCLOPE_PROFILE 0//change this
+#define CYCLOPE_PROFILE 1//change this
 #if CYCLOPE_PROFILE//change this
 #define CYCLOPE_BEGIN_PROFILE_SESSION(name, filepath) Cyclope::Instrumentor::Get().BeginSession(name, filepath)
 #define CYCLOPE_END_PROFILE_SESSION()  Cyclope::Instrumentor::Get().EndSession()

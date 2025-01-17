@@ -20,8 +20,8 @@ namespace CyclopeEditor {
 	}
 
 	void ContentBrowserPanel::Draw() {
-
-		ImGui::Begin("Content Browser");
+		CYCLOPE_PROFILE_FUNCTION();
+		/*ImGui::Begin("Content Browser");
 
 		ImGui::Text(std::filesystem::relative(currentDirectory, assetDir).string().c_str());
 
@@ -70,7 +70,7 @@ namespace CyclopeEditor {
 
 		ImGui::Columns(1);
 
-		ImGui::End();
+		ImGui::End();*/
 
 	}
 

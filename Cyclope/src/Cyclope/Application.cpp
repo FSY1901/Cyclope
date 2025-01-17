@@ -28,7 +28,7 @@ namespace Cyclope {
     }
 
     void Application::Run() {
-        //glEnable(GL_MULTISAMPLE);
+
         while (!glfwWindowShouldClose(m_window.m_window))
         {
             float currentTime = glfwGetTime();

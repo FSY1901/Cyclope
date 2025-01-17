@@ -94,11 +94,9 @@ namespace CyclopeEditor {
 	void EditorLayer::OnAttach() {
 		s_EditorLayer = this;
 
-
 		activeScene = MakeShared<Scene>();
 
 		OpenProject("D:\\VS_Projects\\Cyclope\\Scripting\\MyProject.cyproj");//TODO make a project selector
-
 
 #pragma region PlaneVA
 		std::vector<float> verts;
@@ -271,22 +269,26 @@ namespace CyclopeEditor {
 
 		framebuffer->ClearAttachment(1, -1);
 
+		{
+			CYCLOPE_PROFILE_SCOPE("Skybox Scope");
 #pragma region Skybox
-		RenderCommands::StencilMask(0x00);
-		RenderCommands::Disable(RenderingOperation::DepthTest);
-		RenderCommands::Disable(RenderingOperation::CullFace);
-		skyboxShader->Bind();
-		skyboxShader->SetMat4("projection", activeCamera->GetProjectionMatrix());
-		glm::mat4 view = glm::mat4(glm::mat3(activeCamera->GetViewMatrix()));
-		skyboxShader->SetMat4("view", view);
-		skybox->Bind();
-		Renderer::Submit(skyboxVA, skyboxShader);
-		RenderCommands::Enable(RenderingOperation::CullFace);
-		RenderCommands::Enable(RenderingOperation::DepthTest);
+			RenderCommands::StencilMask(0x00);
+			RenderCommands::Disable(RenderingOperation::DepthTest);
+			RenderCommands::Disable(RenderingOperation::CullFace);
+			skyboxShader->Bind();
+			skyboxShader->SetMat4("projection", activeCamera->GetProjectionMatrix());
+			glm::mat4 view = glm::mat4(glm::mat3(activeCamera->GetViewMatrix()));
+			skyboxShader->SetMat4("view", view);
+			skybox->Bind();
+			Renderer::Submit(skyboxVA, skyboxShader);
+			RenderCommands::Enable(RenderingOperation::CullFace);
+			RenderCommands::Enable(RenderingOperation::DepthTest);
 #pragma endregion
+		}
 
 		{
 			CYCLOPE_PROFILE_SCOPE("Render Scope");
+			
 			activeScene->ForEach([&](Entity e) {
 				if (e.HasComponent<ModelRendererComponent>()) {
 					/*
@@ -317,9 +319,9 @@ namespace CyclopeEditor {
 						shader->SetInt("entityID", e.GetID());//Maybe Temporary
 						//Dependent on the shader
 						shader->SetMat3("normalMatrix", Matrix3(glm::transpose(glm::inverse(transform))));
-						if(sceneState == SceneState::Edit)
+						if (sceneState == SceneState::Edit)
 							shader->SetVec3("viewPos", svc.transform.position);
-						else if(sceneState == SceneState::Play)
+						else if (sceneState == SceneState::Play)
 							shader->SetVec3("viewPos", cameraEntity.GetComponent<TransformComponent>().position);
 						shader->SetVec3("material.diffuse", modelComponent.diffuse);
 						shader->SetVec3("material.specular", modelComponent.specular);
@@ -332,7 +334,7 @@ namespace CyclopeEditor {
 				});
 
 			if (sceneState == SceneState::Edit) {
-				CYCLOPE_PROFILE_SCOPE("Editor Rendering");
+				CYCLOPE_PROFILE_SCOPE("Biilboard Rendering");
 				activeScene->ForEach([&](Entity e) {
 					if (e.HasComponent<DirectionalLightComponent>()) {
 						auto& tc = e.GetComponent<TransformComponent>();
@@ -446,41 +448,44 @@ namespace CyclopeEditor {
 
 	void EditorLayer::OnImGuiRender() {
 		CYCLOPE_PROFILE_FUNCTION();
-		ImGuiWindowFlags winFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
-			| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
-			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+		
+		{
+			ImGuiWindowFlags winFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
+				| ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+				| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
 
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::SetNextWindowPos(viewport->Pos);
-		ImGui::SetNextWindowSize(viewport->Size);
-		ImGui::SetNextWindowViewport(viewport->ID);
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		//ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.0f);
-		ImGui::Begin("Win", NULL, winFlags);
-		ImGui::PopStyleVar(3);
-		ImGuiID id = ImGui::GetID("WinDockspace");
-		ImGui::DockSpace(id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
-		ImGui::End();
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			//ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.0f);
+			ImGui::Begin("Win", NULL, winFlags);
+			ImGui::PopStyleVar(3);
+			ImGuiID id = ImGui::GetID("WinDockspace");
+			ImGui::DockSpace(id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+			ImGui::End();
 
-		if (ImGui::BeginMainMenuBar()) {
-			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("New", "Ctrl+N")) {
-					activeScene = MakeShared<Scene>();
-					selectedEntity = {};
+			if (ImGui::BeginMainMenuBar()) {
+				if (ImGui::BeginMenu("File")) {
+					if (ImGui::MenuItem("New", "Ctrl+N")) {
+						activeScene = MakeShared<Scene>();
+						selectedEntity = {};
+					}
+					if (ImGui::MenuItem("Save...", "Ctrl+S")) {
+						SerializeScene();
+					}
+					if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+						DeserializeScene();
+					}
+					ImGui::EndMenu();
 				}
-				if (ImGui::MenuItem("Save...", "Ctrl+S")) {
-					SerializeScene();
-				}
-				if (ImGui::MenuItem("Open...", "Ctrl+L")) {
-					DeserializeScene();
-				}
-				ImGui::EndMenu();
+				DrawToolbar();
+				ImGui::EndMainMenuBar();
 			}
-			DrawToolbar();
-			ImGui::EndMainMenuBar();
 		}
 
 		DrawViewportPanel();
@@ -592,7 +597,7 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DrawViewportPanel() {
-
+		CYCLOPE_PROFILE_FUNCTION();
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 		ImGui::Begin("Viewport");
 		ImGui::PopStyleVar();
@@ -682,29 +687,124 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DrawSceneHierarchyPanel() {
-
+		CYCLOPE_PROFILE_FUNCTION();
 		ImGui::Begin("Scene Hierarchy");
-
-		activeScene->ForEach([&](Entity& e) {
-			bool node = ImGui::TreeNodeEx((e.Tag() + std::string("##") + std::to_string(e)).c_str(),
-				ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth);
-			if (node) {
-				ImGui::TreePop();
-			}
+		
+		std::function<void(Entity&, RelationshipComponent*)> RenderEntityTreeNode = [&](Entity& e, RelationshipComponent* rel) {
+			bool node = ImGui::TreeNodeEx((void*)(intptr_t)e.GetUUID(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth,
+				e.Tag().c_str());
 			if (ImGui::IsItemClicked()) {
 				selectedEntity = e;
+			}
+			if (ImGui::BeginDragDropSource())
+			{
+				uint32_t id = e.GetID();
+				ImGui::SetDragDropPayload("_TREENODE", &id, (sizeof(uint32_t)));
+				ImGui::Text("Move Entity");
+				ImGui::EndDragDropSource();
+			}
+			if (ImGui::BeginDragDropTarget()) {
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
+					if (payload->DataSize == sizeof(uint32_t)) {
+						//TODO: Reconstruct tree when entity is moved(needs prev)
+						uint32_t _id = *(const uint32_t*)payload->Data;
+						auto child = Entity{ (entt::entity)_id, activeScene.get() };
+						auto childRel = &child.GetComponent<RelationshipComponent>();
+						rel->children++;
+						if (rel->first == Entity::Null) {
+							rel->first = child;
+							childRel->parent = e;
+						}
+						else {
+							auto id = rel->first;
+							Entity entity{ id, activeScene.get() };
+							auto entityRel = &entity.GetComponent<RelationshipComponent>();
+							while (entityRel->next != Entity::Null) {
+								entity = Entity{ entityRel->next, activeScene.get() };
+								entityRel = &entity.GetComponent<RelationshipComponent>();
+							}
+							childRel->parent = e;
+							entityRel->next = child;
+						}
+					}
+				}
+				ImGui::EndDragDropTarget();
 			}
 			if (ImGui::BeginPopupContextItem())
 			{
 				if (ImGui::MenuItem("Delete Entity")) {
-					activeScene->DestroyEntity(e);
-					if (selectedEntity == e)
-						selectedEntity = {};
+
+					//TODO: Reconstruct tree when entity is deleted(needs prev)
+					//Delete all children recursively
+					std::function<void(Entity&, RelationshipComponent*)> DeleteChildren = [&](Entity& e, RelationshipComponent* _rel) {
+						if (_rel->parent != Entity::Null) {
+							Entity parent = Entity{ _rel->parent, activeScene.get() };
+							auto parentRel = &parent.GetComponent<RelationshipComponent>();
+							parentRel->children--;
+							if (parentRel->first == e) {
+								parentRel->first = Entity::Null;
+							}
+						}
+
+						if (_rel->children != 0) {
+							Entity child = Entity{ _rel->first, activeScene.get() };
+							while (child != Entity::Null) {
+								auto childRel = &child.GetComponent<RelationshipComponent>();
+								DeleteChildren(child, childRel);
+								child = Entity{ childRel->next, activeScene.get() };
+							}
+						}
+
+						if (selectedEntity == e)
+							selectedEntity = {};
+
+						activeScene->DestroyEntity(e);
+					};
+
+					DeleteChildren(e, rel);
+				}
+				else if (ImGui::MenuItem("Create Child")) {
+					auto child = activeScene->CreateEntity();
+					auto childRel = &child.GetComponent<RelationshipComponent>();
+					rel->children++;
+					if (rel->first == Entity::Null) {
+						rel->first = child;
+						childRel->parent = e;
+					}
+					else {
+						auto id = rel->first;
+						Entity entity{ id, activeScene.get()};
+						auto entityRel = &entity.GetComponent<RelationshipComponent>();
+						while (entityRel->next != Entity::Null) {
+							entity = Entity{ entityRel->next, activeScene.get() };
+							entityRel = &entity.GetComponent<RelationshipComponent>();
+						}
+						childRel->parent = e;
+						entityRel->next = child;
+					}
 				}
 				ImGui::EndPopup();
 			}
-			});
+			if (node) {
+				Entity child;
+				if (rel->first != Entity::Null) {
+					child = Entity{ rel->first, activeScene.get() };
+					while (child != Entity::Null) {
+						auto childRel = &child.GetComponent<RelationshipComponent>();
+						RenderEntityTreeNode(child, &child.GetComponent<RelationshipComponent>());
+						child = Entity{ childRel->next, activeScene.get() };
+					}
+				}
+				ImGui::TreePop();
+			}
+		};
 
+		activeScene->ForEach([&](Entity& e) {
+			auto rel = &e.GetComponent<RelationshipComponent>();
+			if (rel->parent == Entity::Null) {
+				RenderEntityTreeNode(e, rel);
+			}
+		});
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			selectedEntity = {};
 
@@ -713,7 +813,7 @@ namespace CyclopeEditor {
 			if (ImGui::MenuItem("Create Entity"))
 				selectedEntity = activeScene->CreateEntity();
 			else if (ImGui::MenuItem("Create Camera")) {
-				auto& e = activeScene->CreateEntity("Create Camera");
+				auto& e = activeScene->CreateEntity("Camera");
 				e.AddComponent<CameraComponent>();
 				selectedEntity = e;
 			}
@@ -744,7 +844,7 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DrawInspectorPanel() {
-
+		CYCLOPE_PROFILE_FUNCTION();
 		ImGui::Begin("Inspector");
 		if (selectedEntity) {
 			if (selectedEntity.HasComponent<TagComponent>())
@@ -780,6 +880,21 @@ namespace CyclopeEditor {
 
 				ImGui::EndPopup();
 			}
+
+			ImGui::SameLine(ImGui::GetWindowWidth() - 115);
+
+			static bool debug = false;
+			ImGui::Checkbox("Debug Mode", &debug);
+
+			if (debug) {
+				DrawComponent<RelationshipComponent>("Relation", selectedEntity, [&](auto& component) {
+					ImGui::Text("ID: %d", (int)selectedEntity.GetID());
+					ImGui::Text("Parent: %d", (int)component.parent);
+					ImGui::Text("Children: %d", (int)component.children);
+					ImGui::Text("Next: %d", (int)component.next);
+					});
+			}
+
 			DrawComponent<TransformComponent>("Transform", selectedEntity, [](auto& component)
 				{
 					DrawVec3Control("Position", component.position);
@@ -1014,7 +1129,7 @@ namespace CyclopeEditor {
 	}
 
 	void EditorLayer::DrawDebugPanel() {
-
+		CYCLOPE_PROFILE_FUNCTION();
 		ImGui::Begin("Debug");
 		ImGui::Text("FPS: ");
 		ImGui::SameLine();

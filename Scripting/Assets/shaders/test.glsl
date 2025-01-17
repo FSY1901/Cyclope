@@ -26,8 +26,14 @@ in vec2 TexCoords;
 
 uniform int entityID;
 
+struct Material {
+    vec3 diffuse;
+}; 
+
+uniform Material material;
+
 void main()
 {
-	color = vec4(1.0, 0.2, 0.8, 1.0);
+	color = vec4(material.diffuse, 1.0);
 	color2 = entityID;
 }

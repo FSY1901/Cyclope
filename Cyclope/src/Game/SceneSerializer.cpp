@@ -130,6 +130,10 @@ namespace Cyclope {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<RelationshipComponent>()) {
+			//TODO: Implement savin relations
+		}
+
 		if (entity.HasComponent<ModelRendererComponent>()) {
 			out << YAML::Key << "ModelRendererComponent";
 			out << YAML::BeginMap;
@@ -266,6 +270,11 @@ namespace Cyclope {
 					transform.position = transformComponent["Position"].as<Vector3>();
 					transform.rotation = transformComponent["Rotation"].as<Quaternion>();
 					transform.scale = transformComponent["Scale"].as<Vector3>();
+				}
+
+				auto relationshipComponent = (*entity)["RelationshipComponent"];
+				if (relationshipComponent) {
+					//TODO: Implement relationship loading
 				}
 
 				auto meshRendererComponent = (*entity)["ModelRendererComponent"];

@@ -1,0 +1,41 @@
+Scene: Name
+Entities:
+  - Entity: 6297431794250944484
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Position: [0, 0, 0]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      zNear: 0.100000001
+      zFar: 1000
+      fov: 45
+      Projection: 0
+  - Entity: 11012900838961582922
+    TagComponent:
+      Tag: Point Light
+    TransformComponent:
+      Position: [1.69009387, 2.37456608, -3.72000003]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    PointLightComponent:
+      ambient: [0.137857676, 0.0814516172, 0.200000003]
+      ambientValue: 0.200000003
+      diffuse: [0.689288378, 0.407258093, 1]
+      radius: 5
+      intensity: 1
+      cutOff: 0.00100000005
+  - Entity: 13931769447418185037
+    TagComponent:
+      Tag: Cube
+    TransformComponent:
+      Position: [0, 0, -7]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelRendererComponent:
+      Path: objs\cube.obj
+      Shader: shaders\test.glsl
+      Diffuse: [1, 0, 0.99193573]
+      Specular: [0.5, 0.5, 0.5]
+      Shininess: 32

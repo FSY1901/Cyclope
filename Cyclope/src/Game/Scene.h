@@ -21,11 +21,27 @@ namespace Cyclope {
 
 		void Update(float dt);
 		void OnEvent(Event& e);
-		void Render();
+		//void Render();
 
 		Entity CreateEntity(std::string name = "Entity");
 		Entity CreateEntityWithUUID(UUID uuid, std::string name = "Entity");
+		
 		void DestroyEntity(Entity& entity);
+
+		template<typename Func>
+		void ForEach(Func func) {
+			m_Registry.each([&](auto entity) {
+				func(Entity{ entity, this });
+				});
+		}
+
+		template<typename T, typename Func>
+		auto ForEachWithComponent(Func func) {
+			auto view = m_Registry.view<T>();
+			for (auto e : view) {
+				func(Entity{ e, this });
+			}
+		}
 
 		template<typename T>
 		auto View() {
@@ -33,12 +49,8 @@ namespace Cyclope {
 			return view;
 		}
 
-		template<typename Func>
-		void ForEach(Func func) {
-			m_Registry.each([&](auto entity) {
-				func(Entity{ entity, this });
-			});
-		}
+		//For Debug Purposes
+		int DEBUGGetNumberOfEntities() { return m_Registry.size(); }
 
 	private:
 		entt::registry m_Registry;

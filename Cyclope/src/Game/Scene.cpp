@@ -97,12 +97,12 @@ namespace Cyclope {
 			});
 	}
 
+	/*
 	void Scene::Render() {
-
-		//TODO: Implement this
+		//TODO: Implement this?
 		//m_Registry.view<MeshRendererComponent>().each([=](auto entity, MeshRendererComponent& mesh) {});
-
 	}
+	*/
 
 	Entity Scene::CreateEntity(std::string name) {
 		return CreateEntityWithUUID(UUID(), name);
@@ -113,6 +113,7 @@ namespace Cyclope {
 		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TagComponent>(name);
+		entity.AddComponent<RelationshipComponent>();
 		entity.AddComponent<TransformComponent>();
 		return entity;
 	}

@@ -29,6 +29,17 @@ namespace Cyclope {
 			: tag(tag) {}
 	};
 
+	struct RelationshipComponent {
+		std::size_t children{};
+		entt::entity first{ entt::null };
+		//entt::entity prev{ entt::null };
+		entt::entity next{ entt::null };
+		entt::entity parent{ entt::null };
+
+		RelationshipComponent() = default;
+		RelationshipComponent(const RelationshipComponent&) = default;
+	};
+
 	struct TransformComponent{
 
 		Vector3 position = { 0.0f, 0.0f, 0.0f };

@@ -56,6 +56,9 @@ namespace Cyclope {
 			return !(*this == other);
 		}
 
+	public:
+		static const entt::entity Null = entt::null;
+
 	private:
 		entt::entity m_Entity{entt::null};
 		Scene* m_Scene;
